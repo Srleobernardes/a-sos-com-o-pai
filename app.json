@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "A sos com o Pai",
+    "slug": "a-sos-com-o-pai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#F5F2EB",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.asoscomopai.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F5F2EB"
+      },
+      "package": "com.asoscomopai.app"
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-font"
+    ]
+  }
+}

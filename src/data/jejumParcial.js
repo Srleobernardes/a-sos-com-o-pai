@@ -1,0 +1,163 @@
+// Jejum Parcial: 3 dias abstendo-se de algo especifico
+// Inspirado em Daniel 10:2-3 ("Naqueles dias, eu, Daniel, estava entristecido durante tres semanas...
+// nao comi alimento desejavel, nem carne nem vinho entrou na minha boca")
+
+export const TIPOS_PARCIAL = [
+  {
+    id: 'carnes',
+    titulo: 'Sem Carnes',
+    icone: 'restaurant',
+    cor: '#C62828',
+    descricao: 'Abstenha-se de carnes vermelhas, brancas e derivados durante os 3 dias.',
+    permitido: 'Frutas, verduras, legumes, grãos, água e sucos naturais.',
+    referencia: 'Daniel 10:3',
+  },
+  {
+    id: 'doces',
+    titulo: 'Sem Doces e Açúcar',
+    icone: 'ice-cream',
+    cor: '#AD1457',
+    descricao: 'Abstenha-se de doces, sobremesas, refrigerantes e tudo que contenha açúcar refinado.',
+    permitido: 'Frutas in natura, alimentos sem açúcar adicionado, água.',
+    referencia: 'Provérbios 25:27',
+  },
+  {
+    id: 'redes',
+    titulo: 'Sem Redes Sociais',
+    icone: 'phone-portrait',
+    cor: '#1565C0',
+    descricao: 'Abstenha-se de redes sociais, entretenimento digital e use o tempo em oração e Palavra.',
+    permitido: 'Comunicação essencial, leitura bíblica, oração, livros edificantes.',
+    referencia: 'Romanos 12:2',
+  },
+  {
+    id: 'industrializados',
+    titulo: 'Sem Industrializados',
+    icone: 'fast-food',
+    cor: '#E65100',
+    descricao: 'Abstenha-se de alimentos processados, fast food, frituras e ultraprocessados.',
+    permitido: 'Comida natural, caseira, frutas, verduras, legumes e grãos.',
+    referencia: 'Gênesis 1:29',
+  },
+  {
+    id: 'lazer',
+    titulo: 'Sem TV e Lazer',
+    icone: 'tv',
+    cor: '#4527A0',
+    descricao: 'Abstenha-se de TV, streaming, jogos e atividades de lazer durante os 3 dias.',
+    permitido: 'Tempo extra em oração, leitura bíblica, comunhão com a família.',
+    referencia: 'Salmo 101:3',
+  },
+  {
+    id: 'personalizado',
+    titulo: 'Personalizado',
+    icone: 'create',
+    cor: '#37474F',
+    descricao: 'Defina diante de Deus o que você vai abrir mão durante este jejum parcial.',
+    permitido: 'Tudo que não esteja relacionado ao seu compromisso pessoal.',
+    referencia: 'Eclesiastes 5:4-5',
+  },
+];
+
+// Cada dia tem 3 momentos de oracao (manha, meio-dia, noite)
+export const JEJUM_PARCIAL_DIAS = [
+  {
+    dia: 1,
+    titulo: 'A Consagração',
+    subtitulo: 'Apresentação do jejum diante de Deus',
+    versiculoChave: 'Daniel 10:12',
+    versiculoTexto: 'Não temas, Daniel; porque desde o primeiro dia em que aplicaste o teu coração a compreender e a humilhar-te perante o teu Deus, são ouvidas as tuas palavras.',
+    oracoes: [
+      {
+        horario: '06h00 (Ao despertar)',
+        duracao: '15 minutos',
+        periodo: 'Manhã',
+        titulo: 'Apresentação do Jejum',
+        referencia: 'Salmo 5:3',
+        texto: 'De manhã, Senhor, ouves a minha voz; de manhã te apresento a minha oração e aguardo com esperança. Pai, neste primeiro dia de jejum parcial, apresento diante de Ti o que escolhi abrir mão. Que esta abstinência não seja em vão, mas que abra meu coração para Te ouvir com mais clareza. Consagro este dia inteiro a Ti. Amém.',
+      },
+      {
+        horario: '12h00 (Meio-dia)',
+        duracao: '10 minutos',
+        periodo: 'Meio-Dia',
+        titulo: 'Renovação do Compromisso',
+        referencia: 'Mateus 6:16-18',
+        texto: 'Quando jejuardes, não vos mostreis tristonhos como os hipócritas; mas tu, quando jejuares, unge a tua cabeça e lava o rosto, para não parecer aos homens que jejuas, mas a teu Pai, que vê em secreto. Senhor, neste meio-dia renovo meu compromisso. Que meu jejum seja em segredo diante de Ti, sem aparência, sem orgulho. Sustenta-me com Tua graça. Amém.',
+      },
+      {
+        horario: '20h00 (Noite)',
+        duracao: '15 minutos',
+        periodo: 'Noite',
+        titulo: 'Encerramento do Primeiro Dia',
+        referencia: 'Salmo 4:8',
+        texto: 'Em paz me deito e logo adormeço, pois só tu, Senhor, me fazes viver em segurança. Pai, agradeço pela força para vencer o primeiro dia. Em vez de buscar o que abri mão, busquei a Ti. Repouso em Tuas mãos sabendo que Tu conheces minha causa. Renova-me esta noite para o segundo dia. Amém.',
+      },
+    ],
+  },
+  {
+    dia: 2,
+    titulo: 'A Resistência',
+    subtitulo: 'Permanência firme no propósito',
+    versiculoChave: 'Tiago 4:7',
+    versiculoTexto: 'Sujeitai-vos, pois, a Deus; resisti ao diabo, e ele fugirá de vos.',
+    oracoes: [
+      {
+        horario: '06h00 (Ao despertar)',
+        duracao: '15 minutos',
+        periodo: 'Manhã',
+        titulo: 'Força para Resistir',
+        referencia: 'Filipenses 4:13',
+        texto: 'Posso todas as coisas naquele que me fortalece. Pai, já senti o peso de abrir mão do que escolhi. A carne reclama, mas o Espírito está firme. Na Tua força eu resisto. Hoje busco mais de Ti do que nunca. Que cada vontade de quebrar este jejum se torne motivo para Te buscar mais. Amém.',
+      },
+      {
+        horario: '12h00 (Meio-dia)',
+        duracao: '15 minutos',
+        periodo: 'Meio-Dia',
+        titulo: 'Clamor pela Causa',
+        referencia: 'Jeremias 33:3',
+        texto: 'Clama a mim e eu te responderei e te anunciarei coisas grandes e ocultas, que você não conhece. Senhor, neste segundo dia clamo pela causa que me trouxe a este jejum. Tu prometeste responder. Tu prometeste anunciar coisas que não conheço. Eu creio. Eu espero. Eu permaneço diante de Ti. Amém.',
+      },
+      {
+        horario: '20h00 (Noite)',
+        duracao: '15 minutos',
+        periodo: 'Noite',
+        titulo: 'Vitória sobre a Carne',
+        referencia: 'Gálatas 5:16-17',
+        texto: 'Andai no Espírito e jamais satisfareis as paixões da carne. Porque a carne deseja o que é contrário ao Espírito; e o Espírito, o que é contrário a carne. Pai, hoje a carne quis vencer, mas o Espírito venceu. Esta vitória de hoje e Tua vitória em mim. Que ela se traduza em vitória sobre tudo aquilo que eu trouxe diante de Ti neste jejum. Amém.',
+      },
+    ],
+  },
+  {
+    dia: 3,
+    titulo: 'A Resposta',
+    subtitulo: 'Receber e selar o que foi pedido',
+    versiculoChave: 'Daniel 10:12',
+    versiculoTexto: 'Desde o primeiro dia em que decidiste obter entendimento e te humilhaste diante do teu Deus, as tuas palavras foram ouvidas, e eu vim em resposta a elas.',
+    oracoes: [
+      {
+        horario: '06h00 (Ao despertar)',
+        duracao: '20 minutos',
+        periodo: 'Manhã',
+        titulo: 'Pela Resposta',
+        referencia: 'Marcos 11:24',
+        texto: 'Tudo o que pedirdes em oração, crede que já o recebestes, e assim será. Senhor, neste último dia de jejum, declaro pela fé: já recebi a resposta. Mesmo sem ver, eu creio. Mesmo sem sentir, eu confio. Tu ouviste meu clamor desde o primeiro dia. Hoje confirmo: a vitória é Tua. A resposta é Tua. Amém.',
+      },
+      {
+        horario: '12h00 (Meio-dia)',
+        duracao: '15 minutos',
+        periodo: 'Meio-Dia',
+        titulo: 'Selando o Pedido',
+        referencia: 'Efésios 1:13-14',
+        texto: 'Em quem também vos, depois que ouvistes a Palavra da verdade, o evangelho da vossa salvação, e nele tendo crido, fostes selados com o Espírito Santo da promessa. Pai, sela com Teu Espírito o que foi pedido nestes 3 dias. Que nada do que foi orado caia por terra. Que cada lágrima, cada hora de fome, cada renúncia se converta em manifestação da Tua glória. Amém.',
+      },
+      {
+        horario: '20h00 (Encerramento)',
+        duracao: '20 minutos',
+        periodo: 'Encerramento',
+        titulo: 'Quebra do Jejum em Adoração',
+        referencia: 'Salmo 103:1-5',
+        texto: 'Bendize, o minha alma, ao Senhor, e tudo o que há em mim bendiga o Seu Santo nome. Bendize, o minha alma, ao Senhor, e não te esqueças de nem um só de Seus benefícios. Ele perdoa todas as tuas iniquidades, sara todas as tuas enfermidades, redime a tua vida do abismo, te coroa de bondade e misericórdia. Pai, encerro este jejum parcial em adoração. Bendigo Teu nome. Levo de Ti uma alma renovada, um Espírito fortalecido e a certeza de que Tu agiste. A Ti seja toda a glória. Amém.',
+      },
+    ],
+  },
+];
