@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Asset } from 'expo-asset';
 import { AppProvider } from './src/context/AppContext';
 import AppNavigator from './src/navigation/AppNavigator';
+import SplashScreen from './src/components/SplashScreen';
+
+const imagens = [
+  require('./assets/banners/conexao.png'),
+  require('./assets/banners/versiculo.png'),
+  require('./assets/banners/devocional.png'),
+  require('./assets/banners/oracao-guiada.png'),
+  require('./assets/icons/logo.png'),
+];
 
 export default function App() {
+  const [pronto, setPronto] = useState(false);
+
+  useEffect(() => {
+    Asset.loadAsync(imagens).finally(() => setPronto(true));
+  }, []);
+
+  if (!pronto) return (
+    <>
+      <StatusBar style="light" />
+      <SplashScreen />
+    </>
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaProvider>

@@ -11,39 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, SHADOWS, FONTS } from '../theme/colors';
 import { useApp } from '../context/AppContext';
-
-const PASSOS = [
-  {
-    titulo: 'Adoracao',
-    icone: 'musical-notes',
-    texto: 'Comece adorando a Deus. Reconheca quem Ele e: Todo-Poderoso, Criador, Pai amoroso. Louve-O por Sua grandeza e fidelidade.',
-    duracao: '1 min',
-  },
-  {
-    titulo: 'Confissao',
-    icone: 'heart-dislike',
-    texto: 'Confesse seus pecados diante de Deus. Nao esconda nada. Ele ja sabe, mas quer ouvir de voce. Peca perdao com sinceridade.',
-    duracao: '1 min',
-  },
-  {
-    titulo: 'Gratidao',
-    icone: 'gift',
-    texto: 'Agradeca a Deus por tudo: pela vida, saude, familia, provisao. Lembre-se de bencaos especificas desta semana.',
-    duracao: '1 min',
-  },
-  {
-    titulo: 'Suplica',
-    icone: 'hand-left',
-    texto: 'Apresente seus pedidos a Deus. Ore por suas necessidades, por sua familia, pela igreja, pelo Brasil e pelas nacoes.',
-    duracao: '1 min',
-  },
-  {
-    titulo: 'Silencio',
-    icone: 'volume-mute',
-    texto: 'Fique em silencio diante de Deus. Ouca o que Ele quer falar ao seu coracao. Esteja disponivel para a voz do Espirito Santo.',
-    duracao: '1 min',
-  },
-];
+import { getOracaoGuiadaDoDia } from '../data/oracaoGuiada';
 
 export default function OracaoGuiadaScreen({ route, navigation }) {
   const insets = useSafeAreaInsets();
@@ -53,6 +21,7 @@ export default function OracaoGuiadaScreen({ route, navigation }) {
   const completed = isTaskCompleted(taskId);
   const fadeAnim = useRef(new Animated.Value(1)).current;
   const progressAnim = useRef(new Animated.Value(0)).current;
+  const PASSOS = getOracaoGuiadaDoDia().passos;
 
   useEffect(() => {
     Animated.timing(progressAnim, {
@@ -87,6 +56,7 @@ export default function OracaoGuiadaScreen({ route, navigation }) {
       uncompleteTask(taskId);
     } else {
       completeTask(taskId);
+      setTimeout(() => navigation.goBack(), 400);
     }
   };
 
@@ -99,7 +69,7 @@ export default function OracaoGuiadaScreen({ route, navigation }) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={COLORS.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Oracao Guiada</Text>
+        <Text style={styles.headerTitle}>Oração Guiada</Text>
         <Text style={styles.stepCount}>{currentStep + 1}/{PASSOS.length}</Text>
       </View>
 
@@ -122,7 +92,7 @@ export default function OracaoGuiadaScreen({ route, navigation }) {
         {/* BANNER: 360x180px - Imagem de maos em oracao */}
         <View style={styles.bannerArea}>
           <Ionicons name="hand-left" size={50} color="rgba(255,255,255,0.5)" />
-          <Text style={styles.bannerText}>Oracao Guiada</Text>
+          <Text style={styles.bannerText}>Oração Guiada</Text>
         </View>
 
         {/* Step content */}
@@ -163,13 +133,6 @@ export default function OracaoGuiadaScreen({ route, navigation }) {
           ))}
         </View>
 
-        {/* Audio placeholder */}
-        <TouchableOpacity style={styles.audioButton}>
-          {/* AUDIO: Coloque o audio guiado em assets/audio/oracao-guiada.mp3 */}
-          <Ionicons name="headset" size={22} color={COLORS.primary} />
-          <Text style={styles.audioLabel}>Ouvir oracao guiada em audio</Text>
-        </TouchableOpacity>
-
         {/* Navigation */}
         <View style={styles.navRow}>
           <TouchableOpacity
@@ -181,17 +144,19 @@ export default function OracaoGuiadaScreen({ route, navigation }) {
             <Text style={[styles.navText, currentStep === 0 && styles.navTextDisabled]}>Anterior</Text>
           </TouchableOpacity>
 
-          {isLast ? (
-            <TouchableOpacity
-              style={[styles.completeButton, completed && styles.completedButton]}
-              onPress={handleToggle}
-            >
-              <Ionicons name={completed ? 'close-circle' : 'checkmark'} size={20} color="#FFF" />
-              <Text style={styles.completeText}>{completed ? 'Desmarcar' : 'Concluir'}</Text>
+          {completed ? (
+            <TouchableOpacity style={styles.completedButton} onPress={handleToggle}>
+              <Ionicons name="close-circle" size={20} color="#FFF" />
+              <Text style={styles.completeText}>Desmarcar</Text>
+            </TouchableOpacity>
+          ) : isLast ? (
+            <TouchableOpacity style={styles.completeButton} onPress={handleToggle}>
+              <Ionicons name="checkmark" size={20} color="#FFF" />
+              <Text style={styles.completeText}>Concluir</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-              <Text style={styles.nextText}>Proximo</Text>
+              <Text style={styles.nextText}>Próximo</Text>
               <Ionicons name="arrow-forward" size={20} color="#FFF" />
             </TouchableOpacity>
           )}

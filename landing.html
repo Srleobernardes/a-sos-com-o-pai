@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>A SOS com o Pai</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F5F2EB; color: #0D1B3E; overflow-x: hidden; }
+  h1,h2,h3,h4 { font-family: 'Noto Serif', serif; }
+  .serif { font-family: 'Noto Serif', serif; }
+
+  /* ── Ambient shadow ── */
+  .card-shadow { box-shadow: 0 8px 24px -4px rgba(13,27,62,0.10), 0 2px 8px -2px rgba(13,27,62,0.06); }
+  .card-shadow-lg { box-shadow: 0 20px 50px -8px rgba(13,27,62,0.18), 0 8px 20px -4px rgba(13,27,62,0.10); }
+
+  /* ── Hero background clouds ── */
+  .hero-section {
+    padding-top: 80px;
+    padding-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #FAF7F0 0%, #F5F0E8 40%, #EEE8DA 100%);
+  }
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 15% 25%, rgba(109,27,43,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 35% at 85% 65%, rgba(109,27,43,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cloud {
+    position: absolute;
+    pointer-events: none;
+    animation: cloudDrift linear infinite;
+    filter: blur(2px);
+  }
+  .cloud svg { display: block; }
+  .cloud-1  { top: 6%;  animation-duration: 70s;  animation-delay: 0s;    }
+  .cloud-2  { top: 20%; animation-duration: 95s;  animation-delay: -28s;  }
+  .cloud-3  { top: 52%; animation-duration: 80s;  animation-delay: -48s;  }
+  .cloud-4  { top: 68%; animation-duration: 105s; animation-delay: -8s;   }
+  .cloud-5  { top: 35%; animation-duration: 88s;  animation-delay: -60s;  }
+  .cloud-6  { top: 82%; animation-duration: 75s;  animation-delay: -38s;  }
+  @keyframes cloudDrift {
+    0%   { transform: translateX(-380px); opacity: 0; }
+    6%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { transform: translateX(calc(100vw + 380px)); opacity: 0; }
+  }
+
+  /* ── Floating icon bubbles ── */
+  .phone-icons-wrapper {
+    position: relative;
+    width: 440px;
+    height: 640px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .float-bubble {
+    position: absolute;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, #FFFEF9 0%, #FFF8EC 45%, #FFF0D6 100%);
+    border: 1.5px solid rgba(196,134,42,0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    box-shadow:
+      0 0 0 6px rgba(212,160,23,0.07),
+      0 0 22px 6px rgba(212,160,23,0.22),
+      0 0 44px 12px rgba(212,160,23,0.10),
+      0 6px 18px rgba(109,27,43,0.10),
+      inset 0 1px 3px rgba(255,255,255,0.95),
+      inset 0 -1px 2px rgba(196,134,42,0.08);
+    animation: floatBob ease-in-out infinite;
+  }
+  .float-bubble::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 10px;
+    width: 22px; height: 10px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.7) 0%, transparent 80%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .float-bubble svg {
+    filter: drop-shadow(0 1px 4px rgba(196,134,42,0.55));
+    position: relative;
+    z-index: 1;
+  }
+  @keyframes floatBob {
+    0%,100% { transform: translateY(0px) rotate(0deg); }
+    30%     { transform: translateY(-9px) rotate(1deg); }
+    65%     { transform: translateY(5px) rotate(-1deg); }
+  }
+
+  /* ── Phone mockup — iPhone 15 Pro realistic ── */
+  .phone-wrap {
+    position: relative;
+    width: 272px;
+    flex-shrink: 0;
+    z-index: 10;
+    /* Sombra via pseudo-elemento para não criar stacking context no filter */
+  }
+  .phone-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 10%;
+    width: 80%;
+    height: 40px;
+    background: radial-gradient(ellipse, rgba(13,27,62,0.30) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+  }
+  /* Outer titanium frame */
+  .phone-frame {
+    width: 272px;
+    height: 562px;
+    background: linear-gradient(145deg, #8a8a8a 0%, #6b6b6b 30%, #7a7a7a 50%, #595959 70%, #6e6e6e 100%);
+    border-radius: 50px;
+    padding: 0;
+    position: relative;
+    flex-shrink: 0;
+  }
+  /* Glass face */
+  .phone-face {
+    position: absolute;
+    inset: 2px;
+    background: #1a1a1a;
+    border-radius: 48px;
+    overflow: hidden;
+  }
+  /* Screen area */
+  .phone-screen {
+    position: absolute;
+    inset: 6px;
+    background: #F5F2EB;
+    border-radius: 43px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Dynamic Island */
+  .dynamic-island {
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88px;
+    height: 26px;
+    background: #1a1a1a;
+    border-radius: 20px;
+    z-index: 10;
+  }
+  /* Side buttons */
+  .phone-btn-power {
+    position: absolute;
+    right: -3px;
+    top: 140px;
+    width: 3px;
+    height: 72px;
+    background: linear-gradient(90deg, #5a5a5a, #7a7a7a);
+    border-radius: 0 2px 2px 0;
+  }
+  .phone-btn-vol1 {
+    position: absolute;
+    left: -3px;
+    top: 110px;
+    width: 3px;
+    height: 36px;
+    background: linear-gradient(270deg, #5a5a5a, #7a7a7a);
+    border-radius: 2px 0 0 2px;
+  }
+  .phone-btn-vol2 {
+    position: absolute;
+    left: -3px;
+    top: 156px;
+    width: 3px;
+    height: 36px;
+    background: linear-gradient(270deg, #5a5a5a, #7a7a7a);
+    border-radius: 2px 0 0 2px;
+  }
+  .phone-btn-action {
+    position: absolute;
+    left: -3px;
+    top: 76px;
+    width: 3px;
+    height: 24px;
+    background: linear-gradient(270deg, #5a5a5a, #7a7a7a);
+    border-radius: 2px 0 0 2px;
+  }
+  /* Bottom pill */
+  .phone-home-indicator {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 2px;
+    z-index: 10;
+  }
+  /* Shine overlay on frame */
+  .phone-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 40%, rgba(255,255,255,0.06) 100%);
+    pointer-events: none;
+  }
+
+  /* phone status bar */
+  .psb { background:#fff; padding:14px 20px 4px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+  .psb-time { font-size:12px; font-weight:700; color:#0D1B3E; }
+
+  /* phone app header */
+  .pah { background:#fff; padding:3px 14px 10px; border-bottom:0.5px solid #EBE6DC; flex-shrink:0; }
+  .pah-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .pah-title { font-size:16px; font-weight:800; color:#0D1B3E; }
+  .badge-pro { background:#1E3A5F; color:#fff; font-size:8px; font-weight:800; padding:2px 7px; border-radius:10px; letter-spacing:.6px; }
+  .streak-pill { display:flex; align-items:center; gap:3px; border:1.5px solid #D4A017; border-radius:14px; padding:2px 7px; margin-left:5px; }
+  .streak-num { font-size:10px; font-weight:700; color:#0D1B3E; }
+
+  /* phone status bar */
+  .psb { background:#fff; padding:9px 16px 3px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+  .psb-time { font-size:11px; font-weight:700; color:#0D1B3E; }
+
+  /* phone app header */
+  .pah { background:#fff; padding:3px 14px 10px; border-bottom:0.5px solid #EBE6DC; flex-shrink:0; }
+  .pah-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .pah-title { font-size:16px; font-weight:800; color:#0D1B3E; }
+  .badge-pro { background:#1E3A5F; color:#fff; font-size:8px; font-weight:800; padding:2px 7px; border-radius:10px; letter-spacing:.6px; }
+  .streak-pill { display:flex; align-items:center; gap:3px; border:1.5px solid #D4A017; border-radius:14px; padding:2px 7px; margin-left:5px; }
+  .streak-num { font-size:10px; font-weight:700; color:#0D1B3E; }
+
+  /* week row */
+  .week-row { display:flex; gap:2px; }
+  .day-col { flex:1; text-align:center; padding:4px 0; border-radius:7px; }
+  .day-col.today { background:rgba(212,160,23,.15); border:1.5px solid #D4A017; }
+  .day-col.done  { background:#4CAF50; }
+  .dlabel { font-size:6.5px; font-weight:500; color:#8899AA; display:block; }
+  .day-col.today .dlabel { color:#B8890F; }
+  .day-col.done  .dlabel { color:rgba(255,255,255,.8); }
+  .dnum   { font-size:9.5px; font-weight:600; color:#555; display:block; margin-top:1px; }
+  .day-col.today .dnum { color:#0D1B3E; font-weight:800; }
+  .day-col.done  .dnum  { color:#fff; font-weight:700; }
+
+  /* phone cards */
+  .pcard { margin:3px 10px; border-radius:12px; height:82px; position:relative; overflow:hidden; box-shadow:0 3px 10px rgba(13,27,62,.14); }
+  .pcard img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; }
+  .pcard-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.55) 100%); }
+  .pcard-content { position:absolute; inset:0; padding:7px 9px; display:flex; flex-direction:column; justify-content:space-between; }
+  .dtag { display:inline-flex; align-items:center; gap:3px; background:rgba(0,0,0,.42); border-radius:10px; padding:2px 6px; width:fit-content; }
+  .dtag span { color:#fff; font-size:7.5px; font-weight:600; }
+  .pcard-title { color:#fff; font-size:11.5px; font-weight:700; text-shadow:0 1px 4px rgba(0,0,0,.5); }
+
+  /* bottom nav */
+  .bnav { position:absolute; bottom:0; left:0; right:0; height:58px; background:#fff; border-top:.5px solid #EBE6DC; display:flex; align-items:center; justify-content:space-around; padding:0 8px 8px; }
+  .ntab { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
+  .ntlabel { font-size:6.5px; color:#8899AA; font-weight:600; }
+  .logo-fab { width:42px; height:42px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-top:-18px; box-shadow:0 4px 14px rgba(13,27,62,.2); border:1.5px solid #EBE6DC; overflow:hidden; }
+  .logo-fab img { width:42px; height:42px; object-fit:cover; }
+
+  /* ── Landing daily cards ── */
+  .daily-lcard { position:relative; border-radius:16px; overflow:hidden; height:200px; cursor:pointer; transition:transform .2s, box-shadow .2s; }
+  .daily-lcard:hover { transform:translateY(-3px); box-shadow:0 24px 48px -8px rgba(13,27,62,.22); }
+  .daily-lcard img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; }
+  .daily-lcard-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.6) 100%); }
+  .daily-lcard-content { position:absolute; inset:0; padding:14px; display:flex; flex-direction:column; justify-content:space-between; }
+  .ldtag { display:inline-flex; align-items:center; gap:4px; background:rgba(0,0,0,.45); border-radius:20px; padding:4px 10px; width:fit-content; }
+  .ldtag span { color:#fff; font-size:12px; font-weight:600; }
+  .lcard-title { color:#fff; font-size:20px; font-weight:700; text-shadow:0 1px 5px rgba(0,0,0,.5); }
+
+  /* ── Jejum type cards ── */
+  .jejum-card { background:#fff; border-radius:14px; padding:18px; display:flex; align-items:center; gap:14px; cursor:pointer; transition:transform .18s, box-shadow .18s; }
+  .jejum-card:hover { transform:translateY(-2px); box-shadow:0 16px 36px -6px rgba(13,27,62,.15); }
+  .jejum-icon-circle { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+  /* ── Propósito cards ── */
+  .prop-card { background:#fff; border-radius:14px; overflow:hidden; display:flex; cursor:pointer; transition:transform .18s, box-shadow .18s; }
+  .prop-card:hover { transform:translateY(-2px); box-shadow:0 16px 36px -6px rgba(13,27,62,.15); }
+  .prop-side { width:56px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .prop-body { padding:14px 12px; flex:1; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+
+  /* ── MODAL OVERLAY ── */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:200; align-items:center; justify-content:center; padding:16px; }
+  .modal-overlay.open { display:flex; }
+  .modal-box {
+    width:100%; max-width:420px; max-height:92vh;
+    background:#F5F2EB; border-radius:20px; overflow:hidden;
+    display:flex; flex-direction:column;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+    animation: slideUp .25s ease;
+  }
+  @keyframes slideUp { from { transform:translateY(30px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+  .modal-scroll { overflow-y:auto; flex:1; padding:12px; display:flex; flex-direction:column; gap:10px; }
+  .modal-scroll::-webkit-scrollbar { width:4px; }
+  .modal-scroll::-webkit-scrollbar-thumb { background:#DDD8CE; border-radius:4px; }
+
+  /* modal white cards */
+  .mcard { background:#fff; border-radius:14px; padding:16px; }
+  .mcard-header { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+  .mcard-header-title { font-size:15px; font-weight:700; color:#0D1B3E; }
+
+  /* benefit row */
+  .benefit-row { display:flex; align-items:flex-start; gap:8px; padding:3px 0; }
+  .benefit-check { width:18px; height:18px; background:#E8F5E9; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .benefit-text { font-size:13.5px; color:#4A5568; line-height:1.5; }
+
+  /* level row */
+  .level-row { border:1px solid #EBE6DC; border-radius:12px; padding:12px; display:flex; align-items:center; gap:10px; cursor:pointer; transition:background .15s; margin-bottom:8px; }
+  .level-row:last-child { margin-bottom:0; }
+  .level-row:hover { background:#FDFBF7; }
+  .level-fire { width:38px; height:38px; background:#FFF3E0; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .level-info { flex:1; }
+  .level-name { font-size:13.5px; font-weight:700; color:#0D1B3E; line-height:1.3; }
+  .level-sub  { font-size:12px; color:#4A5568; margin-top:1px; }
+  .level-meta { display:flex; gap:12px; margin-top:5px; flex-wrap:wrap; }
+  .level-meta-item { display:flex; align-items:center; gap:3px; font-size:11px; color:#8899AA; }
+  .level-right { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+  .badge-level { font-size:10px; font-weight:700; padding:3px 9px; border-radius:20px; white-space:nowrap; }
+  .chevron { color:#8899AA; font-size:20px; font-weight:300; }
+
+  /* modal close btn */
+  .modal-close-btn { position:absolute; top:14px; right:14px; width:32px; height:32px; background:rgba(255,255,255,.25); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; border:none; color:white; font-size:18px; line-height:1; transition:background .15s; }
+  .modal-close-btn:hover { background:rgba(255,255,255,.4); }
+
+  /* section heading */
+  .section-title { font-family:'Noto Serif',serif; font-size:36px; color:#0D1B3E; font-weight:700; line-height:1.2; }
+  .section-sub { font-size:17px; color:#4A5568; line-height:1.6; max-width:520px; margin-top:10px; }
+
+  /* stats card */
+  .stat-block { border-left:3px solid rgba(212,160,23,.5); padding-left:16px; }
+
+  /* ── Jejum Feature Cards ── */
+  .card-border-glow {
+    box-shadow: 0 0 20px 8px rgba(220, 180, 50, 0.4);
+    border: 2px solid #e0b838;
+  }
+  .card-bg-1 {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuATIBf66EsY3TpeH2vL51H029pEbqmAWdRdahZfIAXkWTqDVLCWStxBAgUEb7xg41pzJbZUY78nUn7SmUhRm8TZ9zFKA1U27qyUWbsZAlPQq51J7py-KSWbvH7b7ma3M58W-L_38Q35Y08s9UM9CaerzrvKVODLMb1OIQ27eTYEU9cIFYnd3jdVzKTzTRWJPbTg4g5wqr3xQGYFNl84eqgjpUzr-EaQcOLY9eiGnV73-DBkrYf01BCdw-JmDSSWUJm_whptZKr7CHA);
+    background-size: cover;
+    background-position: center;
+  }
+  .card-bg-2 {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuA378-dw7bf9TbrWPUFDhivk7IyJQM5Z3HYaarx9CuJqgyatRbIX1gSqKQvHXBwKp-S7tgabIlK1urJKjDn3EkDZAvvLZO23v5UL0mRCFggG3d0GdFdX-eH_uNYgXU4xmMQahyVX3VHn2kVL61w2KQkNvpAypcuVOKuKHZTqIyisYKtoTVGJml8A-OVuCaFFHyMqjOB32jbipDlf3Xq9pWNkajy3UZjT85dcAe732y6R8VtMx_X37Wtlbo6nTTEguA-NMgKUkpEXqw);
+    background-size: cover;
+    background-position: center;
+  }
+  .card-bg-3 {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBjOLK4EygsWJoMUeJcbpU1CFXAUofpY5PLTPyHRDOjGosJ1hL7CeYBxY0JRb03KsUk7PU3D7wxsSIyM2ioju2nD42LcQoci_4CDHRlJgLqKcvKflWcbJZtZCfsIJ-BVQuC8ImehvWksOMUnKpDfBqM2Bcgsk2HPleMFKEnMQAB-Uc1wN6eqfxbxVJjKonQnH6bCe0DRYXGQbrIY_azU7lsUNaJj7n-KBLOzjbfZwQuSZ8BJnsxQ4n1bcP6be0Fz4AUZAQcZ4THFIg);
+    background-size: cover;
+    background-position: center;
+  }
+  .btn-gradient {
+    background: linear-gradient(to right, #CD6E61, #DFA927);
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     NAVIGATION
+════════════════════════════════ -->
+<nav style="position:fixed; top:0; width:100%; z-index:50; background:rgba(245,242,235,.85); backdrop-filter:blur(16px); border-bottom:1px solid #EBE6DC;">
+  <div style="max-width:1200px; margin:0 auto; padding:18px 48px; display:flex; align-items:center; justify-content:space-between;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="width:62px; height:62px; border-radius:50%; overflow:hidden; border:2px solid rgba(212,160,23,.45); box-shadow:0 2px 12px rgba(196,134,42,0.2);">
+        <img src="assets/icons/logo.png" alt="Logo" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='#1E3A5F';this.style.display='none'"/>
+      </div>
+      <span class="serif" style="font-size:20px; color:#0D1B3E; font-weight:600; font-style:italic;">A SOS com o Pai</span>
+    </div>
+    <div style="display:flex; gap:32px; align-items:center;">
+      <a href="#jejum" style="font-size:14px; color:#4A5568; text-decoration:none; transition:color .2s;" onmouseover="this.style.color='#D4A017'" onmouseout="this.style.color='#4A5568'">Jejum</a>
+      <a href="#oracoes" style="font-size:14px; color:#4A5568; text-decoration:none; transition:color .2s;" onmouseover="this.style.color='#D4A017'" onmouseout="this.style.color='#4A5568'">Orações</a>
+      <a href="#sobre" style="font-size:14px; color:#4A5568; text-decoration:none; transition:color .2s;" onmouseover="this.style.color='#D4A017'" onmouseout="this.style.color='#4A5568'">Testemunhos</a>
+    </div>
+    <button style="background:#1E3A5F; color:#fff; padding:10px 24px; border-radius:50px; border:none; font-size:14px; font-weight:600; cursor:pointer;" onmouseover="this.style.background='#2A4D7A'" onmouseout="this.style.background='#1E3A5F'">Entrar</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section class="hero-section">
+
+  <!-- Nuvens animadas -->
+  <div class="cloud cloud-1" style="left:-420px;">
+    <svg width="420" height="120" viewBox="0 0 420 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="210" cy="90" rx="200" ry="32" fill="white" opacity="0.88"/>
+      <ellipse cx="130" cy="72" rx="100" ry="46" fill="white" opacity="0.88"/>
+      <ellipse cx="270" cy="65" rx="115" ry="50" fill="white" opacity="0.88"/>
+      <ellipse cx="185" cy="48" rx="80" ry="38" fill="white" opacity="0.88"/>
+      <ellipse cx="310" cy="55" rx="70" ry="34" fill="white" opacity="0.80"/>
+    </svg>
+  </div>
+  <div class="cloud cloud-2" style="left:-360px;">
+    <svg width="360" height="100" viewBox="0 0 360 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="180" cy="72" rx="168" ry="28" fill="white" opacity="0.82"/>
+      <ellipse cx="110" cy="58" rx="85" ry="40" fill="white" opacity="0.82"/>
+      <ellipse cx="240" cy="52" rx="100" ry="44" fill="white" opacity="0.82"/>
+      <ellipse cx="170" cy="36" rx="70" ry="30" fill="white" opacity="0.75"/>
+    </svg>
+  </div>
+  <div class="cloud cloud-3" style="left:-480px;">
+    <svg width="480" height="130" viewBox="0 0 480 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="240" cy="98" rx="228" ry="32" fill="white" opacity="0.78"/>
+      <ellipse cx="150" cy="78" rx="115" ry="50" fill="white" opacity="0.78"/>
+      <ellipse cx="310" cy="70" rx="130" ry="54" fill="white" opacity="0.78"/>
+      <ellipse cx="210" cy="52" rx="90" ry="40" fill="white" opacity="0.78"/>
+      <ellipse cx="360" cy="60" rx="80" ry="36" fill="white" opacity="0.70"/>
+    </svg>
+  </div>
+  <div class="cloud cloud-4" style="left:-300px;">
+    <svg width="300" height="90" viewBox="0 0 300 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="150" cy="66" rx="140" ry="24" fill="white" opacity="0.75"/>
+      <ellipse cx="95" cy="52" rx="72" ry="36" fill="white" opacity="0.75"/>
+      <ellipse cx="200" cy="46" rx="82" ry="38" fill="white" opacity="0.75"/>
+      <ellipse cx="145" cy="32" rx="60" ry="26" fill="white" opacity="0.68"/>
+    </svg>
+  </div>
+  <div class="cloud cloud-5" style="left:-380px;">
+    <svg width="380" height="110" viewBox="0 0 380 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="190" cy="82" rx="178" ry="28" fill="white" opacity="0.80"/>
+      <ellipse cx="120" cy="64" rx="92" ry="44" fill="white" opacity="0.80"/>
+      <ellipse cx="255" cy="58" rx="108" ry="48" fill="white" opacity="0.80"/>
+      <ellipse cx="180" cy="40" rx="74" ry="32" fill="white" opacity="0.72"/>
+    </svg>
+  </div>
+  <div class="cloud cloud-6" style="left:-320px;">
+    <svg width="320" height="95" viewBox="0 0 320 95" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="160" cy="70" rx="150" ry="26" fill="white" opacity="0.76"/>
+      <ellipse cx="100" cy="55" rx="78" ry="40" fill="white" opacity="0.76"/>
+      <ellipse cx="215" cy="50" rx="90" ry="42" fill="white" opacity="0.76"/>
+      <ellipse cx="155" cy="36" rx="64" ry="28" fill="white" opacity="0.68"/>
+    </svg>
+  </div>
+
+  <div style="max-width:1200px; margin:0 auto; padding:20px 48px 40px; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:64px; width:100%; position:relative; z-index:1;">
+
+    <!-- Left -->
+    <div style="display:flex; flex-direction:column; gap:28px;">
+      <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(109,27,43,0.07); border:1px solid rgba(109,27,43,.18); padding:8px 16px; border-radius:50px; width:fit-content;">
+        <div style="width:8px; height:8px; background:#6D1B2B; border-radius:50%;"></div>
+        <span style="font-size:13px; font-weight:600; color:#6D1B2B;">Seu guia espiritual diário</span>
+      </div>
+      <h1 class="serif" style="font-size:52px; font-weight:700; color:#2D0A12; line-height:1.15; letter-spacing:-0.5px; max-width:480px;">
+        Conecte-se com Deus Diariamente com o <em style="color:#6D1B2B; font-style:italic;">A SOS com o Pai.</em>
+      </h1>
+      <p style="font-size:18px; color:#5C4A4E; line-height:1.7; max-width:420px;">
+        Meditação, jejum e oração guiada para fortalecer sua fé e encontrar paz interior. Seu guia espiritual pessoal, sempre com você.
+      </p>
+      <div style="display:flex; flex-direction:column; gap:14px; align-items:flex-start; margin-top:8px;">
+        <button style="background:#6D1B2B; color:#fff; padding:18px 40px; border-radius:12px; border:none; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 6px 24px rgba(109,27,43,.38);" onmouseover="this.style.background='#8B2438'" onmouseout="this.style.background='#6D1B2B'">
+          Experimente Grátis por 7 Dias
+        </button>
+        <a href="#" style="font-size:14px; color:#6D1B2B; border-bottom:1px solid rgba(109,27,43,.3); padding-bottom:2px; text-decoration:none;">Ver Planos e Preços</a>
+      </div>
+
+      <!-- App identity badge -->
+      <div style="display:flex; align-items:center; gap:14px; padding:10px 20px 10px 10px; background:rgba(255,255,255,0.75); border:1px solid rgba(109,27,43,0.12); border-radius:50px; width:fit-content; backdrop-filter:blur(8px);">
+        <div style="width:58px; height:58px; border-radius:50%; overflow:hidden; border:2px solid rgba(196,134,42,0.5); flex-shrink:0; box-shadow:0 3px 14px rgba(109,27,43,0.18);">
+          <img src="assets/icons/logo.png" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='#6D1B2B';this.style.display='none'"/>
+        </div>
+        <span style="font-family:'Noto Serif',serif; font-size:17px; font-weight:700; color:#2D0A12; font-style:italic;">A SOS com o Pai</span>
+        <div style="width:1px; height:16px; background:rgba(109,27,43,0.15);"></div>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span style="font-size:12px; font-weight:700; color:#2D0A12; margin-left:2px;">4.9</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right — iPhone 15 Pro + floating icons -->
+    <div style="display:flex; justify-content:center; align-items:center;">
+      <div class="phone-icons-wrapper">
+
+        <!-- ══ Ícones espalhados ao redor — posições de relógio ══ -->
+
+        <!-- Cruz / Fé — ~11h topo esquerdo -->
+        <div class="float-bubble" style="left:18px; top:64px; animation-duration:6.8s; animation-delay:0s;">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <rect x="16" y="5" width="4" height="26" rx="2" fill="#C4862A" opacity="0.9"/>
+            <rect x="9" y="12" width="18" height="4" rx="2" fill="#C4862A" opacity="0.9"/>
+            <!-- shimmer -->
+            <rect x="16" y="5" width="2" height="12" rx="1" fill="rgba(255,255,255,0.5)"/>
+          </svg>
+        </div>
+
+        <!-- Mãos em Oração — ~9h meio esquerdo -->
+        <div class="float-bubble" style="left:0px; top:281px; animation-duration:7.8s; animation-delay:-2.2s;">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <!-- praying hands simplified -->
+            <path d="M18 6 C16 8 14 12 14 17 L14 22 C14 23.1 14.9 24 16 24 L18 24" stroke="#C4862A" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M18 6 C20 8 22 12 22 17 L22 22 C22 23.1 21.1 24 20 24 L18 24" stroke="#C4862A" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M12 14 C11 14 10 15 10 16 L10 22 C10 25.3 13.1 28 17 28 L19 28 C22.9 28 26 25.3 26 22 L26 16 C26 15 25 14 24 14" stroke="#C4862A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="18" cy="5" r="2" fill="#C4862A" opacity="0.75"/>
+          </svg>
+        </div>
+
+        <!-- Chama do Espírito Santo — ~7h baixo esquerdo -->
+        <div class="float-bubble" style="left:20px; top:506px; animation-duration:8.4s; animation-delay:-5.1s;">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <path d="M18 4 C18 4 11 11 11 19 C11 23.4 14.1 27 18 27 C21.9 27 25 23.4 25 19 C25 11 18 4 18 4Z" fill="#C4862A" opacity="0.22" stroke="#C4862A" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M18 13 C18 13 14.5 16.5 14.5 19.5 C14.5 21.4 16.1 23 18 23 C19.9 23 21.5 21.4 21.5 19.5 C21.5 16.5 18 13 18 13Z" fill="#C4862A" opacity="0.7"/>
+            <!-- candle base -->
+            <rect x="15" y="28" width="6" height="3" rx="1.5" fill="#C4862A" opacity="0.55"/>
+          </svg>
+        </div>
+
+        <!-- Pomba da Paz — ~1h topo direito -->
+        <div class="float-bubble" style="right:18px; top:58px; animation-duration:7.2s; animation-delay:-1.4s;">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <path d="M24 10 C27 10 29 12 29 15 C29 18 26 20 24 19 L15 19 L11 25 L8 22 L12 17.5" stroke="#C4862A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M12 17.5 L12 14 C12 11 14.5 9 17.5 9 L24 9" fill="#C4862A" opacity="0.18" stroke="#C4862A" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M15 19 L15 25 C15 26.7 16.3 28 18 28 C19.7 28 21 26.7 21 25 L21 21" stroke="#C4862A" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+            <path d="M24 9 L28 6" stroke="#C4862A" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="26" cy="12" r="2" fill="#C4862A" opacity="0.7"/>
+          </svg>
+        </div>
+
+        <!-- Escudo com Cruz — ~3h meio direito -->
+        <div class="float-bubble" style="right:0px; top:278px; animation-duration:9.2s; animation-delay:-3.8s;">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <path d="M18 4 L29 8.5 L29 18 C29 24 24 29 18 31 C12 29 7 24 7 18 L7 8.5 Z" fill="#C4862A" opacity="0.15" stroke="#C4862A" stroke-width="1.7" stroke-linejoin="round"/>
+            <line x1="18" y1="12" x2="18" y2="24" stroke="#C4862A" stroke-width="2.2" stroke-linecap="round"/>
+            <line x1="12.5" y1="18" x2="23.5" y2="18" stroke="#C4862A" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <!-- Bíblia Aberta — ~5h baixo direito -->
+        <div class="float-bubble" style="right:18px; top:502px; animation-duration:6.6s; animation-delay:-6.5s;">
+          <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+            <!-- open bible pages -->
+            <path d="M18 8 C18 8 11 6 5 7.5 L5 28 C11 26.5 18 29 18 29 C18 29 25 26.5 31 28 L31 7.5 C25 6 18 8 18 8Z" fill="#C4862A" opacity="0.14" stroke="#C4862A" stroke-width="1.6" stroke-linejoin="round"/>
+            <line x1="18" y1="8" x2="18" y2="29" stroke="#C4862A" stroke-width="1.6"/>
+            <!-- left page lines -->
+            <line x1="9" y1="13" x2="16" y2="12" stroke="#C4862A" stroke-width="1.2" stroke-linecap="round" opacity="0.65"/>
+            <line x1="9" y1="17" x2="16" y2="16" stroke="#C4862A" stroke-width="1.2" stroke-linecap="round" opacity="0.65"/>
+            <line x1="9" y1="21" x2="15" y2="20" stroke="#C4862A" stroke-width="1.2" stroke-linecap="round" opacity="0.65"/>
+            <!-- right page lines -->
+            <line x1="20" y1="12" x2="27" y2="13" stroke="#C4862A" stroke-width="1.2" stroke-linecap="round" opacity="0.65"/>
+            <line x1="20" y1="16" x2="27" y2="17" stroke="#C4862A" stroke-width="1.2" stroke-linecap="round" opacity="0.65"/>
+            <line x1="20" y1="20" x2="26" y2="21" stroke="#C4862A" stroke-width="1.2" stroke-linecap="round" opacity="0.65"/>
+          </svg>
+        </div>
+
+        <!-- iPhone no centro -->
+        <div class="phone-wrap">
+        <div class="phone-frame">
+          <!-- Side buttons -->
+          <div class="phone-btn-action"></div>
+          <div class="phone-btn-vol1"></div>
+          <div class="phone-btn-vol2"></div>
+          <div class="phone-btn-power"></div>
+
+          <!-- Glass face -->
+          <div class="phone-face">
+            <!-- Screen -->
+            <div class="phone-screen">
+              <!-- Dynamic Island -->
+              <div class="dynamic-island"></div>
+
+              <!-- Status bar (below Dynamic Island) -->
+              <div class="psb" style="padding-top:46px;">
+                <span class="psb-time">9:41</span>
+                <div style="display:flex; gap:5px; align-items:center;">
+                  <!-- Signal bars -->
+                  <svg width="17" height="11" viewBox="0 0 17 11" fill="none">
+                    <rect x="0" y="7" width="3" height="4" rx=".6" fill="#0D1B3E"/>
+                    <rect x="4.5" y="4.5" width="3" height="6.5" rx=".6" fill="#0D1B3E"/>
+                    <rect x="9" y="2" width="3" height="9" rx=".6" fill="#0D1B3E"/>
+                    <rect x="13.5" y="0" width="3" height="11" rx=".6" fill="#0D1B3E" opacity=".22"/>
+                  </svg>
+                  <!-- Battery -->
+                  <svg width="24" height="12" viewBox="0 0 24 12" fill="none">
+                    <rect x=".5" y=".5" width="20" height="11" rx="2.5" stroke="#0D1B3E" stroke-width="1"/>
+                    <rect x="21.5" y="3.5" width="2" height="5" rx="1" fill="#0D1B3E" opacity=".4"/>
+                    <rect x="1.5" y="1.5" width="16" height="9" rx="1.8" fill="#0D1B3E"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- App header -->
+              <div class="pah">
+                <div class="pah-row">
+                  <span class="pah-title">Plano Diário</span>
+                  <div style="display:flex;align-items:center;">
+                    <span class="badge-pro">PRO</span>
+                    <div class="streak-pill">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#D4A017" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                      <span class="streak-num">7</span>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#8899AA" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="week-row">
+                  <div class="day-col done"><span class="dlabel">DOM</span><span class="dnum">13</span></div>
+                  <div class="day-col done"><span class="dlabel">SEG</span><span class="dnum">14</span></div>
+                  <div class="day-col done"><span class="dlabel">TER</span><span class="dnum">15</span></div>
+                  <div class="day-col done"><span class="dlabel">QUA</span><span class="dnum">16</span></div>
+                  <div class="day-col today"><span class="dlabel">QUI</span><span class="dnum">17</span></div>
+                  <div class="day-col"><span class="dlabel">SEX</span><span class="dnum">18</span></div>
+                  <div class="day-col"><span class="dlabel">SÁB</span><span class="dnum">19</span></div>
+                </div>
+              </div>
+              <div style="height:.5px; background:#EBE6DC;"></div>
+
+              <!-- Cards -->
+              <div style="flex:1; overflow:hidden; padding:8px 0 0; background:#F5F2EB;">
+                <div class="pcard">
+                  <img src="assets/banners/conexao.png" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1E3A5F,#2A6D8A)'"/>
+                  <div class="pcard-overlay"></div>
+                  <div class="pcard-content">
+                    <div class="dtag"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>1 min</span></div>
+                    <span class="pcard-title">Conexão Diária</span>
+                  </div>
+                </div>
+                <div class="pcard">
+                  <img src="assets/banners/versiculo.png" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#8B6914,#D4A017)'"/>
+                  <div class="pcard-overlay"></div>
+                  <div class="pcard-content">
+                    <div class="dtag"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>1 min</span></div>
+                    <span class="pcard-title">Versículo Diário</span>
+                  </div>
+                </div>
+                <div class="pcard">
+                  <img src="assets/banners/devocional.png" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#2A4D7A,#1E3A5F)'"/>
+                  <div class="pcard-overlay"></div>
+                  <div class="pcard-content">
+                    <div class="dtag"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>3 min</span></div>
+                    <span class="pcard-title">Devoção Diária</span>
+                  </div>
+                </div>
+                <div class="pcard" style="margin-bottom:0;">
+                  <img src="assets/banners/oracao-guiada.png" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0D1B3E,#1E3A5F)'"/>
+                  <div class="pcard-overlay"></div>
+                  <div class="pcard-content">
+                    <div class="dtag"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>5 min</span></div>
+                    <span class="pcard-title">Oração Guiada</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom nav -->
+              <div class="bnav">
+                <div class="ntab">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#BBBBBB" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  <span class="ntlabel">Guia</span>
+                </div>
+                <div class="ntab">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#BBBBBB" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                  <span class="ntlabel">Jejum</span>
+                </div>
+                <div class="ntab">
+                  <div class="logo-fab">
+                    <img src="assets/icons/logo.png" onerror="this.style.display='none';this.parentElement.style.background='#1E3A5F'"/>
+                  </div>
+                </div>
+                <div class="ntab">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#BBBBBB" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <span class="ntlabel">Orações</span>
+                </div>
+                <div class="ntab">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#BBBBBB" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span class="ntlabel">Perfil</span>
+                </div>
+              </div>
+
+              <!-- Home indicator -->
+              <div class="phone-home-indicator"></div>
+            </div>
+          </div>
+        </div><!-- /phone-wrap -->
+      </div><!-- /phone-icons-wrapper -->
+    </div><!-- /right col -->
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     JEJUM ESPIRITUAL
+════════════════════════════════ -->
+<section id="jejum" style="padding:72px 48px; background:#FBF8F3;">
+  <div style="max-width:1200px; margin:0 auto;">
+
+    <!-- Section header — centered -->
+    <div style="text-align:center; margin-bottom:64px;">
+      <span style="font-size:12px; font-weight:700; color:#6D1B2B; text-transform:uppercase; letter-spacing:2.5px;">Jejum Espiritual</span>
+      <h2 style="font-family:'Noto Serif',serif; font-size:42px; font-weight:700; color:#1A0A0E; line-height:1.2; margin-top:12px; margin-bottom:14px;">O app guia você durante<br>todo o seu jejum.</h2>
+      <p style="font-size:18px; color:#5C4A4E; line-height:1.7; max-width:560px; margin:0 auto;">Cada dia do jejum tem orações específicas escritas para você — com horário, versículo bíblico e um texto de meditação. É só seguir o app.</p>
+    </div>
+
+    <!-- How it works — 3 steps -->
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-bottom:72px;">
+      <!-- Step 1 -->
+      <div style="background:#fff; border-radius:20px; padding:32px 28px; border:1px solid #EBE6DC; box-shadow:0 4px 20px rgba(109,27,43,0.06); text-align:center; position:relative;">
+        <div style="position:absolute; top:-16px; left:50%; transform:translateX(-50%); width:34px; height:34px; background:#6D1B2B; border-radius:50%; display:flex; align-items:center; justify-content:center; border:3px solid #FBF8F3;">
+          <span style="font-size:14px; font-weight:800; color:#fff;">1</span>
+        </div>
+        <div style="width:60px; height:60px; background:linear-gradient(135deg,#FFF0D6,#FFE4B0); border-radius:18px; display:flex; align-items:center; justify-content:center; margin:8px auto 18px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4862A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        </div>
+        <h3 style="font-family:'Noto Serif',serif; font-size:20px; font-weight:700; color:#1A0A0E; margin-bottom:10px;">Escolha o Tipo de Jejum</h3>
+        <p style="font-size:15px; color:#5C4A4E; line-height:1.65;">Jejum Normal, Parcial, de Daniel ou de Ester — cada um com duração e instruções próprias.</p>
+      </div>
+      <!-- Step 2 -->
+      <div style="background:#fff; border-radius:20px; padding:32px 28px; border:1px solid #EBE6DC; box-shadow:0 4px 20px rgba(109,27,43,0.06); text-align:center; position:relative;">
+        <div style="position:absolute; top:-16px; left:50%; transform:translateX(-50%); width:34px; height:34px; background:#6D1B2B; border-radius:50%; display:flex; align-items:center; justify-content:center; border:3px solid #FBF8F3;">
+          <span style="font-size:14px; font-weight:800; color:#fff;">2</span>
+        </div>
+        <div style="width:60px; height:60px; background:linear-gradient(135deg,#FDE8EA,#F5B8BF); border-radius:18px; display:flex; align-items:center; justify-content:center; margin:8px auto 18px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6D1B2B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 style="font-family:'Noto Serif',serif; font-size:20px; font-weight:700; color:#1A0A0E; margin-bottom:10px;">Escolha um Propósito</h3>
+        <p style="font-size:15px; color:#5C4A4E; line-height:1.65;">Consagração, saúde, família, proteção ou provisão — o app personaliza as orações para o seu momento.</p>
+      </div>
+      <!-- Step 3 -->
+      <div style="background:#fff; border-radius:20px; padding:32px 28px; border:1px solid #EBE6DC; box-shadow:0 4px 20px rgba(109,27,43,0.06); text-align:center; position:relative;">
+        <div style="position:absolute; top:-16px; left:50%; transform:translateX(-50%); width:34px; height:34px; background:#6D1B2B; border-radius:50%; display:flex; align-items:center; justify-content:center; border:3px solid #FBF8F3;">
+          <span style="font-size:14px; font-weight:800; color:#fff;">3</span>
+        </div>
+        <div style="width:60px; height:60px; background:linear-gradient(135deg,#E8F5E9,#C8E6C9); border-radius:18px; display:flex; align-items:center; justify-content:center; margin:8px auto 18px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 style="font-family:'Noto Serif',serif; font-size:20px; font-weight:700; color:#1A0A0E; margin-bottom:10px;">O App Te Guia Cada Dia</h3>
+        <p style="font-size:15px; color:#5C4A4E; line-height:1.65;">Toda manhã, tarde e noite você recebe a oração do momento — com versículo, texto e botão para marcar como feito.</p>
+        <div style="display:inline-flex; align-items:center; gap:9px; margin-top:18px; padding:8px 16px 8px 8px; background:#FBF8F3; border-radius:30px; border:1px solid rgba(109,27,43,0.12);">
+          <div style="width:42px; height:42px; border-radius:50%; overflow:hidden; flex-shrink:0; border:2px solid rgba(196,134,42,0.45); box-shadow:0 2px 10px rgba(109,27,43,0.14);">
+            <img src="assets/icons/logo.png" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='#6D1B2B';this.style.display='none'"/>
+          </div>
+          <span style="font-size:14px; font-weight:700; color:#6D1B2B; font-style:italic; font-family:'Noto Serif',serif;">A SOS com o Pai</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: types list + active jejum mockup -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;">
+
+      <!-- Left: fasting types -->
+      <div>
+        <h3 style="font-family:'Noto Serif',serif; font-size:26px; font-weight:700; color:#1A0A0E; margin-bottom:8px;">4 tipos de jejum disponíveis</h3>
+        <p style="font-size:16px; color:#5C4A4E; margin-bottom:28px; line-height:1.6;">Escolha o que se encaixa melhor no seu momento espiritual e de saúde.</p>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <!-- Jejum Normal -->
+          <div style="display:flex; align-items:center; gap:16px; padding:18px 20px; background:#fff; border-radius:16px; border:1px solid #EBE6DC; box-shadow:0 2px 10px rgba(109,27,43,0.05);">
+            <div style="width:50px; height:50px; background:linear-gradient(135deg,#FFF0D6,#FFE4B0); border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4862A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:16px; font-weight:700; color:#1A0A0E; margin-bottom:2px;">Jejum Normal</div>
+              <div style="font-size:14px; color:#5C4A4E; line-height:1.5;">Sem alimentos por 1 dia, com orações ao longo do dia</div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:#6D1B2B; background:#FDE8EA; padding:4px 12px; border-radius:20px; white-space:nowrap; flex-shrink:0;">1 dia</span>
+          </div>
+          <!-- Jejum Parcial -->
+          <div style="display:flex; align-items:center; gap:16px; padding:18px 20px; background:#fff; border-radius:16px; border:1px solid #EBE6DC; box-shadow:0 2px 10px rgba(109,27,43,0.05);">
+            <div style="width:50px; height:50px; background:linear-gradient(135deg,#E8F5E9,#C8E6C9); border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12M4.93 10.93A10 10 0 1019.07 10.93"/><path d="M12 2a5 5 0 015 5"/></svg>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:16px; font-weight:700; color:#1A0A0E; margin-bottom:2px;">Jejum Parcial</div>
+              <div style="font-size:14px; color:#5C4A4E; line-height:1.5;">Sem carnes e industrializados, ideal para quem está começando</div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:#1B5E20; background:#E8F5E9; padding:4px 12px; border-radius:20px; white-space:nowrap; flex-shrink:0;">3 dias</span>
+          </div>
+          <!-- Jejum de Daniel -->
+          <div style="display:flex; align-items:center; gap:16px; padding:18px 20px; background:#fff; border-radius:16px; border:2px solid rgba(109,27,43,0.18); box-shadow:0 4px 20px rgba(109,27,43,0.12);">
+            <div style="width:50px; height:50px; background:linear-gradient(135deg,#6D1B2B,#8B2438); border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD580" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C9 5 7 8 7 12a5 5 0 0010 0c0-4-2-7-5-10z"/><path d="M12 18v3M9 20l1.5-1.5M15 20l-1.5-1.5"/></svg>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:16px; font-weight:700; color:#1A0A0E; margin-bottom:2px;">Jejum de Daniel <span style="font-size:11px; color:#6D1B2B; background:#FDE8EA; padding:2px 8px; border-radius:10px; font-weight:700; margin-left:4px;">Popular</span></div>
+              <div style="font-size:14px; color:#5C4A4E; line-height:1.5;">Apenas frutas, legumes e água — 21 dias de meditações diárias</div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:#6D1B2B; background:#FDE8EA; padding:4px 12px; border-radius:20px; white-space:nowrap; flex-shrink:0;">21 dias</span>
+          </div>
+          <!-- Jejum de Ester -->
+          <div style="display:flex; align-items:center; gap:16px; padding:18px 20px; background:#fff; border-radius:16px; border:1px solid #EBE6DC; box-shadow:0 2px 10px rgba(109,27,43,0.05);">
+            <div style="width:50px; height:50px; background:linear-gradient(135deg,#F3E5F5,#E1BEE7); border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6A1B9A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:16px; font-weight:700; color:#1A0A0E; margin-bottom:2px;">Jejum de Ester</div>
+              <div style="font-size:14px; color:#5C4A4E; line-height:1.5;">3 dias de jejum total com orações de intercessão e libertação</div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:#4A148C; background:#F3E5F5; padding:4px 12px; border-radius:20px; white-space:nowrap; flex-shrink:0;">3 dias</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: active jejum card (faithful to app) -->
+      <div>
+        <h3 style="font-family:'Noto Serif',serif; font-size:26px; font-weight:700; color:#1A0A0E; margin-bottom:8px;">Veja como fica no app</h3>
+        <p style="font-size:16px; color:#5C4A4E; margin-bottom:28px; line-height:1.6;">Durante o jejum, o app mostra exatamente o que fazer agora.</p>
+
+        <!-- Faithful recreation of the "jejum em andamento" card -->
+        <div style="background:linear-gradient(145deg, #0D1B3E, #1A3358); border-radius:22px; padding:24px; box-shadow:0 24px 60px rgba(13,27,62,0.35), 0 0 0 1px rgba(255,255,255,0.07);">
+
+          <!-- Badge + step dots -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+            <div style="display:flex; align-items:center; gap:7px;">
+              <div style="width:8px; height:8px; background:#FF7043; border-radius:50%;"></div>
+              <span style="font-size:11px; font-weight:700; color:rgba(255,255,255,0.55); letter-spacing:1.2px;">JEJUM EM ANDAMENTO</span>
+            </div>
+            <!-- Orações dots: 3 orações, 1 feita, 1 ativa -->
+            <div style="display:flex; gap:5px; align-items:center;">
+              <div style="width:7px; height:7px; background:#66BB6A; border-radius:50%;"></div>
+              <div style="width:20px; height:7px; background:#fff; border-radius:4px;"></div>
+              <div style="width:7px; height:7px; background:rgba(255,255,255,0.2); border-radius:50%;"></div>
+            </div>
+          </div>
+
+          <!-- Name + progress % -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:18px; font-weight:700; color:#fff;">Jejum de Daniel</span>
+            <span style="font-size:18px; font-weight:800; color:#66BB6A;">67%</span>
+          </div>
+          <!-- Progress bar -->
+          <div style="height:6px; background:rgba(255,255,255,0.12); border-radius:3px; overflow:hidden; margin-bottom:5px;">
+            <div style="height:100%; width:67%; background:#66BB6A; border-radius:3px;"></div>
+          </div>
+          <p style="font-size:12px; color:rgba(255,255,255,0.45); margin-bottom:18px;">14 de 21 dias completos</p>
+
+          <!-- Divider -->
+          <div style="height:1px; background:rgba(255,255,255,0.1); margin-bottom:16px;"></div>
+
+          <!-- Status tag + time -->
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <span style="font-size:11px; font-weight:700; color:#FF7043; background:rgba(255,112,67,0.2); border:1px solid rgba(255,112,67,0.35); padding:3px 10px; border-radius:7px; letter-spacing:0.8px;">PRÓXIMO PASSO</span>
+            <span style="font-size:13px; color:rgba(255,255,255,0.45);">3h até a próxima</span>
+          </div>
+
+          <!-- Prayer number -->
+          <p style="font-size:13px; color:rgba(255,255,255,0.4); margin-bottom:6px;">Oração 2 de 3 — 12h00</p>
+
+          <!-- Prayer title -->
+          <p style="font-size:20px; font-weight:700; color:#fff; margin-bottom:5px; line-height:1.3;">Meditação do Meio-Dia</p>
+
+          <!-- Bible reference -->
+          <p style="font-size:14px; font-weight:700; color:#D4A017; margin-bottom:10px;">Daniel 1:8</p>
+
+          <!-- Prayer text excerpt -->
+          <p style="font-size:14px; color:rgba(255,255,255,0.68); line-height:1.7; margin-bottom:16px;">"Senhor, assim como Daniel propôs em seu coração não se contaminar, proponho também guardar minha mente e meu corpo para a Tua glória neste dia de consagração..."</p>
+
+          <!-- Mark as done button -->
+          <div style="display:flex; align-items:center; justify-content:center; gap:10px; padding:14px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); border-radius:12px; margin-bottom:12px; cursor:pointer;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+            <span style="font-size:15px; font-weight:700; color:rgba(255,255,255,0.85);">Marcar como concluído</span>
+          </div>
+
+          <!-- Next prayer preview -->
+          <div style="display:flex; align-items:center; gap:7px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08); margin-bottom:14px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 8 16 12 12 16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <span style="font-size:13px; color:rgba(255,255,255,0.45);">A seguir: Oração da Noite · 20h00</span>
+          </div>
+
+          <!-- Nav button -->
+          <div style="display:flex; align-items:center; justify-content:center; gap:8px; padding:13px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:12px; cursor:pointer;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            <span style="font-size:14px; font-weight:700; color:#fff; flex:1;">Ver Meditações Diárias</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     ORAÇÕES GUIADAS
+════════════════════════════════ -->
+<section id="oracoes" style="padding:100px 48px; background:linear-gradient(160deg,#1A0008 0%, #3D0A18 40%, #5C1020 100%); position:relative; overflow:hidden;">
+  <!-- Background glow effects -->
+  <div style="position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:800px; height:400px; background:radial-gradient(ellipse, rgba(109,27,43,0.6) 0%, transparent 70%); pointer-events:none;"></div>
+  <div style="position:absolute; bottom:-80px; right:-100px; width:400px; height:400px; background:radial-gradient(circle, rgba(212,160,23,0.1) 0%, transparent 70%); pointer-events:none;"></div>
+
+  <div style="max-width:1100px; margin:0 auto; position:relative; z-index:1;">
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:56px;">
+      <!-- Logo mark -->
+      <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:20px;">
+        <div style="height:1px; width:64px; background:linear-gradient(to right, transparent, rgba(196,134,42,0.5));"></div>
+        <div style="width:92px; height:92px; border-radius:50%; overflow:hidden; border:3px solid rgba(196,134,42,0.55); box-shadow:0 0 36px rgba(196,134,42,0.5), 0 0 0 8px rgba(196,134,42,0.1);">
+          <img src="assets/icons/logo.png" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='rgba(109,27,43,0.8)';this.style.display='none'"/>
+        </div>
+        <div style="height:1px; width:64px; background:linear-gradient(to left, transparent, rgba(196,134,42,0.5));"></div>
+      </div>
+      <span style="font-size:12px; font-weight:700; color:#C4862A; text-transform:uppercase; letter-spacing:2.5px;">Orações Guiadas</span>
+      <h2 style="font-family:'Noto Serif',serif; font-size:42px; font-weight:700; color:#fff; line-height:1.2; margin-top:12px; margin-bottom:16px;">Encontre as palavras certas<br>para cada momento.</h2>
+      <p style="font-size:17px; color:rgba(255,255,255,0.6); max-width:520px; margin:0 auto; line-height:1.7;">Orações para cura, proteção, família e mais. Guiadas passo a passo pelo app.</p>
+    </div>
+
+    <!-- Quote card -->
+    <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); backdrop-filter:blur(20px); border-radius:20px; padding:36px 48px; margin-bottom:40px; text-align:center; position:relative;">
+      <div style="font-size:52px; color:rgba(212,160,23,0.4); font-family:'Noto Serif',serif; line-height:1; position:absolute; top:16px; left:30px;">"</div>
+      <p style="font-family:'Noto Serif',serif; font-size:20px; color:rgba(255,255,255,0.9); line-height:1.6; font-style:italic; position:relative; z-index:1;">Pedi e dar-se-vos-á; buscai e encontrareis; batei e abrir-se-vos-á.</p>
+      <p style="font-size:13px; color:rgba(255,255,255,0.4); margin-top:14px; font-weight:600;">Mateus 7:7</p>
+    </div>
+
+    <!-- Prayer category pills -->
+    <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:40px;">
+      <span style="background:rgba(212,160,23,0.2); border:1px solid rgba(212,160,23,0.35); color:#FFD580; padding:8px 20px; border-radius:50px; font-size:13px; font-weight:600;">Todas</span>
+      <span style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.65); padding:8px 20px; border-radius:50px; font-size:13px; font-weight:600;">Cura</span>
+      <span style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.65); padding:8px 20px; border-radius:50px; font-size:13px; font-weight:600;">Proteção</span>
+      <span style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.65); padding:8px 20px; border-radius:50px; font-size:13px; font-weight:600;">Família</span>
+      <span style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.65); padding:8px 20px; border-radius:50px; font-size:13px; font-weight:600;">Gratidão</span>
+      <span style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.65); padding:8px 20px; border-radius:50px; font-size:13px; font-weight:600;">Intercessão</span>
+      <span style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.65); padding:8px 20px; border-radius:50px; font-size:13px; font-weight:600;">Arrependimento</span>
+    </div>
+
+    <!-- Prayer cards -->
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+      <!-- Card 1 -->
+      <div style="background:linear-gradient(160deg,#6D1B2B,#8B2438); border-radius:20px; padding:28px; border:1px solid rgba(255,255,255,0.1); position:relative; overflow:hidden; cursor:pointer; transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:radial-gradient(circle, rgba(212,160,23,0.15) 0%, transparent 70%); pointer-events:none;"></div>
+        <div style="width:48px; height:48px; background:rgba(255,255,255,0.12); border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:18px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD580" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3 style="font-family:'Noto Serif',serif; font-size:18px; font-weight:700; color:#fff; margin-bottom:10px; line-height:1.3;">Oração pela Cura</h3>
+        <p style="font-size:13px; color:rgba(255,255,255,0.6); line-height:1.6; margin-bottom:20px;">Clame pela restauração do seu corpo, mente e espírito com palavras poderosas de fé.</p>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span style="font-size:12px; color:rgba(255,255,255,0.4);">5 min</span>
+          <span style="margin-left:auto; font-size:12px; font-weight:600; color:#FFD580;">Iniciar →</span>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div style="background:linear-gradient(160deg,#6D1B2B,#8B2438); border-radius:20px; padding:28px; border:1px solid rgba(255,255,255,0.1); position:relative; overflow:hidden; cursor:pointer; transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:radial-gradient(circle, rgba(212,160,23,0.15) 0%, transparent 70%); pointer-events:none;"></div>
+        <div style="width:48px; height:48px; background:rgba(255,255,255,0.12); border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:18px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD580" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3 style="font-family:'Noto Serif',serif; font-size:18px; font-weight:700; color:#fff; margin-bottom:10px; line-height:1.3;">Restauração Familiar</h3>
+        <p style="font-size:13px; color:rgba(255,255,255,0.6); line-height:1.6; margin-bottom:20px;">Ore pela paz e restauração do seu lar, dos vínculos e do amor entre os seus.</p>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span style="font-size:12px; color:rgba(255,255,255,0.4);">7 min</span>
+          <span style="margin-left:auto; font-size:12px; font-weight:600; color:#FFD580;">Iniciar →</span>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div style="background:linear-gradient(160deg,#6D1B2B,#8B2438); border-radius:20px; padding:28px; border:1px solid rgba(255,255,255,0.1); position:relative; overflow:hidden; cursor:pointer; transition:transform .2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:radial-gradient(circle, rgba(212,160,23,0.15) 0%, transparent 70%); pointer-events:none;"></div>
+        <div style="width:48px; height:48px; background:rgba(255,255,255,0.12); border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:18px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD580" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 style="font-family:'Noto Serif',serif; font-size:18px; font-weight:700; color:#fff; margin-bottom:10px; line-height:1.3;">Proteção e Cobertura</h3>
+        <p style="font-size:13px; color:rgba(255,255,255,0.6); line-height:1.6; margin-bottom:20px;">Declare proteção sobre sua vida e de quem você ama sob o abrigo do Altíssimo.</p>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span style="font-size:12px; color:rgba(255,255,255,0.4);">6 min</span>
+          <span style="margin-left:auto; font-size:12px; font-weight:600; color:#FFD580;">Iniciar →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     TESTEMUNHOS + MEDALHAS + CTA
+════════════════════════════════ -->
+<section id="sobre" style="padding:100px 48px; background:#fff;">
+  <div style="max-width:1100px; margin:0 auto;">
+
+    <!-- Testimonials heading -->
+    <div style="text-align:center; margin-bottom:48px;">
+      <span style="font-size:12px; font-weight:700; color:#6D1B2B; text-transform:uppercase; letter-spacing:2.5px;">Testemunhos</span>
+      <h2 style="font-family:'Noto Serif',serif; font-size:38px; font-weight:700; color:#1A0A0E; line-height:1.2; margin-top:10px;">Vidas transformadas pela fé diária.</h2>
+    </div>
+
+    <!-- Testimonial cards -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:72px;">
+      <!-- T1 -->
+      <div style="background:#FBF8F3; border-radius:20px; padding:32px; border:1px solid #EBE6DC; position:relative;">
+        <div style="display:flex; gap:4px; margin-bottom:16px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p style="font-size:16px; color:#2D0A12; line-height:1.75; font-style:italic; margin-bottom:24px;">"O A SOS com o Pai mudou minha vida espiritual. Nunca consegui manter uma rotina de oração, mas com o plano diário do app, já estou no 30.º dia consecutivo. Me sinto mais perto de Deus do que nunca."</p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:44px; height:44px; background:linear-gradient(135deg,#6D1B2B,#C4862A); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <span style="font-size:16px; font-weight:700; color:#fff;">M</span>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:700; font-size:14px; color:#1A0A0E;">Maria Silva</div>
+            <div style="font-size:12px; color:#8899AA;">São Paulo, SP · 30 dias de sequência</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; padding:5px 12px 5px 5px; background:rgba(109,27,43,0.06); border-radius:20px; border:1px solid rgba(109,27,43,0.12);">
+            <div style="width:32px; height:32px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1.5px solid rgba(196,134,42,0.4);">
+              <img src="assets/icons/logo.png" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='#6D1B2B';this.style.display='none'"/>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:#6D1B2B; white-space:nowrap;">via app</span>
+          </div>
+        </div>
+      </div>
+      <!-- T2 -->
+      <div style="background:#FBF8F3; border-radius:20px; padding:32px; border:1px solid #EBE6DC; position:relative;">
+        <div style="display:flex; gap:4px; margin-bottom:16px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#C4862A"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p style="font-size:16px; color:#2D0A12; line-height:1.75; font-style:italic; margin-bottom:24px;">"Fiz o Jejum de Daniel pela primeira vez guiado pelo app. Cada dia tinha uma oração específica e versículos para meditar. Sinto que Deus respondeu de uma forma que nunca imaginei. Recomendo demais!"</p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:44px; height:44px; background:linear-gradient(135deg,#0D47A1,#2196F3); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <span style="font-size:16px; font-weight:700; color:#fff;">J</span>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:700; font-size:14px; color:#1A0A0E;">João Pereira</div>
+            <div style="font-size:12px; color:#8899AA;">Belo Horizonte, MG · Jejum de Daniel completo</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; padding:5px 12px 5px 5px; background:rgba(109,27,43,0.06); border-radius:20px; border:1px solid rgba(109,27,43,0.12);">
+            <div style="width:32px; height:32px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1.5px solid rgba(196,134,42,0.4);">
+              <img src="assets/icons/logo.png" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='#6D1B2B';this.style.display='none'"/>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:#6D1B2B; white-space:nowrap;">via app</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medals section -->
+    <div style="text-align:center; margin-bottom:32px;">
+      <span style="font-size:12px; font-weight:700; color:#6D1B2B; text-transform:uppercase; letter-spacing:2.5px;">Conquistas</span>
+      <h3 style="font-family:'Noto Serif',serif; font-size:30px; font-weight:700; color:#1A0A0E; margin-top:8px; margin-bottom:6px;">Medalhas que celebram sua constância.</h3>
+      <p style="font-size:15px; color:#5C4A4E;">Mantenha a sequência e desbloqueie conquistas espirituais.</p>
+    </div>
+    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:72px;">
+      <!-- Medal 1 unlocked -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+        <div style="width:72px; height:72px; background:radial-gradient(circle at 35% 30%, #FFF8EC, #FFF0D6); border-radius:50%; border:2px solid rgba(196,134,42,0.35); display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(212,160,23,0.3), 0 4px 12px rgba(109,27,43,0.1);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C4862A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1A0A0E;">Farol da Fé</div>
+          <div style="font-size:11px; color:#8899AA;">5 dias</div>
+        </div>
+      </div>
+      <!-- Medal 2 unlocked -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+        <div style="width:72px; height:72px; background:radial-gradient(circle at 35% 30%, #E8F5E9, #C8E6C9); border-radius:50%; border:2px solid rgba(76,175,80,0.4); display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(76,175,80,0.25), 0 4px 12px rgba(76,175,80,0.1);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1A0A0E;">Guardião da Fé</div>
+          <div style="font-size:11px; color:#8899AA;">7 dias</div>
+        </div>
+      </div>
+      <!-- Medal 3 unlocked -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+        <div style="width:72px; height:72px; background:radial-gradient(circle at 35% 30%, #E3F2FD, #BBDEFB); border-radius:50%; border:2px solid rgba(33,150,243,0.4); display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(33,150,243,0.25), 0 4px 12px rgba(33,150,243,0.1);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M16 8l4.59-4.59M8 8L3.41 3.41M8 16l-4.59 4.59M16 16l4.59 4.59"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1A0A0E;">Peregrino</div>
+          <div style="font-size:11px; color:#8899AA;">14 dias</div>
+        </div>
+      </div>
+      <!-- Medal 4 locked -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px; opacity:0.45;">
+        <div style="width:72px; height:72px; background:#F5F5F5; border-radius:50%; border:2px solid #E0E0E0; display:flex; align-items:center; justify-content:center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1A0A0E;">Discípulo Fiel</div>
+          <div style="font-size:11px; color:#8899AA;">21 dias</div>
+        </div>
+      </div>
+      <!-- Medal 5 locked -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px; opacity:0.45;">
+        <div style="width:72px; height:72px; background:#F5F5F5; border-radius:50%; border:2px solid #E0E0E0; display:flex; align-items:center; justify-content:center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1A0A0E;">Guerreiro Espiritual</div>
+          <div style="font-size:11px; color:#8899AA;">30 dias</div>
+        </div>
+      </div>
+      <!-- Medal 6 locked -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px; opacity:0.45;">
+        <div style="width:72px; height:72px; background:#F5F5F5; border-radius:50%; border:2px solid #E0E0E0; display:flex; align-items:center; justify-content:center;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:12px; font-weight:700; color:#1A0A0E;">Soldado de Cristo</div>
+          <div style="font-size:11px; color:#8899AA;">40 dias</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky CTA card -->
+    <div style="background:linear-gradient(135deg,#3D0A18 0%,#6D1B2B 50%,#8B2438 100%); border-radius:28px; padding:56px 64px; display:flex; align-items:center; justify-content:space-between; gap:40px; position:relative; overflow:hidden; box-shadow:0 30px 80px rgba(109,27,43,0.4);">
+      <div style="position:absolute; top:-80px; right:-80px; width:300px; height:300px; background:radial-gradient(circle, rgba(212,160,23,0.18) 0%, transparent 70%); pointer-events:none;"></div>
+      <div style="position:absolute; bottom:-60px; left:-60px; width:250px; height:250px; background:radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%); pointer-events:none;"></div>
+      <div style="position:relative; z-index:1;">
+        <!-- App identity in CTA -->
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:18px;">
+          <div style="width:76px; height:76px; border-radius:22px; overflow:hidden; border:2px solid rgba(196,134,42,0.55); box-shadow:0 8px 28px rgba(0,0,0,0.45); flex-shrink:0;">
+            <img src="assets/icons/logo.png" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='rgba(109,27,43,0.9)';this.style.display='none'"/>
+          </div>
+          <div>
+            <span style="font-family:'Noto Serif',serif; font-size:15px; font-style:italic; font-weight:700; color:rgba(255,255,255,0.9);">A SOS com o Pai</span>
+            <div style="font-size:11px; color:rgba(255,213,128,0.7); font-weight:600; letter-spacing:1.5px; text-transform:uppercase; margin-top:1px;">Comece agora</div>
+          </div>
+        </div>
+        <h2 style="font-family:'Noto Serif',serif; font-size:36px; font-weight:700; color:#fff; line-height:1.2; margin-bottom:12px;">7 dias gratuitos.<br>Sem precisar de cartão.</h2>
+        <p style="font-size:16px; color:rgba(255,255,255,0.6); line-height:1.6;">Experimente o plano completo por 7 dias. Cancele quando quiser.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px; align-items:center; flex-shrink:0; position:relative; z-index:1;">
+        <button style="background:linear-gradient(135deg,#C4862A,#D4A017); color:#fff; padding:18px 40px; border-radius:14px; border:none; font-size:16px; font-weight:700; cursor:pointer; white-space:nowrap; box-shadow:0 8px 28px rgba(196,134,42,0.45); min-width:240px;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+          Baixar o App Gratuitamente
+        </button>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="display:flex; align-items:center; gap:4px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:12px; color:rgba(255,255,255,0.5);">App Store</span>
+          </div>
+          <div style="width:1px; height:14px; background:rgba(255,255,255,0.2);"></div>
+          <div style="display:flex; align-items:center; gap:4px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:12px; color:rgba(255,255,255,0.5);">Google Play</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<footer style="background:#1A0008; padding:64px 48px 40px; border-top:1px solid rgba(212,160,23,0.15);">
+  <div style="max-width:1200px; margin:0 auto;">
+    <!-- Top row -->
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:48px; gap:40px; flex-wrap:wrap;">
+      <!-- Brand -->
+      <div style="max-width:280px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+          <div style="width:64px; height:64px; border-radius:50%; overflow:hidden; border:2px solid rgba(212,160,23,0.5); flex-shrink:0; box-shadow:0 0 18px rgba(196,134,42,0.3);">
+            <img src="assets/icons/logo.png" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='#3D0A18';this.style.display='none'"/>
+          </div>
+          <span style="font-family:'Noto Serif',serif; font-size:20px; color:#fff; font-style:italic; font-weight:700; letter-spacing:-0.3px;">FÉ DIÁRIA</span>
+        </div>
+        <p style="font-size:14px; color:rgba(255,255,255,0.45); line-height:1.7;">Seu companheiro espiritual diário. Oração, jejum e devoção — todos os dias, em qualquer lugar.</p>
+      </div>
+      <!-- Links -->
+      <div style="display:flex; gap:64px; flex-wrap:wrap;">
+        <div>
+          <div style="font-size:12px; font-weight:700; color:rgba(212,160,23,0.7); text-transform:uppercase; letter-spacing:2px; margin-bottom:16px;">App</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <a href="#" style="font-size:14px; color:rgba(255,255,255,0.5); text-decoration:none;" onmouseover="this.style.color='#FFD580'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Plano Diário</a>
+            <a href="#jejum" style="font-size:14px; color:rgba(255,255,255,0.5); text-decoration:none;" onmouseover="this.style.color='#FFD580'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Jejum Espiritual</a>
+            <a href="#oracoes" style="font-size:14px; color:rgba(255,255,255,0.5); text-decoration:none;" onmouseover="this.style.color='#FFD580'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Orações Guiadas</a>
+            <a href="#" style="font-size:14px; color:rgba(255,255,255,0.5); text-decoration:none;" onmouseover="this.style.color='#FFD580'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Medalhas</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:700; color:rgba(212,160,23,0.7); text-transform:uppercase; letter-spacing:2px; margin-bottom:16px;">Legal</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <a href="#" style="font-size:14px; color:rgba(255,255,255,0.5); text-decoration:none;" onmouseover="this.style.color='#FFD580'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Privacidade</a>
+            <a href="#" style="font-size:14px; color:rgba(255,255,255,0.5); text-decoration:none;" onmouseover="this.style.color='#FFD580'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Termos de Uso</a>
+            <a href="#" style="font-size:14px; color:rgba(255,255,255,0.5); text-decoration:none;" onmouseover="this.style.color='#FFD580'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">Contato</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Divider -->
+    <div style="height:1px; background:rgba(255,255,255,0.07); margin-bottom:24px;"></div>
+    <!-- Bottom row -->
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <p style="font-size:13px; color:rgba(255,255,255,0.25);">© 2025 A SOS com o Pai. Todos os direitos reservados.</p>
+      <p style="font-size:13px; color:rgba(255,255,255,0.25);">Feito com fé 🙏</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ════════════════════════════════════════════════════════
+     MODALS — gerados via JS
+════════════════════════════════════════════════════════ -->
+<div id="modals-container"></div>
+
+<script>
+/* ─────────────────────────────────────
+   DATA
+───────────────────────────────────── */
+const TIPOS = [
+  {
+    id: 'normal',
+    titulo: 'Jejum Normal',
+    subtitulo: 'Abstenha-se de alimentos por um período',
+    icone: 'restaurant',
+    cor: '#1E3A5F',
+    corFundo: '#EBF2FF',
+    descricao: 'O Jejum Normal é a prática de abster-se completamente de alimentos sólidos por um período determinado, mantendo apenas a ingestão de água. É uma das formas mais antigas e poderosas de buscar a face de Deus.',
+    beneficios: [
+      'Quebra de padrões de pecado e vícios',
+      'Maior sensibilidade espiritual e clareza de visão',
+      'Fortalecimento da disciplina e domínio próprio',
+      'Aproximação profunda com Deus através da negação da carne',
+    ],
+    duracao: '1 dia',
+    instrucoes: 'Pode-se beber água durante todo o período. Escolha um momento do dia para orar ao início e ao fim do jejum.',
+  },
+  {
+    id: 'parcial',
+    titulo: 'Jejum Parcial',
+    subtitulo: 'Restrição de alimentos específicos',
+    icone: 'eco',
+    cor: '#2E7D32',
+    corFundo: '#E8F5E9',
+    descricao: 'O Jejum Parcial consiste em abster-se de alguns alimentos específicos ou de comer apenas em determinados horários do dia. É acessível a pessoas que não podem fazer o jejum completo por motivos de saúde.',
+    beneficios: [
+      'Disciplina alimentar com foco espiritual',
+      'Acessível para iniciantes e pessoas com restrições de saúde',
+      'Construção gradual do hábito de jejum',
+      'Renovação espiritual ao longo de 3 dias',
+    ],
+    duracao: '3 dias',
+    instrucoes: 'Evite carnes, doces e alimentos processados. Prefira frutas, verduras e grãos. Ore ao acordar e antes de dormir.',
+  },
+  {
+    id: 'daniel',
+    titulo: 'Jejum de Daniel',
+    subtitulo: 'Frutas, legumes e água por 21 dias',
+    icone: 'apple',
+    cor: '#6A1B9A',
+    corFundo: '#F3E5F5',
+    descricao: 'Baseado no relato bíblico de Daniel (capítulos 1 e 10), este jejum consiste em comer apenas vegetais e frutas, e beber apenas água, por 21 dias. É um jejum de profunda consagração e busca de revelação.',
+    beneficios: [
+      'Revelação divina e visões espirituais profundas',
+      'Quebra de fortalezas espirituais de longa data',
+      'Renovação completa da mente e do Espírito',
+      'Intercessão eficaz por nações, famílias e propósitos',
+    ],
+    duracao: '21 dias',
+    instrucoes: 'Consuma apenas frutas, legumes, verduras, grãos e água. Evite carnes, laticínios, açúcar e alimentos processados. Reserve um tempo diário para oração e leitura bíblica.',
+  },
+  {
+    id: 'ester',
+    titulo: 'Jejum de Ester',
+    subtitulo: '3 dias de jejum total, intercessão e livramento',
+    icone: 'star',
+    cor: '#BF360C',
+    corFundo: '#FBE9E7',
+    descricao: 'Baseado no jejum de Ester (Ester 4:16), é um jejum de 3 dias sem comer nem beber, em situações de grande necessidade ou crise. Representa a máxima entrega e o clamor desesperado por intervenção divina.',
+    beneficios: [
+      'Intercessão de alto impacto por situações críticas',
+      'Livramento de inimigos espirituais visíveis e invisíveis',
+      'Quebra imediata de maldições e sentenças espirituais',
+      'Ativação de favor sobrenatural e providência divina',
+    ],
+    duracao: '3 dias',
+    instrucoes: 'Este é um jejum extremo. Consulte um médico antes. Abstenha-se de comida e água por 3 dias. Ore continuamente. Recomendado apenas para situações de grande urgência espiritual.',
+  },
+];
+
+const PROPOSITOS = [
+  {
+    id: 'consagracao',
+    titulo: 'Consagração e Guerra Espiritual',
+    subtitulo: 'Quebre jugos e posicione-se na presença de Deus',
+    icone: 'shield',
+    cor: '#8B0000',
+    descricao: 'Um guia espiritual para quem deseja romper correntes, quebrar jugos e se posicionar de maneira firme na presença de Deus.',
+    beneficios: [
+      'Fortalecimento espiritual e quebra de fortalezas',
+      'Maior sensibilidade à voz do Espírito Santo',
+      'Proteção contra ataques do inimigo',
+      'Renovação da fé e do compromisso com Deus',
+    ],
+    niveis: [
+      { titulo: 'Nível 1: O Despertar', subtitulo: '12 Horas de Consagração', duracao: '12 horas (06h às 18h)', oracoes: 4, badge: 'Básico', badgeCor: '#2E7D32', badgeBg: '#E8F5E9' },
+      { titulo: 'Nível 2: O Confronto e a Resistência', subtitulo: '24 Horas de Combate', duracao: '24 horas (19h às 19h do dia seguinte)', oracoes: 6, badge: 'Intermediário', badgeCor: '#E65100', badgeBg: '#FFF3E0' },
+      { titulo: 'Nível 3: O Domínio do Espírito', subtitulo: '36 Horas de Cerco Absoluto', duracao: '36 horas (19h dia 1 até 07h dia 3)', oracoes: 8, badge: 'Avançado', badgeCor: '#C62828', badgeBg: '#FFEBEE' },
+    ],
+  },
+  {
+    id: 'financeiro',
+    titulo: 'Despertar Financeiro',
+    subtitulo: 'Busque a provisão e sabedoria de Deus',
+    icone: 'wallet',
+    cor: '#1B5E20',
+    descricao: 'Um guia espiritual para quem deseja buscar a provisão divina e a sabedoria financeira através do jejum e da oração.',
+    beneficios: [
+      'Clareza para tomar decisões financeiras sábias',
+      'Quebra de ciclos de escassez e dívida',
+      'Fortalecimento da confiança na provisão de Deus',
+      'Sabedoria para administrar recursos com fidelidade',
+    ],
+    niveis: [
+      { titulo: 'Nível 1: As Primícias e a Confiança', subtitulo: '12 Horas de Consagração', duracao: '12 horas (06h às 18h)', oracoes: 4, badge: 'Básico', badgeCor: '#2E7D32', badgeBg: '#E8F5E9' },
+      { titulo: 'Nível 2: A Quebra da Escassez', subtitulo: '24 Horas de Combate', duracao: '24 horas (19h às 19h do dia seguinte)', oracoes: 6, badge: 'Intermediário', badgeCor: '#E65100', badgeBg: '#FFF3E0' },
+      { titulo: 'Nível 3: A Provisão Sobrenatural', subtitulo: '36 Horas de Cerco Absoluto', duracao: '36 horas (19h dia 1 até 07h dia 3)', oracoes: 8, badge: 'Avançado', badgeCor: '#C62828', badgeBg: '#FFEBEE' },
+    ],
+  },
+  {
+    id: 'protecao',
+    titulo: 'Proteção Divina',
+    subtitulo: 'Busque o abrigo e a fortaleza do Altíssimo',
+    icone: 'umbrella',
+    cor: '#0D47A1',
+    descricao: 'Um guia espiritual para quem deseja buscar a proteção divina e o abrigo do Altíssimo através do jejum e da oração.',
+    beneficios: [
+      'Segurança e paz em meio às adversidades',
+      'Fortalecimento da fé nas promessas de proteção',
+      'Livramento de perigos visíveis e invisíveis',
+      'Confiança renovada no cuidado de Deus',
+    ],
+    niveis: [
+      { titulo: 'Nível 1: O Escudo da Fé', subtitulo: '12 Horas de Proteção', duracao: '12 horas (06h às 18h)', oracoes: 4, badge: 'Básico', badgeCor: '#2E7D32', badgeBg: '#E8F5E9' },
+      { titulo: 'Nível 2: A Muralha de Fogo', subtitulo: '24 Horas de Combate', duracao: '24 horas (19h às 19h do dia seguinte)', oracoes: 6, badge: 'Intermediário', badgeCor: '#E65100', badgeBg: '#FFF3E0' },
+      { titulo: 'Nível 3: A Fortaleza Impenetrável', subtitulo: '36 Horas de Cerco Absoluto', duracao: '36 horas (19h dia 1 até 07h dia 3)', oracoes: 8, badge: 'Avançado', badgeCor: '#C62828', badgeBg: '#FFEBEE' },
+    ],
+  },
+  {
+    id: 'familiar',
+    titulo: 'Restauração Familiar',
+    subtitulo: 'Restaure vínculos e traga paz ao seu lar',
+    icone: 'home',
+    cor: '#6A1B9A',
+    descricao: 'Um guia espiritual para quem deseja restaurar relacionamentos familiares, curar feridas e trazer a paz de Deus para dentro do lar.',
+    beneficios: [
+      'Restauração de relacionamentos rompidos',
+      'Cura de feridas emocionais e mágoas',
+      'Fortalecimento dos vínculos familiares',
+      'Paz e harmonia no lar',
+    ],
+    niveis: [
+      { titulo: 'Nível 1: O Alicerce da Casa', subtitulo: '12 Horas de Intercessão', duracao: '12 horas (06h às 18h)', oracoes: 4, badge: 'Básico', badgeCor: '#2E7D32', badgeBg: '#E8F5E9' },
+      { titulo: 'Nível 2: O Muro de Fogo', subtitulo: '24 Horas de Combate', duracao: '24 horas (19h às 19h do dia seguinte)', oracoes: 6, badge: 'Intermediário', badgeCor: '#E65100', badgeBg: '#FFF3E0' },
+      { titulo: 'Nível 3: O Resgate das Gerações', subtitulo: '36 Horas de Intercessão de Alto Impacto', duracao: '36 horas (19h dia 1 até 07h dia 3)', oracoes: 8, badge: 'Avançado', badgeCor: '#C62828', badgeBg: '#FFEBEE' },
+    ],
+  },
+  {
+    id: 'saude',
+    titulo: 'Saúde e Cura',
+    subtitulo: 'Busque a cura divina para corpo e alma',
+    icone: 'medical_services',
+    cor: '#E65100',
+    descricao: 'Um guia espiritual para quem deseja buscar a cura divina e a restauração da saúde através do jejum e da oração.',
+    beneficios: [
+      'Fortalecimento da fé na cura divina',
+      'Paz e esperança em meio à enfermidade',
+      'Restauração física, emocional e espiritual',
+      'Renovação das forças e da vitalidade',
+    ],
+    niveis: [
+      { titulo: 'Nível 1: O Toque da Restauração', subtitulo: '12 Horas de Consagração', duracao: '12 horas (06h às 18h)', oracoes: 4, badge: 'Básico', badgeCor: '#2E7D32', badgeBg: '#E8F5E9' },
+      { titulo: 'Nível 2: A Renovação do Templo', subtitulo: '24 Horas de Combate', duracao: '24 horas (19h às 19h do dia seguinte)', oracoes: 6, badge: 'Intermediário', badgeCor: '#E65100', badgeBg: '#FFF3E0' },
+      { titulo: 'Nível 3: A Ressurreição do Vigor', subtitulo: '36 Horas de Cerco Absoluto', duracao: '36 horas (19h dia 1 até 07h dia 3)', oracoes: 8, badge: 'Avançado', badgeCor: '#C62828', badgeBg: '#FFEBEE' },
+    ],
+  },
+];
+
+/* ─────────────────────────────────────
+   MODAL BUILDERS
+───────────────────────────────────── */
+function buildTipoModal(t) {
+  return `
+  <div id="m-${t.id}" class="modal-overlay">
+    <div class="modal-box">
+      <!-- Header -->
+      <div style="background:${t.cor}; padding:44px 24px 32px; text-align:center; position:relative; flex-shrink:0;">
+        <button class="modal-close-btn" onclick="closeModal('m-${t.id}')">✕</button>
+        <div style="width:64px;height:64px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+          <span class="material-symbols-outlined" style="color:#fff;font-size:30px;">${t.icone}</span>
+        </div>
+        <h2 style="font-family:'Noto Serif',serif;color:#fff;font-size:22px;font-weight:700;margin-bottom:8px;">${t.titulo}</h2>
+        <p style="font-size:14px;color:rgba(255,255,255,.75);line-height:1.5;">${t.subtitulo}</p>
+      </div>
+      <!-- Body -->
+      <div class="modal-scroll">
+        <!-- Sobre -->
+        <div class="mcard">
+          <div class="mcard-header">
+            <div style="width:28px;height:28px;background:#FFF9C4;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#F9A825"><circle cx="12" cy="12" r="10"/></svg>
+            </div>
+            <span class="mcard-header-title">Sobre este jejum</span>
+          </div>
+          <p style="font-size:13.5px;color:#4A5568;line-height:1.65;">${t.descricao}</p>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:12px;padding:10px 12px;background:#F5F2EB;border-radius:8px;">
+            <span class="material-symbols-outlined" style="font-size:16px;color:#8899AA;">schedule</span>
+            <span style="font-size:13px;color:#4A5568;font-weight:600;">Duração: ${t.duracao}</span>
+          </div>
+        </div>
+        <!-- Benefícios -->
+        <div class="mcard">
+          <div class="mcard-header">
+            <div style="width:28px;height:28px;background:#FFF9C4;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#F9A825"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+            </div>
+            <span class="mcard-header-title">No que ajuda</span>
+          </div>
+          ${t.beneficios.map(b => `
+          <div class="benefit-row">
+            <div class="benefit-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="benefit-text">${b}</span>
+          </div>`).join('')}
+        </div>
+        <!-- Instruções -->
+        <div class="mcard">
+          <div class="mcard-header">
+            <div style="width:28px;height:28px;background:#E3F2FD;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <span class="material-symbols-outlined" style="font-size:15px;color:#1565C0;">info</span>
+            </div>
+            <span class="mcard-header-title">Como praticar</span>
+          </div>
+          <p style="font-size:13.5px;color:#4A5568;line-height:1.65;">${t.instrucoes}</p>
+        </div>
+        <!-- CTA -->
+        <button onclick="closeModal('m-${t.id}')" style="background:${t.cor};color:#fff;width:100%;padding:16px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:2px;">
+          Iniciar ${t.titulo}
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildPropositoModal(p) {
+  const niveisHtml = p.niveis.map((n, i) => `
+  <div class="level-row">
+    <div class="level-fire">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="${i===0?'#FF9800':i===1?'#F44336':'#B71C1C'}">
+        <path d="M12 2c0 0-5 4-5 9a5 5 0 0 0 10 0c0-5-5-9-5-9z" opacity=".8"/>
+        <path d="M12 8c0 0-2.5 2-2.5 4.5a2.5 2.5 0 0 0 5 0C14.5 10 12 8 12 8z"/>
+      </svg>
+    </div>
+    <div class="level-info">
+      <div class="level-name">${n.titulo}</div>
+      <div class="level-sub">${n.subtitulo}</div>
+      <div class="level-meta">
+        <div class="level-meta-item">
+          <span class="material-symbols-outlined" style="font-size:13px;">schedule</span>
+          ${n.duracao}
+        </div>
+        <div class="level-meta-item">
+          <span class="material-symbols-outlined" style="font-size:13px;">pan_tool</span>
+          ${n.oracoes} orações
+        </div>
+      </div>
+    </div>
+    <div class="level-right">
+      <span class="badge-level" style="color:${n.badgeCor};background:${n.badgeBg};">${n.badge}</span>
+      <span class="chevron">›</span>
+    </div>
+  </div>`).join('');
+
+  return `
+  <div id="m-${p.id}" class="modal-overlay">
+    <div class="modal-box">
+      <!-- Header -->
+      <div style="background:${p.cor}; padding:44px 24px 32px; text-align:center; position:relative; flex-shrink:0;">
+        <button class="modal-close-btn" onclick="closeModal('m-${p.id}')">✕</button>
+        <div style="width:64px;height:64px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+          <span class="material-symbols-outlined" style="color:#fff;font-size:30px;">${p.icone}</span>
+        </div>
+        <h2 style="font-family:'Noto Serif',serif;color:#fff;font-size:21px;font-weight:700;margin-bottom:8px;">${p.titulo}</h2>
+        <p style="font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.5;">${p.subtitulo}</p>
+      </div>
+      <!-- Body -->
+      <div class="modal-scroll">
+        <!-- Sobre -->
+        <div class="mcard">
+          <div class="mcard-header">
+            <div style="width:28px;height:28px;background:#FFF9C4;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#F9A825"><circle cx="12" cy="12" r="10"/></svg>
+            </div>
+            <span class="mcard-header-title">Sobre este propósito</span>
+          </div>
+          <p style="font-size:13.5px;color:#4A5568;line-height:1.65;">${p.descricao}</p>
+        </div>
+        <!-- Benefícios -->
+        <div class="mcard">
+          <div class="mcard-header">
+            <div style="width:28px;height:28px;background:#FFF9C4;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#F9A825"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+            </div>
+            <span class="mcard-header-title">No que ajuda</span>
+          </div>
+          ${p.beneficios.map(b => `
+          <div class="benefit-row">
+            <div class="benefit-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="benefit-text">${b}</span>
+          </div>`).join('')}
+        </div>
+        <!-- Níveis -->
+        <div class="mcard">
+          <div class="mcard-header">
+            <div style="width:28px;height:28px;background:#FFF3E0;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF9800"><path d="M12 2c0 0-5 4-5 9a5 5 0 0 0 10 0c0-5-5-9-5-9z"/></svg>
+            </div>
+            <span class="mcard-header-title">Escolha o Nível</span>
+          </div>
+          <p style="font-size:12px;color:#8899AA;margin-bottom:14px;">Cada nível tem duração e intensidade diferentes</p>
+          ${niveisHtml}
+        </div>
+        <!-- CTA -->
+        <button onclick="closeModal('m-${p.id}')" style="background:${p.cor};color:#fff;width:100%;padding:16px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;margin-top:2px;">
+          Começar este Propósito
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ─────────────────────────────────────
+   INJECT MODALS
+───────────────────────────────────── */
+const container = document.getElementById('modals-container');
+TIPOS.forEach(t => container.insertAdjacentHTML('beforeend', buildTipoModal(t)));
+PROPOSITOS.forEach(p => container.insertAdjacentHTML('beforeend', buildPropositoModal(p)));
+
+/* Backdrop close */
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) closeModal(el.id); });
+});
+
+/* ─────────────────────────────────────
+   OPEN / CLOSE
+───────────────────────────────────── */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ESC key */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(el => closeModal(el.id));
+  }
+});
+</script>
+</body>
+</html>

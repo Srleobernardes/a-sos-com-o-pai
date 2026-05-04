@@ -1,0 +1,230 @@
+import React, { useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { COLORS, SHADOWS, FONTS } from '../theme/colors';
+
+const { width } = Dimensions.get('window');
+
+const PARTICULAS = [
+  { angle: 0,   color: '#7B68EE', size: 10 },
+  { angle: 45,  color: '#FFD700', size: 8  },
+  { angle: 90,  color: '#7B68EE', size: 12 },
+  { angle: 135, color: '#E91E63', size: 8  },
+  { angle: 180, color: '#7B68EE', size: 10 },
+  { angle: 225, color: '#FFD700', size: 8  },
+  { angle: 270, color: '#7B68EE', size: 12 },
+  { angle: 315, color: '#E91E63', size: 8  },
+];
+
+function Particula({ angle, color, size, explodeAnim }) {
+  const rad = (angle * Math.PI) / 180;
+  const distancia = 90;
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        backgroundColor: color,
+        opacity: explodeAnim.interpolate({ inputRange: [0, 0.4, 1], outputRange: [0, 1, 0] }),
+        transform: [
+          {
+            translateX: explodeAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, Math.cos(rad) * distancia],
+            }),
+          },
+          {
+            translateY: explodeAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, Math.sin(rad) * distancia],
+            }),
+          },
+        ],
+      }}
+    />
+  );
+}
+
+export default function OracoesConcluidasAnimacao({ visible, onClose }) {
+  const scaleAnim   = useRef(new Animated.Value(0)).current;
+  const opacityAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim   = useRef(new Animated.Value(50)).current;
+  const explodeAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim   = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (visible) {
+      scaleAnim.setValue(0);
+      opacityAnim.setValue(0);
+      slideAnim.setValue(50);
+      explodeAnim.setValue(0);
+      pulseAnim.setValue(1);
+
+      Animated.sequence([
+        Animated.timing(opacityAnim, { toValue: 1, duration: 250, useNativeDriver: true }),
+        Animated.parallel([
+          Animated.spring(scaleAnim, { toValue: 1, friction: 3, tension: 80, useNativeDriver: true }),
+          Animated.timing(explodeAnim, { toValue: 1, duration: 700, useNativeDriver: true }),
+        ]),
+        Animated.spring(slideAnim, { toValue: 0, friction: 8, tension: 60, useNativeDriver: true }),
+      ]).start(() => {
+        Animated.loop(
+          Animated.sequence([
+            Animated.timing(pulseAnim, { toValue: 1.08, duration: 800, useNativeDriver: true }),
+            Animated.timing(pulseAnim, { toValue: 1, duration: 800, useNativeDriver: true }),
+          ])
+        ).start();
+      });
+    }
+  }, [visible]);
+
+  return (
+    <Modal visible={visible} transparent animationType="none" onRequestClose={onClose}>
+      <Animated.View style={[styles.overlay, { opacity: opacityAnim }]}>
+        <View style={styles.content}>
+
+          <View style={styles.iconArea}>
+            {PARTICULAS.map((p, i) => (
+              <Particula key={i} {...p} explodeAnim={explodeAnim} />
+            ))}
+            <Animated.View
+              style={[
+                styles.iconCircle,
+                { transform: [{ scale: Animated.multiply(scaleAnim, pulseAnim) }] },
+              ]}
+            >
+              <Ionicons name="hand-left" size={64} color="#7B68EE" />
+            </Animated.View>
+          </View>
+
+          <Animated.View
+            style={{
+              opacity: opacityAnim,
+              transform: [{ translateY: slideAnim }],
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.label}>ORAÇÕES DO DIA</Text>
+            <Text style={styles.titulo}>Todas as Orações{'\n'}Glorificadas!</Text>
+            <Text style={styles.descricao}>
+              Você glorificou seu dia com oração.{'\n'}
+              O Senhor ouve cada palavra do seu coração.
+            </Text>
+
+            <View style={styles.badgeRow}>
+              <Ionicons name="star" size={18} color="#7B68EE" />
+              <Text style={styles.badgeText}>+1 ponto em orações</Text>
+            </View>
+          </Animated.View>
+
+          <Animated.View style={{ opacity: opacityAnim, transform: [{ translateY: slideAnim }] }}>
+            <TouchableOpacity style={styles.button} onPress={onClose}>
+              <Ionicons name="heart" size={20} color="#FFF" />
+              <Text style={styles.buttonText}>Amém!</Text>
+            </TouchableOpacity>
+          </Animated.View>
+
+        </View>
+      </Animated.View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.72)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  content: {
+    width: width * 0.85,
+    backgroundColor: COLORS.surface,
+    borderRadius: 28,
+    padding: 32,
+    alignItems: 'center',
+    ...SHADOWS.large,
+  },
+  iconArea: {
+    width: 140,
+    height: 140,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+  },
+  iconCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#EDE7F6',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 4,
+    borderColor: '#7B68EE',
+    ...SHADOWS.medium,
+  },
+  label: {
+    fontSize: 12,
+    color: COLORS.textSecondary,
+    ...FONTS.semibold,
+    letterSpacing: 3,
+    textTransform: 'uppercase',
+    marginBottom: 10,
+  },
+  titulo: {
+    fontSize: 28,
+    ...FONTS.extrabold,
+    color: COLORS.text,
+    textAlign: 'center',
+    lineHeight: 36,
+    marginBottom: 12,
+  },
+  descricao: {
+    fontSize: 15,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 23,
+    marginBottom: 18,
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#EDE7F6',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginBottom: 28,
+  },
+  badgeText: {
+    fontSize: 14,
+    ...FONTS.bold,
+    color: '#5C4DB1',
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 48,
+    borderRadius: 30,
+    backgroundColor: '#7B68EE',
+    gap: 8,
+    ...SHADOWS.small,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    ...FONTS.bold,
+  },
+});

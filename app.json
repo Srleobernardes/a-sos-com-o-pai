@@ -20,11 +20,21 @@
       "adaptiveIcon": {
         "backgroundColor": "#F5F2EB"
       },
-      "package": "com.asoscomopai.app"
+      "package": "com.asoscomopai.app",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "plugins": [
       "expo-asset",
-      "expo-font"
-    ]
+      "expo-font",
+      "expo-image-picker"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b1687403-70da-43d7-b4a5-fae511641df6"
+      }
+    },
+    "owner": "leobernardes"
   }
 }

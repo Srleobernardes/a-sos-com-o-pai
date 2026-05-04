@@ -31,6 +31,7 @@ export default function VersiculoScreen({ route, navigation }) {
       uncompleteTask(taskId);
     } else {
       completeTask(taskId);
+      setTimeout(() => navigation.goBack(), 400);
     }
   };
 
@@ -48,7 +49,7 @@ export default function VersiculoScreen({ route, navigation }) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={COLORS.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Versiculo Diario</Text>
+        <Text style={styles.headerTitle}>Versículo Diário</Text>
         <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
           <Ionicons name="share-outline" size={22} color={COLORS.primary} />
         </TouchableOpacity>
@@ -71,9 +72,9 @@ export default function VersiculoScreen({ route, navigation }) {
         </View>
 
         <View style={styles.reflexaoCard}>
-          <Text style={styles.reflexaoTitle}>Reflexao do dia</Text>
+          <Text style={styles.reflexaoTitle}>Reflexão do Dia</Text>
           <Text style={styles.reflexaoText}>
-            Medite neste versiculo hoje. Deixe que a Palavra de Deus transforme seu dia, suas decisoes e sua perspectiva. Carregue este versiculo no coracao.
+            Medite neste versículo hoje. Deixe que a Palavra de Deus transforme seu dia, suas decisões e sua perspectiva. Carregue este versículo no coração.
           </Text>
         </View>
 
@@ -84,7 +85,7 @@ export default function VersiculoScreen({ route, navigation }) {
           >
             <Ionicons name={completed ? 'close-circle' : 'checkmark'} size={22} color="#FFF" />
             <Text style={styles.completeText}>
-              {completed ? 'Desmarcar' : 'Marcar como concluido'}
+              {completed ? 'Desmarcar' : 'Marcar como concluído'}
             </Text>
           </TouchableOpacity>
         </Animated.View>

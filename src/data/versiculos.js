@@ -1,10 +1,10 @@
 export const VERSICULOS = [
   {
-    texto: 'Porque Deus amou o mundo de tal maneira que deu o seu Filho unigenito, para que todo aquele que nele cre nao pereca, mas tenha a vida eterna.',
-    referencia: 'Joao 3:16',
+    texto: 'Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.',
+    referencia: 'João 3:16',
   },
   {
-    texto: 'O Senhor e o meu pastor; nada me faltara.',
+    texto: 'O Senhor é o meu pastor; nada me faltará.',
     referencia: 'Salmo 23:1',
   },
   {
@@ -12,47 +12,47 @@ export const VERSICULOS = [
     referencia: 'Filipenses 4:13',
   },
   {
-    texto: 'Confia no Senhor de todo o teu coracao e nao te estribes no teu proprio entendimento.',
-    referencia: 'Proverbios 3:5',
+    texto: 'Confia no Senhor de todo o teu coração e não te estribes no teu próprio entendimento.',
+    referencia: 'Provérbios 3:5',
   },
   {
-    texto: 'Porque eu bem sei os pensamentos que tenho a vosso respeito, diz o Senhor; pensamentos de paz, e nao de mal, para vos dar o fim que esperais.',
+    texto: 'Porque eu bem sei os pensamentos que tenho a vosso respeito, diz o Senhor; pensamentos de paz, e não de mal, para vos dar o fim que esperais.',
     referencia: 'Jeremias 29:11',
   },
   {
-    texto: 'Nao temas, porque eu sou contigo; nao te assombres, porque eu sou o teu Deus; eu te fortaleco, e te ajudo, e te sustento com a destra da minha justica.',
-    referencia: 'Isaias 41:10',
+    texto: 'Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus; eu te fortaleço, e te ajudo, e te sustento com a destra da minha justiça.',
+    referencia: 'Isaías 41:10',
   },
   {
-    texto: 'Mas os que esperam no Senhor renovarao as suas forcas; subiram com asas como aguias; correrao e nao se cansarao; caminharao e nao se fatigarao.',
-    referencia: 'Isaias 40:31',
+    texto: 'Mas os que esperam no Senhor renovarão as suas forças; subirão com asas como águias; correrão e não se cansarão; caminharão e não se fatigarão.',
+    referencia: 'Isaías 40:31',
   },
   {
-    texto: 'Entrega o teu caminho ao Senhor; confia nele, e ele tudo fara.',
+    texto: 'Entrega o teu caminho ao Senhor; confia nele, e ele tudo fará.',
     referencia: 'Salmo 37:5',
   },
   {
-    texto: 'E sabemos que todas as coisas contribuem juntamente para o bem daqueles que amam a Deus.',
+    texto: 'Sabemos que todas as coisas contribuem juntamente para o bem daqueles que amam a Deus.',
     referencia: 'Romanos 8:28',
   },
   {
-    texto: 'O Senhor e a minha luz e a minha salvacao; a quem temerei? O Senhor e a forca da minha vida; de quem me recearei?',
+    texto: 'O Senhor é a minha luz e a minha salvação; a quem temerei? O Senhor é a força da minha vida; de quem me recearei?',
     referencia: 'Salmo 27:1',
   },
   {
-    texto: 'Lancando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vos.',
+    texto: 'Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.',
     referencia: '1 Pedro 5:7',
   },
   {
-    texto: 'Jesus disse: Eu sou o caminho, a verdade e a vida. Ninguem vem ao Pai senao por mim.',
-    referencia: 'Joao 14:6',
+    texto: 'Jesus disse: Eu sou o caminho, a verdade e a vida. Ninguém vem ao Pai senão por mim.',
+    referencia: 'João 14:6',
   },
   {
-    texto: 'Buscai primeiro o Reino de Deus e a sua justica, e todas estas coisas vos serao acrescentadas.',
+    texto: 'Buscai primeiro o Reino de Deus e a sua justiça, e todas estas coisas vos serão acrescentadas.',
     referencia: 'Mateus 6:33',
   },
   {
-    texto: 'Deem gracas ao Senhor, pois ele e bom; o seu amor dura para sempre.',
+    texto: 'Deem graças ao Senhor, pois ele é bom; o seu amor dura para sempre.',
     referencia: 'Salmo 136:1',
   },
   {
@@ -60,55 +60,55 @@ export const VERSICULOS = [
     referencia: 'Filipenses 4:4',
   },
   {
-    texto: 'Pois onde estiverem dois ou tres reunidos em meu nome, ali eu estou no meio deles.',
+    texto: 'Pois onde estiverem dois ou três reunidos em meu nome, ali eu estou no meio deles.',
     referencia: 'Mateus 18:20',
   },
   {
-    texto: 'Sede fortes e corajosos. Nao temam nem fiquem apavorados, pois o Senhor, o seu Deus, vai com voces; nunca os deixara, nunca os abandonara.',
-    referencia: 'Deuteronomio 31:6',
+    texto: 'Sede fortes e corajosos. Não temam nem fiquem apavorados, pois o Senhor, o seu Deus, vai com vocês; nunca os deixará, nunca os abandonará.',
+    referencia: 'Deuteronômio 31:6',
   },
   {
-    texto: 'A minha graca te basta, porque o meu poder se aperfeiçoa na fraqueza.',
-    referencia: '2 Corintios 12:9',
+    texto: 'A minha graça te basta, porque o meu poder se aperfeiçoa na fraqueza.',
+    referencia: '2 Coríntios 12:9',
   },
   {
-    texto: 'Clamei ao Senhor na minha angustia, e ele me respondeu.',
+    texto: 'Clamei ao Senhor na minha angústia, e ele me respondeu.',
     referencia: 'Salmo 120:1',
   },
   {
-    texto: 'Deleita-te tambem no Senhor, e ele te concedera os desejos do teu coracao.',
+    texto: 'Deleita-te também no Senhor, e ele te concederá os desejos do teu coração.',
     referencia: 'Salmo 37:4',
   },
   {
-    texto: 'Se confessarmos os nossos pecados, ele e fiel e justo para nos perdoar e nos purificar de toda injustica.',
-    referencia: '1 Joao 1:9',
+    texto: 'Se confessarmos os nossos pecados, ele é fiel e justo para nos perdoar e nos purificar de toda injustiça.',
+    referencia: '1 João 1:9',
   },
   {
-    texto: 'Eis que estou a porta e bato. Se alguem ouvir a minha voz e abrir a porta, entrarei e cearei com ele, e ele comigo.',
+    texto: 'Eis que estou à porta e bato. Se alguém ouvir a minha voz e abrir a porta, entrarei e cearei com ele, e ele comigo.',
     referencia: 'Apocalipse 3:20',
   },
   {
-    texto: 'Porque o Senhor da a sabedoria; da sua boca vem o conhecimento e o entendimento.',
-    referencia: 'Proverbios 2:6',
+    texto: 'Porque o Senhor dá a sabedoria; da sua boca vem o conhecimento e o entendimento.',
+    referencia: 'Provérbios 2:6',
   },
   {
-    texto: 'Portanto, se alguem esta em Cristo, e nova criacao. As coisas antigas ja passaram; eis que surgiram coisas novas!',
-    referencia: '2 Corintios 5:17',
+    texto: 'Portanto, se alguém está em Cristo, é nova criação. As coisas antigas já passaram; eis que surgiram coisas novas!',
+    referencia: '2 Coríntios 5:17',
   },
   {
-    texto: 'Pois Deus nao nos deu o espirito de covardia, mas de poder, de amor e de equilibrio.',
-    referencia: '2 Timoteo 1:7',
+    texto: 'Pois Deus não nos deu o espírito de covardia, mas de poder, de amor e de equilíbrio.',
+    referencia: '2 Timóteo 1:7',
   },
   {
-    texto: 'O Senhor e bom, uma fortaleza no dia da angustia; e conhece os que nele confiam.',
+    texto: 'O Senhor é bom, uma fortaleza no dia da angústia; e conhece os que nele confiam.',
     referencia: 'Naum 1:7',
   },
   {
-    texto: 'Clama a mim e te responderei; anunciar-te-ei coisas grandes e firmes que nao sabes.',
+    texto: 'Clama a mim e te responderei; anunciar-te-ei coisas grandes e firmes que não sabes.',
     referencia: 'Jeremias 33:3',
   },
   {
-    texto: 'A fe e a certeza daquilo que esperamos e a prova das coisas que nao vemos.',
+    texto: 'A fé é a certeza daquilo que esperamos e a prova das coisas que não vemos.',
     referencia: 'Hebreus 11:1',
   },
   {

@@ -12,8 +12,8 @@ import { COLORS, SHADOWS, FONTS } from '../theme/colors';
 
 const NIVEL_META = {
   '12h': { icone: 'flame-outline', oracoes: 4, badge: 'Básico' },
-  '24h': { icone: 'flame', oracoes: 6, badge: 'Intermediario' },
-  '36h': { icone: 'bonfire', oracoes: 8, badge: 'Avancado' },
+  '24h': { icone: 'flame', oracoes: 6, badge: 'Intermediário' },
+  '36h': { icone: 'bonfire', oracoes: 8, badge: 'Avançado' },
 };
 
 export default function JejumNivelScreen({ route, navigation }) {
@@ -44,7 +44,7 @@ export default function JejumNivelScreen({ route, navigation }) {
         <View style={styles.card}>
           <View style={styles.sectionHeader}>
             <Ionicons name="information-circle" size={20} color={COLORS.primary} />
-            <Text style={styles.sectionTitle}>Sobre este proposito</Text>
+            <Text style={styles.sectionTitle}>Sobre este propósito</Text>
           </View>
           <Text style={styles.bodyText}>{jejum.descricao}</Text>
         </View>
@@ -66,10 +66,10 @@ export default function JejumNivelScreen({ route, navigation }) {
         {/* Level selection */}
         <View style={styles.niveisHeader}>
           <Ionicons name="layers" size={22} color={COLORS.primary} />
-          <Text style={styles.niveisTitle}>Escolha o Nivel</Text>
+          <Text style={styles.niveisTitle}>Escolha o Nível</Text>
         </View>
         <Text style={styles.niveisSubtitle}>
-          Cada nivel tem duracao e intensidade diferentes
+          Cada nível tem duração e intensidade diferentes
         </Text>
 
         {jejum.niveis.map((nivel) => {
@@ -99,7 +99,7 @@ export default function JejumNivelScreen({ route, navigation }) {
                   </View>
                   <View style={styles.nivelInfoItem}>
                     <Ionicons name="hand-left-outline" size={14} color={COLORS.textLight} />
-                    <Text style={styles.nivelInfoText}>{meta.oracoes} oracoes</Text>
+                    <Text style={styles.nivelInfoText}>{meta.oracoes} orações</Text>
                   </View>
                 </View>
               </View>

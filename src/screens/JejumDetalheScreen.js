@@ -12,6 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, SHADOWS, FONTS } from '../theme/colors';
+import { useApp } from '../context/AppContext';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -42,6 +43,44 @@ export default function JejumDetalheScreen({ route, navigation }) {
   const [expandedOracao, setExpandedOracao] = useState(null);
   const [downloading, setDownloading] = useState(false);
   const animValues = useRef(nivel.oracoes.map(() => new Animated.Value(0))).current;
+  const { startJejumProposito, jejumAtivo } = useApp();
+
+  const isEsteJejumAtivo =
+    jejumAtivo?.tipo === 'proposito' &&
+    jejumAtivo?.propositoId === jejum?.id &&
+    jejumAtivo?.nivelId === nivel?.id;
+
+  const handleIniciarJejum = () => {
+    if (isEsteJejumAtivo) {
+      navigation.navigate('JejumMain');
+      return;
+    }
+
+    const confirmar = () => {
+      startJejumProposito(jejum.id, nivel.id);
+      navigation.navigate('JejumMain');
+    };
+
+    if (!jejumAtivo) {
+      confirmar();
+      return;
+    }
+
+    if (Platform.OS === 'web') {
+      if (window.confirm('Você já tem um jejum ativo. Deseja iniciar este novo? O progresso atual será perdido.')) {
+        confirmar();
+      }
+    } else {
+      Alert.alert(
+        'Jejum em andamento',
+        'Você já tem um jejum ativo. Deseja iniciar este novo?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Sim, iniciar este', onPress: confirmar },
+        ]
+      );
+    }
+  };
 
   const handleDownloadPdf = async () => {
     if (!nivel.pdf || downloading) return;
@@ -110,7 +149,7 @@ export default function JejumDetalheScreen({ route, navigation }) {
         <View style={styles.card}>
           <View style={styles.sectionHeader}>
             <Ionicons name="information-circle" size={20} color={COLORS.primary} />
-            <Text style={styles.sectionTitle}>Sobre este nivel</Text>
+            <Text style={styles.sectionTitle}>Sobre este nível</Text>
           </View>
           <Text style={styles.bodyText}>{nivel.descricao}</Text>
         </View>
@@ -119,7 +158,7 @@ export default function JejumDetalheScreen({ route, navigation }) {
         <View style={styles.card}>
           <View style={styles.sectionHeader}>
             <Ionicons name="time" size={20} color={COLORS.primary} />
-            <Text style={styles.sectionTitle}>Duracao e Intensidade</Text>
+            <Text style={styles.sectionTitle}>Duração e Intensidade</Text>
           </View>
           <View style={styles.infoRow}>
             <Ionicons name="hourglass-outline" size={16} color={COLORS.textLight} />
@@ -168,13 +207,33 @@ export default function JejumDetalheScreen({ route, navigation }) {
           </TouchableOpacity>
         )}
 
+        {/* Botão Iniciar */}
+        <TouchableOpacity
+          style={[
+            styles.iniciarButton,
+            isEsteJejumAtivo && styles.iniciarButtonAtivo,
+            { backgroundColor: isEsteJejumAtivo ? COLORS.success : jejum.cor },
+          ]}
+          onPress={handleIniciarJejum}
+          activeOpacity={isEsteJejumAtivo ? 1 : 0.85}
+        >
+          <Ionicons
+            name={isEsteJejumAtivo ? 'checkmark-circle' : 'play-circle'}
+            size={24}
+            color="#FFF"
+          />
+          <Text style={styles.iniciarButtonText}>
+            {isEsteJejumAtivo ? 'Jejum em Andamento' : 'Iniciar este Jejum'}
+          </Text>
+        </TouchableOpacity>
+
         {/* Prayers section */}
         <View style={styles.oracoesHeader}>
           <Ionicons name="hand-left" size={22} color={COLORS.primary} />
-          <Text style={styles.oracoesTitle}>Oracoes do Dia</Text>
+          <Text style={styles.oracoesTitle}>Orações do Dia</Text>
         </View>
         <Text style={styles.oracoesSubtitle}>
-          {nivel.oracoes.length} momentos de oracao ao longo do jejum
+          {nivel.oracoes.length} momentos de oração ao longo do jejum
         </Text>
 
         {nivel.oracoes.map((oracao, index) => {
@@ -341,5 +400,16 @@ const styles = StyleSheet.create({
   referenciaText: { fontSize: 12, ...FONTS.bold, color: COLORS.primaryDark },
   oracaoTexto: {
     fontSize: 15, color: COLORS.textSecondary, lineHeight: 24, fontStyle: 'italic',
+  },
+  iniciarButton: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10,
+    marginHorizontal: 16, marginTop: 20, marginBottom: 4, paddingVertical: 16,
+    borderRadius: 14, ...SHADOWS.medium,
+  },
+  iniciarButtonAtivo: {
+    opacity: 0.9,
+  },
+  iniciarButtonText: {
+    fontSize: 17, ...FONTS.bold, color: '#FFF',
   },
 });

@@ -5,10 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, SHADOWS, FONTS } from '../theme/colors';
+import { useApp } from '../context/AppContext';
 import { CAUSAS_JEJUM, REFEICOES, ORACOES_POR_REFEICAO } from '../data/jejumNormal';
 
 const COR = '#1E3A5F';
@@ -17,7 +20,7 @@ const PERIODO_ICONES = {
   'Despertar': 'sunny',
   'Manhã': 'partly-sunny',
   'Meio da Manhã': 'cafe',
-  'Antes do Almoco': 'leaf',
+  'Antes do Almoço': 'leaf',
   'Meio-Dia': 'sunny',
   'Depois do Almoco': 'cloudy',
   'Início da Noite': 'moon',
@@ -27,9 +30,35 @@ const PERIODO_ICONES = {
 
 export default function JejumNormalScreen({ navigation }) {
   const insets = useSafeAreaInsets();
+  const { startJejumNormal, jejumAtivo } = useApp();
   const [causaSelecionada, setCausaSelecionada] = useState(null);
   const [refeicaoSelecionada, setRefeicaoSelecionada] = useState(null);
   const [expandedOracao, setExpandedOracao] = useState(null);
+
+  const isEsteJejumAtivo = jejumAtivo?.tipo === 'normal';
+
+  const confirmarInicioJejum = (causaId, refeicaoId) => {
+    const doStart = () => {
+      startJejumNormal(causaId, refeicaoId);
+      navigation.navigate('JejumMain');
+    };
+    if (!jejumAtivo || isEsteJejumAtivo) {
+      doStart();
+      return;
+    }
+    if (Platform.OS === 'web') {
+      if (window.confirm('Você já tem um jejum ativo. Deseja iniciar um novo?')) doStart();
+    } else {
+      Alert.alert(
+        'Jejum em andamento',
+        'Você já tem um jejum ativo. Deseja iniciar um novo?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Sim, iniciar novo', onPress: doStart },
+        ]
+      );
+    }
+  };
 
   const etapa = !causaSelecionada ? 1 : !refeicaoSelecionada ? 2 : 3;
 
@@ -70,7 +99,7 @@ export default function JejumNormalScreen({ navigation }) {
                 <Ionicons name="restaurant" size={40} color="#FFF" />
               </View>
               <Text style={styles.bannerTitulo}>Jejum Normal</Text>
-              <Text style={styles.bannerSubtitulo}>Escolha uma causa e dedique uma refeicao em oracao</Text>
+              <Text style={styles.bannerSubtitulo}>Escolha uma causa e dedique uma refeição em oração</Text>
             </View>
 
             <View style={styles.card}>
@@ -79,7 +108,7 @@ export default function JejumNormalScreen({ navigation }) {
                 <Text style={styles.sectionTitle}>Como funciona</Text>
               </View>
               <Text style={styles.bodyText}>
-                O jejum normal e a pratica de substituir uma refeicao do dia por um momento de oracao e busca a Deus. Escolha a causa pela qual deseja interceder, selecione a refeicao que vai pular, e siga as oracoes guiadas no horario correspondente.
+                O jejum normal é a prática de substituir uma refeição do dia por um momento de oração e busca a Deus. Escolha a causa pela qual deseja interceder, selecione a refeição que vai pular, e siga as orações guiadas no horário correspondente.
               </Text>
             </View>
 
@@ -95,17 +124,17 @@ export default function JejumNormalScreen({ navigation }) {
               </View>
               <View style={styles.passoRow}>
                 <View style={styles.passoNumero}><Text style={styles.passoNumeroText}>2</Text></View>
-                <Text style={styles.passoText}>Selecione a refeicao que vai substituir</Text>
+                <Text style={styles.passoText}>Selecione a refeição que vai substituir</Text>
               </View>
               <View style={styles.passoRow}>
                 <View style={styles.passoNumero}><Text style={styles.passoNumeroText}>3</Text></View>
-                <Text style={styles.passoText}>Siga as oracoes guiadas no horario</Text>
+                <Text style={styles.passoText}>Siga as orações guiadas no horário</Text>
               </View>
             </View>
 
             <View style={styles.sectionHeaderFull}>
               <Ionicons name="heart" size={22} color={COR} />
-              <Text style={styles.sectionTitleFull}>Qual e a sua causa?</Text>
+              <Text style={styles.sectionTitleFull}>Qual é a sua causa?</Text>
             </View>
 
             {CAUSAS_JEJUM.map((c) => (
@@ -147,10 +176,10 @@ export default function JejumNormalScreen({ navigation }) {
             <View style={styles.card}>
               <View style={styles.sectionHeader}>
                 <Ionicons name="restaurant-outline" size={20} color={COR} />
-                <Text style={styles.sectionTitle}>Qual refeicao vai pular?</Text>
+                <Text style={styles.sectionTitle}>Qual refeição vai pular?</Text>
               </View>
               <Text style={styles.bodyText}>
-                Escolha a refeicao que voce vai substituir por um momento de oracao e busca a Deus pela sua causa.
+                Escolha a refeição que você vai substituir por um momento de oração e busca a Deus pela sua causa.
               </Text>
             </View>
 
@@ -158,7 +187,10 @@ export default function JejumNormalScreen({ navigation }) {
               <TouchableOpacity
                 key={ref.id}
                 style={styles.refeicaoCard}
-                onPress={() => setRefeicaoSelecionada(ref.id)}
+                onPress={() => {
+                  setRefeicaoSelecionada(ref.id);
+                  confirmarInicioJejum(causaSelecionada, ref.id);
+                }}
                 activeOpacity={0.8}
               >
                 <View style={[styles.refeicaoIconCircle, { backgroundColor: causa.cor + '15' }]}>
@@ -193,7 +225,7 @@ export default function JejumNormalScreen({ navigation }) {
 
             <TouchableOpacity style={styles.trocarLink} onPress={voltarEtapa} activeOpacity={0.7}>
               <Ionicons name="chevron-back" size={16} color={COR} />
-              <Text style={styles.trocarLinkText}>Trocar refeicao</Text>
+              <Text style={styles.trocarLinkText}>Trocar refeição</Text>
             </TouchableOpacity>
 
             {/* Info card */}
@@ -208,21 +240,21 @@ export default function JejumNormalScreen({ navigation }) {
               </View>
               <View style={[styles.infoRow, { marginTop: 8 }]}>
                 <Ionicons name="restaurant-outline" size={16} color={COLORS.textLight} />
-                <Text style={styles.bodyText}>Refeicao: {refeicao.titulo} ({refeicao.horario})</Text>
+                <Text style={styles.bodyText}>Refeição: {refeicao.titulo} ({refeicao.horario})</Text>
               </View>
               <View style={[styles.infoRow, { marginTop: 8 }]}>
                 <Ionicons name="hand-left" size={16} color={COLORS.textLight} />
-                <Text style={styles.bodyText}>{oracoes.length} momentos de oracao</Text>
+                <Text style={styles.bodyText}>{oracoes.length} momentos de oração</Text>
               </View>
             </View>
 
             {/* Prayers */}
             <View style={styles.sectionHeaderFull}>
               <Ionicons name="hand-left" size={22} color={causa.cor} />
-              <Text style={styles.sectionTitleFull}>Oracoes Guiadas</Text>
+              <Text style={styles.sectionTitleFull}>Orações Guiadas</Text>
             </View>
             <Text style={styles.oracoesSubtitle}>
-              Siga estas oracoes no horario indicado ao longo do jejum
+              Siga estas orações no horário indicado ao longo do jejum
             </Text>
 
             {oracoes.map((oracao, index) => {
@@ -278,7 +310,7 @@ export default function JejumNormalScreen({ navigation }) {
               activeOpacity={0.8}
             >
               <Ionicons name="refresh" size={18} color={COR} />
-              <Text style={styles.reiniciarText}>Escolher outra causa ou refeicao</Text>
+              <Text style={styles.reiniciarText}>Escolher outra causa ou refeição</Text>
             </TouchableOpacity>
           </>
         )}
@@ -418,4 +450,13 @@ const styles = StyleSheet.create({
     borderWidth: 1.5, borderColor: COR + '30',
   },
   reiniciarText: { fontSize: 14, ...FONTS.semibold, color: COR },
+  iniciarButton: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    gap: 10, marginHorizontal: 16, marginTop: 20, marginBottom: 4,
+    paddingVertical: 16, borderRadius: 14, backgroundColor: COR,
+    shadowColor: COR, shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3, shadowRadius: 8, elevation: 6,
+  },
+  iniciarButtonAtivo: { backgroundColor: '#388E3C' },
+  iniciarButtonText: { fontSize: 17, ...FONTS.bold, color: '#FFF' },
 });

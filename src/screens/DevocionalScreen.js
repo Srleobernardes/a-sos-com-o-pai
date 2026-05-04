@@ -30,7 +30,8 @@ export default function DevocionalScreen({ route, navigation }) {
       uncompleteTask(taskId);
     } else {
       completeTask(taskId);
-      incrementDevocionais();
+      incrementDevocionais(devocional.titulo);
+      setTimeout(() => navigation.goBack(), 400);
     }
   };
 
@@ -40,7 +41,7 @@ export default function DevocionalScreen({ route, navigation }) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={COLORS.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Devocao Diaria</Text>
+        <Text style={styles.headerTitle}>Devoção Diária</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -61,7 +62,7 @@ export default function DevocionalScreen({ route, navigation }) {
 
         {/* Reflection */}
         <View style={styles.contentCard}>
-          <Text style={styles.sectionTitle}>Reflexao</Text>
+          <Text style={styles.sectionTitle}>Reflexão</Text>
           <Text style={styles.bodyText}>{devocional.reflexao}</Text>
         </View>
 
@@ -69,18 +70,9 @@ export default function DevocionalScreen({ route, navigation }) {
         <View style={styles.prayerCard}>
           <View style={styles.prayerHeader}>
             <Ionicons name="hand-left" size={20} color={COLORS.primary} />
-            <Text style={styles.prayerTitle}>Oracao</Text>
+            <Text style={styles.prayerTitle}>Oração</Text>
           </View>
           <Text style={styles.prayerText}>{devocional.oracao}</Text>
-        </View>
-
-        {/* Audio placeholder */}
-        <View style={styles.audioArea}>
-          {/* AUDIO: Arquivo .mp3 do devocional */}
-          <TouchableOpacity style={styles.audioButton}>
-            <Ionicons name="headset" size={24} color={COLORS.primary} />
-            <Text style={styles.audioLabel}>Ouvir devocional em audio</Text>
-          </TouchableOpacity>
         </View>
 
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
@@ -90,7 +82,7 @@ export default function DevocionalScreen({ route, navigation }) {
           >
             <Ionicons name={completed ? 'close-circle' : 'checkmark'} size={22} color="#FFF" />
             <Text style={styles.completeText}>
-              {completed ? 'Desmarcar' : 'Marcar como concluido'}
+              {completed ? 'Desmarcar' : 'Marcar como concluído'}
             </Text>
           </TouchableOpacity>
         </Animated.View>

@@ -5,6 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,11 +26,39 @@ const PERIODO_ICONES = {
 
 export default function JejumEsterScreen({ navigation }) {
   const insets = useSafeAreaInsets();
-  const { jejumDias, toggleJejumDia } = useApp();
+  const { jejumDias, toggleJejumDia, startJejum, jejumAtivo } = useApp();
   const [expandedDia, setExpandedDia] = useState(null);
   const [expandedOracao, setExpandedOracao] = useState(null);
 
   const diasCompletos = Object.values(jejumDias).filter(Boolean).length;
+  const isEsteJejumAtivo = jejumAtivo?.tipo === 'ester';
+
+  const handleIniciarJejum = () => {
+    if (isEsteJejumAtivo) {
+      navigation.navigate('JejumMain');
+      return;
+    }
+    const doStart = () => {
+      startJejum('ester');
+      navigation.navigate('JejumMain');
+    };
+    if (!jejumAtivo) {
+      doStart();
+      return;
+    }
+    if (Platform.OS === 'web') {
+      if (window.confirm('Você já tem um jejum ativo. Deseja iniciar um novo?')) doStart();
+    } else {
+      Alert.alert(
+        'Jejum em andamento',
+        'Você já tem um jejum ativo. Deseja iniciar um novo?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Sim, iniciar novo', onPress: doStart },
+        ]
+      );
+    }
+  };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -48,7 +78,7 @@ export default function JejumEsterScreen({ navigation }) {
           </View>
           <Text style={styles.bannerTitulo}>3 Dias</Text>
           <Text style={styles.bannerSubtitulo}>Jejum de Ester</Text>
-          <Text style={styles.bannerDescricao}>Jejum, Intercessao e Livramento</Text>
+          <Text style={styles.bannerDescricao}>Jejum, Intercessão e Livramento</Text>
         </View>
 
         {/* Description */}
@@ -85,6 +115,22 @@ export default function JejumEsterScreen({ navigation }) {
             <View style={[styles.progressFill, { width: `${Math.min((diasCompletos / 3) * 100, 100)}%` }]} />
           </View>
         </View>
+
+        {/* Iniciar Jejum */}
+        <TouchableOpacity
+          style={[styles.iniciarButton, isEsteJejumAtivo && styles.iniciarButtonAtivo]}
+          onPress={handleIniciarJejum}
+          activeOpacity={0.85}
+        >
+          <Ionicons
+            name={isEsteJejumAtivo ? 'checkmark-circle' : 'play-circle'}
+            size={24}
+            color="#FFF"
+          />
+          <Text style={styles.iniciarButtonText}>
+            {isEsteJejumAtivo ? 'Jejum em Andamento' : 'Iniciar Jejum de Ester'}
+          </Text>
+        </TouchableOpacity>
 
         {/* Days */}
         <View style={styles.diasHeader}>
@@ -133,7 +179,7 @@ export default function JejumEsterScreen({ navigation }) {
                   <Text style={styles.diaDescricao}>{diaData.descricao}</Text>
 
                   <Text style={styles.oracoesLabel}>
-                    {diaData.oracoes.length} momentos de oracao
+                    {diaData.oracoes.length} momentos de oração
                   </Text>
 
                   {diaData.oracoes.map((oracao, idx) => {
@@ -191,7 +237,7 @@ export default function JejumEsterScreen({ navigation }) {
                       color={completo ? '#E53935' : '#FFF'}
                     />
                     <Text style={[styles.marcarText, completo && styles.marcarTextCompleto]}>
-                      {completo ? 'Desmarcar dia' : 'Marcar dia como concluido'}
+                      {completo ? 'Desmarcar dia' : 'Marcar dia como concluído'}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -300,4 +346,11 @@ const styles = StyleSheet.create({
   marcarButtonCompleto: { backgroundColor: COLORS.surface, borderWidth: 1, borderColor: '#E53935' },
   marcarText: { fontSize: 14, ...FONTS.bold, color: '#FFF' },
   marcarTextCompleto: { color: '#E53935' },
+  iniciarButton: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    gap: 10, marginHorizontal: 16, marginTop: 20, marginBottom: 4,
+    paddingVertical: 16, borderRadius: 14, backgroundColor: COR, ...SHADOWS.medium,
+  },
+  iniciarButtonAtivo: { backgroundColor: COLORS.success },
+  iniciarButtonText: { fontSize: 17, ...FONTS.bold, color: '#FFF' },
 });

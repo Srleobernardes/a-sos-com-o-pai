@@ -26,7 +26,7 @@ export default function HojeScreen({ navigation }) {
   const tarefas = [
     {
       id: 'conexao',
-      titulo: 'Conexao Diaria',
+      titulo: 'Conexão Diária',
       duracao: '1 min',
       icone: 'heart',
       cor: '#1E3A5F',
@@ -35,7 +35,7 @@ export default function HojeScreen({ navigation }) {
     },
     {
       id: 'versiculo',
-      titulo: 'Versiculo Diario',
+      titulo: 'Versículo Diário',
       duracao: '1 min',
       icone: 'book',
       cor: '#D4A017',
@@ -44,7 +44,7 @@ export default function HojeScreen({ navigation }) {
     },
     {
       id: 'devocional',
-      titulo: 'Devoção Diaria',
+      titulo: 'Devoção Diária',
       duracao: '3 min',
       icone: 'create',
       cor: '#2A4D7A',
@@ -53,7 +53,7 @@ export default function HojeScreen({ navigation }) {
     },
     {
       id: 'oracao_guiada',
-      titulo: 'Oracao Guiada',
+      titulo: 'Oração Guiada',
       duracao: '5 min',
       icone: 'hand-left',
       cor: '#0D1B3E',
@@ -67,13 +67,13 @@ export default function HojeScreen({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.titulo}>Plano Diario</Text>
+          <Text style={styles.titulo}>Plano Diário</Text>
           <View style={styles.headerRight}>
             <View style={styles.proBadge}>
               <Text style={styles.proText}>PRO</Text>
             </View>
             <View style={styles.streakBadge}>
-              <Ionicons name="cross" size={16} color={COLORS.primary} />
+              <Ionicons name="add" size={16} color={COLORS.primary} />
               <Text style={styles.streakText}>{streak}</Text>
               <Ionicons name="calendar" size={16} color={COLORS.textSecondary} />
             </View>
@@ -142,8 +142,8 @@ export default function HojeScreen({ navigation }) {
               <Ionicons name="play-circle" size={44} color={COLORS.primary} />
             </View>
             <View style={styles.newContentText}>
-              <Text style={styles.newContentTitle}>Novo conteudo de</Text>
-              <Text style={styles.newContentTitle}>assistir ja disponivel!</Text>
+              <Text style={styles.newContentTitle}>Novo conteúdo</Text>
+              <Text style={styles.newContentTitle}>já disponível!</Text>
             </View>
           </View>
         </TouchableOpacity>

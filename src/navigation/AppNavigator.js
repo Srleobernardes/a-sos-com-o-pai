@@ -1,8 +1,15 @@
 import React from 'react';
+import { Image, View, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../theme/colors';
+import { useApp } from '../context/AppContext';
+import PlanoConcluidoAnimacao from '../components/PlanoConcluidoAnimacao';
+import OracoesConcluidasAnimacao from '../components/OracoesConcluidasAnimacao';
+import SplashScreen from '../components/SplashScreen';
+
+const logoIcon = require('../../assets/icons/logo.png');
 
 import GuiaInicialScreen from '../screens/GuiaInicialScreen';
 import JejumScreen from '../screens/JejumScreen';
@@ -21,9 +28,12 @@ import JejumDanielScreen from '../screens/JejumDanielScreen';
 import JejumEsterScreen from '../screens/JejumEsterScreen';
 import JejumNormalScreen from '../screens/JejumNormalScreen';
 import JejumParcialScreen from '../screens/JejumParcialScreen';
+import PaywallScreen from '../screens/PaywallScreen';
+import LoginScreen from '../screens/LoginScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const Root = createNativeStackNavigator();
 
 function HojeStack() {
   return (
@@ -81,17 +91,46 @@ const TAB_LABELS = {
   GuiaTab: 'Guia',
   JejumTab: 'Jejum',
   HojeTab: 'Hoje',
-  OracoesTab: 'Oracoes',
+  OracoesTab: 'Orações',
   PerfilTab: 'Perfil',
 };
 
-export default function AppNavigator() {
+function MainNavigator() {
+  const { planoConcluido, clearPlanoConcluido, todasOracoesCompletas, clearTodasOracoesCompletas } = useApp();
+
   return (
+    <>
     <Tab.Navigator
       initialRouteName="HojeTab"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === 'HojeTab') {
+            return (
+              <View style={{
+                width: 80,
+                height: 80,
+                borderRadius: 40,
+                backgroundColor: '#FFFFFF',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: -36,
+                shadowColor: '#0D1B3E',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.25,
+                shadowRadius: 8,
+                elevation: 10,
+                borderWidth: 2,
+                borderColor: '#EBE6DC',
+              }}>
+                <Image
+                  source={logoIcon}
+                  style={{ width: 76, height: 76, opacity: focused ? 1 : 0.65 }}
+                  resizeMode="cover"
+                />
+              </View>
+            );
+          }
           const icons = TAB_ICONS[route.name];
           return (
             <Ionicons
@@ -103,7 +142,7 @@ export default function AppNavigator() {
         },
         tabBarActiveTintColor: COLORS.text,
         tabBarInactiveTintColor: COLORS.textLight,
-        tabBarLabel: TAB_LABELS[route.name],
+        tabBarLabel: route.name === 'HojeTab' ? () => null : TAB_LABELS[route.name],
         tabBarLabelStyle: {
           fontSize: 11,
           ...FONTS.semibold,
@@ -125,5 +164,27 @@ export default function AppNavigator() {
       <Tab.Screen name="OracoesTab" component={OracoesStack} />
       <Tab.Screen name="PerfilTab" component={PerfilScreen} />
     </Tab.Navigator>
+    <PlanoConcluidoAnimacao visible={planoConcluido} onClose={clearPlanoConcluido} />
+    <OracoesConcluidasAnimacao visible={todasOracoesCompletas} onClose={clearTodasOracoesCompletas} />
+    </>
+  );
+}
+
+export default function AppNavigator() {
+  const { isAuthenticated, authLoading } = useApp();
+
+  if (authLoading) return <SplashScreen />;
+
+  return (
+    <Root.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
+      {isAuthenticated ? (
+        <Root.Screen name="Main" component={MainNavigator} />
+      ) : (
+        <>
+          <Root.Screen name="Paywall" component={PaywallScreen} />
+          <Root.Screen name="Login" component={LoginScreen} />
+        </>
+      )}
+    </Root.Navigator>
   );
 }

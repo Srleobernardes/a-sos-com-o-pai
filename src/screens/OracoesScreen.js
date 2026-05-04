@@ -8,7 +8,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../theme/colors';
 import { useApp } from '../context/AppContext';
-import { ORACOES } from '../data/oracoes';
+import { ORACOES, getOracaoDoDia } from '../data/oracoes';
 import OracaoCard from '../components/OracaoCard';
 
 export default function OracoesScreen({ navigation }) {
@@ -19,9 +19,9 @@ export default function OracoesScreen({ navigation }) {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Text style={styles.titulo}>Oracoes Sagradas</Text>
+          <Text style={styles.titulo}>Orações Sagradas</Text>
           <Text style={styles.subtitulo}>
-            {oracoesLidas.length} de {ORACOES.length} oracoes lidas
+            {oracoesLidas.length} de {ORACOES.length} orações lidas
           </Text>
         </View>
 
@@ -39,14 +39,19 @@ export default function OracoesScreen({ navigation }) {
           </View>
         </View>
 
-        {ORACOES.map((oracao) => (
-          <OracaoCard
-            key={oracao.id}
-            oracao={oracao}
-            lida={oracoesLidas.includes(oracao.id)}
-            onPress={() => navigation.navigate('OracaoDetalhe', { oracao })}
-          />
-        ))}
+        <Text style={styles.headline}>Orações para Glorificar seu Dia</Text>
+
+        {ORACOES.map((oracao) => {
+          const oracaoHoje = getOracaoDoDia(oracao);
+          return (
+            <OracaoCard
+              key={oracao.id}
+              oracao={oracaoHoje}
+              lida={oracoesLidas.includes(oracao.id)}
+              onPress={() => navigation.navigate('OracaoDetalhe', { oracao })}
+            />
+          );
+        })}
       </ScrollView>
     </View>
   );
@@ -69,6 +74,13 @@ const styles = StyleSheet.create({
     fontSize: 28,
     ...FONTS.extrabold,
     color: COLORS.text,
+  },
+  headline: {
+    fontSize: 16,
+    ...FONTS.bold,
+    color: COLORS.textSecondary,
+    paddingHorizontal: 20,
+    marginBottom: 12,
   },
   subtitulo: {
     fontSize: 14,

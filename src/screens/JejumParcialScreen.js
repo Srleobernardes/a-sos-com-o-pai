@@ -5,6 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,15 +18,15 @@ const COR = '#2E7D32';
 const COR_FUNDO = '#E8F5E9';
 
 const PERIODO_ICONES = {
-  Manha: 'sunny',
+  'Manhã': 'sunny',
   'Meio-Dia': 'partly-sunny',
-  Noite: 'moon',
-  Encerramento: 'checkmark-done-circle',
+  'Noite': 'moon',
+  'Encerramento': 'checkmark-done-circle',
 };
 
 export default function JejumParcialScreen({ navigation }) {
   const insets = useSafeAreaInsets();
-  const { jejumDias, toggleJejumDia } = useApp();
+  const { jejumDias, toggleJejumDia, startJejum, jejumAtivo } = useApp();
   const [tipoSelecionado, setTipoSelecionado] = useState(null);
   const [expandedDia, setExpandedDia] = useState(null);
   const [expandedOracao, setExpandedOracao] = useState(null);
@@ -32,10 +34,34 @@ export default function JejumParcialScreen({ navigation }) {
 
   const diasCompletos = [1, 2, 3].filter((d) => jejumDias[`dia_${d}`]).length;
   const tipo = TIPOS_PARCIAL.find((t) => t.id === tipoSelecionado);
+  const isEsteJejumAtivo = jejumAtivo?.tipo === 'parcial';
+
+  const confirmarInicioJejum = () => {
+    const doStart = () => {
+      startJejum('parcial');
+      navigation.navigate('JejumMain');
+    };
+    if (!jejumAtivo || isEsteJejumAtivo) {
+      doStart();
+      return;
+    }
+    if (Platform.OS === 'web') {
+      if (window.confirm('Você já tem um jejum ativo. Deseja iniciar um novo?')) doStart();
+    } else {
+      Alert.alert(
+        'Jejum em andamento',
+        'Você já tem um jejum ativo. Deseja iniciar um novo?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Sim, iniciar novo', onPress: doStart },
+        ]
+      );
+    }
+  };
 
   const renderEscolherTipo = () => (
     <View style={styles.tipoSelectArea}>
-      <Text style={styles.tipoSelectTitulo}>Do que voce vai abrir mao?</Text>
+      <Text style={styles.tipoSelectTitulo}>Do que você vai abrir mão?</Text>
       <Text style={styles.tipoSelectSubtitulo}>
         Escolha o que abster durante os 3 dias deste jejum parcial
       </Text>
@@ -47,6 +73,7 @@ export default function JejumParcialScreen({ navigation }) {
           onPress={() => {
             setTipoSelecionado(t.id);
             setShowTroca(false);
+            confirmarInicioJejum();
           }}
           activeOpacity={0.85}
         >
@@ -71,7 +98,7 @@ export default function JejumParcialScreen({ navigation }) {
           <Ionicons name={tipo.icone} size={22} color="#FFF" />
         </View>
         <View style={styles.tipoEscolhidoContent}>
-          <Text style={styles.tipoEscolhidoLabel}>Voce esta abrindo mao de</Text>
+          <Text style={styles.tipoEscolhidoLabel}>Você está abrindo mão de</Text>
           <Text style={styles.tipoEscolhidoTitulo}>{tipo.titulo}</Text>
         </View>
         <TouchableOpacity
@@ -112,7 +139,7 @@ export default function JejumParcialScreen({ navigation }) {
         <View style={styles.progressBar}>
           <View style={[styles.progressFill, { width: `${(diasCompletos / 3) * 100}%` }]} />
         </View>
-        <Text style={styles.progressPercent}>{Math.round((diasCompletos / 3) * 100)}% concluido</Text>
+        <Text style={styles.progressPercent}>{Math.round((diasCompletos / 3) * 100)}% concluído</Text>
       </View>
 
       {/* Dias */}
@@ -167,7 +194,7 @@ export default function JejumParcialScreen({ navigation }) {
                 </View>
 
                 {/* Oracoes */}
-                <Text style={styles.oracoesLabel}>Momentos de oracao do dia</Text>
+                <Text style={styles.oracoesLabel}>Momentos de oração do dia</Text>
                 {dia.oracoes.map((oracao, idx) => {
                   const oracaoKey = `${dia.dia}_${idx}`;
                   const isOracaoExpanded = expandedOracao === oracaoKey;
@@ -232,7 +259,7 @@ export default function JejumParcialScreen({ navigation }) {
                     color={completo ? '#E53935' : '#FFF'}
                   />
                   <Text style={[styles.marcarText, completo && styles.marcarTextCompleto]}>
-                    {completo ? 'Desmarcar dia' : 'Marcar dia como concluido'}
+                    {completo ? 'Desmarcar dia' : 'Marcar dia como concluído'}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -261,7 +288,7 @@ export default function JejumParcialScreen({ navigation }) {
           </View>
           <Text style={styles.bannerTitulo}>3 Dias</Text>
           <Text style={styles.bannerSubtitulo}>Jejum Parcial</Text>
-          <Text style={styles.bannerDescricao}>Abster-se de algo especifico em consagracao</Text>
+          <Text style={styles.bannerDescricao}>Abster-se de algo específico em consagração</Text>
         </View>
 
         {tipo && !showTroca ? renderDias() : renderEscolherTipo()}
@@ -466,4 +493,13 @@ const styles = StyleSheet.create({
   },
   marcarText: { fontSize: 14, ...FONTS.bold, color: '#FFF' },
   marcarTextCompleto: { color: '#E53935' },
+  iniciarButton: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    gap: 10, marginVertical: 16,
+    paddingVertical: 16, borderRadius: 14, backgroundColor: COR,
+    shadowColor: COR, shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3, shadowRadius: 8, elevation: 6,
+  },
+  iniciarButtonAtivo: { backgroundColor: '#388E3C' },
+  iniciarButtonText: { fontSize: 17, ...FONTS.bold, color: '#FFF' },
 });
