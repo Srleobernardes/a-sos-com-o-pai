@@ -46,7 +46,6 @@ export default function DailyCard({ titulo, duracao, icone, cor, concluido, onPr
           source={banner}
           style={[styles.bannerArea]}
           imageStyle={styles.bannerImage}
-          resizeMode="cover"
         >
           <View style={styles.bannerDarken} />
           {content}
@@ -73,6 +72,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   bannerArea: {
+    width: width - 40,
     height: 160,
     justifyContent: 'flex-end',
     padding: 16,
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   },
   bannerImage: {
     borderRadius: 16,
+    resizeMode: 'cover',
   },
   bannerDarken: {
     ...StyleSheet.absoluteFillObject,
