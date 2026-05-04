@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   StatusBar,
   Dimensions,
+  Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,17 +24,21 @@ const CHECK_COLOR = '#D4A017';
 
 export default function PaywallScreen({ navigation }) {
   const [planSelecionado, setPlanSelecionado] = useState('semestral');
+  const [modalInstrucao, setModalInstrucao] = useState(false);
   const { savePendingPlano } = useApp();
 
   const planoAtual = PLANOS.find((p) => p.id === planSelecionado);
 
   const handleAssinar = async () => {
     await savePendingPlano(planSelecionado);
+    setModalInstrucao(true);
+  };
+
+  const handleIrParaCheckout = async () => {
+    setModalInstrucao(false);
     try {
       await Linking.openURL(planoAtual.checkoutUrl);
-    } catch {
-      // URL placeholder — quando Hubla estiver configurado isso vai funcionar
-    }
+    } catch {}
   };
 
   const handleJaTenhoAcesso = () => {
@@ -65,6 +70,13 @@ export default function PaywallScreen({ navigation }) {
               <Text style={styles.trialText}>7 dias grátis — cancele quando quiser</Text>
             </View>
           </View>
+
+          {/* Botão Já tenho acesso — destaque */}
+          <TouchableOpacity onPress={handleJaTenhoAcesso} style={styles.jaTemAcessoBtn} activeOpacity={0.8}>
+            <Ionicons name="person-circle-outline" size={20} color="#D4A017" />
+            <Text style={styles.jaTemAcessoText}>Já paguei — Entrar com meu email</Text>
+            <Ionicons name="chevron-forward" size={18} color="#D4A017" />
+          </TouchableOpacity>
 
           {/* Plan Cards */}
           <View style={styles.plansContainer}>
@@ -145,13 +157,64 @@ export default function PaywallScreen({ navigation }) {
               Após o trial, você será cobrado {planoAtual?.preco}{planoAtual?.periodo}.{'\n'}
               Cancele a qualquer momento.
             </Text>
-
-            <TouchableOpacity onPress={handleJaTenhoAcesso} style={styles.loginLink}>
-              <Text style={styles.loginLinkText}>Já tenho acesso — Entrar</Text>
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>
+
+      {/* Modal instrução pós-compra */}
+      <Modal
+        visible={modalInstrucao}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setModalInstrucao(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            {/* Ícone */}
+            <View style={styles.modalIconCircle}>
+              <Ionicons name="checkmark-circle" size={48} color="#D4A017" />
+            </View>
+
+            <Text style={styles.modalTitulo}>Quase lá!</Text>
+            <Text style={styles.modalSubtitulo}>
+              Você será levado para o checkout. Depois de concluir o pagamento, siga estas etapas:
+            </Text>
+
+            {/* Passos */}
+            <View style={styles.passosList}>
+              <View style={styles.passoRow}>
+                <View style={styles.passoNumero}><Text style={styles.passoNumeroText}>1</Text></View>
+                <Text style={styles.passoTexto}>Conclua o pagamento com o seu email</Text>
+              </View>
+              <View style={styles.passoRow}>
+                <View style={styles.passoNumero}><Text style={styles.passoNumeroText}>2</Text></View>
+                <Text style={styles.passoTexto}>Volte para este app</Text>
+              </View>
+              <View style={styles.passoRow}>
+                <View style={styles.passoNumero}><Text style={styles.passoNumeroText}>3</Text></View>
+                <Text style={styles.passoTexto}>Clique em <Text style={styles.passoDestaque}>"Já paguei — Entrar com meu email"</Text> e acesse com o email do checkout</Text>
+              </View>
+            </View>
+
+            {/* Botões */}
+            <TouchableOpacity onPress={handleIrParaCheckout} activeOpacity={0.85} style={styles.btnCheckout}>
+              <LinearGradient
+                colors={['#D4A017', '#B8890F']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.btnCheckoutGradient}
+              >
+                <Text style={styles.btnCheckoutText}>Ir para o checkout</Text>
+                <Ionicons name="arrow-forward" size={18} color="#0D1B3E" />
+              </LinearGradient>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setModalInstrucao(false)} style={styles.btnCancelar}>
+              <Text style={styles.btnCancelarText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -172,7 +235,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     paddingTop: 32,
-    paddingBottom: 24,
+    paddingBottom: 20,
     paddingHorizontal: 24,
   },
   logo: {
@@ -207,6 +270,27 @@ const styles = StyleSheet.create({
   },
   trialText: {
     fontSize: 13,
+    fontWeight: '600',
+    color: '#D4A017',
+  },
+
+  // Botão já tenho acesso
+  jaTemAcessoBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginBottom: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    borderColor: 'rgba(212, 160, 23, 0.5)',
+    backgroundColor: 'rgba(212, 160, 23, 0.08)',
+    gap: 10,
+  },
+  jaTemAcessoText: {
+    flex: 1,
+    fontSize: 14,
     fontWeight: '600',
     color: '#D4A017',
   },
@@ -383,14 +467,103 @@ const styles = StyleSheet.create({
     marginTop: 10,
     lineHeight: 16,
   },
-  loginLink: {
-    marginTop: 20,
-    paddingVertical: 8,
+
+  // Modal instrução pós-compra
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
   },
-  loginLinkText: {
+  modalCard: {
+    backgroundColor: '#132040',
+    borderRadius: 24,
+    padding: 28,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: 'rgba(212, 160, 23, 0.3)',
+    alignItems: 'center',
+  },
+  modalIconCircle: {
+    marginBottom: 16,
+  },
+  modalTitulo: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalSubtitulo: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#AABBCC',
-    textDecorationLine: 'underline',
+    fontWeight: '400',
+    color: '#8899AA',
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 24,
+  },
+  passosList: {
+    width: '100%',
+    gap: 14,
+    marginBottom: 28,
+  },
+  passoRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 14,
+  },
+  passoNumero: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(212, 160, 23, 0.2)',
+    borderWidth: 1.5,
+    borderColor: '#D4A017',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    marginTop: 1,
+  },
+  passoNumeroText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#D4A017',
+  },
+  passoTexto: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#D0DCE8',
+    lineHeight: 20,
+  },
+  passoDestaque: {
+    fontWeight: '700',
+    color: '#D4A017',
+  },
+  btnCheckout: {
+    width: '100%',
+    marginBottom: 12,
+  },
+  btnCheckoutGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    height: 52,
+    borderRadius: 14,
+  },
+  btnCheckoutText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#0D1B3E',
+  },
+  btnCancelar: {
+    paddingVertical: 10,
+  },
+  btnCancelarText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#8899AA',
   },
 });
