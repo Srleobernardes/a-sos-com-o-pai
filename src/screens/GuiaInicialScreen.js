@@ -25,37 +25,37 @@ export default function GuiaInicialScreen({ navigation }) {
     {
       icone: 'heart',
       cor: '#D4A017',
-      titulo: 'Bem-vindo a\nA sos com o Pai',
+      titulo: 'Bem-vindo a\nA Sós com o Pai',
       descricao:
-        'Sua jornada espiritual comeca aqui. Vamos te ajudar a desenvolver disciplina na oracao, devocional e jejum.',
+        'Sua jornada espiritual começa aqui. Vamos te ajudar a desenvolver disciplina na oração, devocional e jejum.',
     },
     {
       icone: 'today',
       cor: COLORS.primary,
-      titulo: 'Plano Diario',
+      titulo: 'Plano Diário',
       descricao:
-        'Todo dia voce tera atividades espirituais para completar: conexao com Deus, versiculo, devocional e oracao guiada.',
+        'Todo dia você terá atividades espirituais para completar: conexão com Deus, versículo, devocional e oração guiada.',
     },
     {
       icone: 'restaurant',
       cor: '#FF9800',
       titulo: 'Jejum Espiritual',
       descricao:
-        'Acompanhe seu jejum com nosso sistema de marcacao. Escolha o tipo de jejum e marque os dias concluidos.',
+        'Acompanhe seu jejum com nosso sistema de marcação. Escolha o tipo de jejum e marque os dias concluídos.',
     },
     {
       icone: 'book',
       cor: '#7B68EE',
-      titulo: 'Oracoes Sagradas',
+      titulo: 'Orações Sagradas',
       descricao:
-        'Acesse uma biblioteca de oracoes poderosas para cada momento da sua vida. Leia, ouca e assista.',
+        'Acesse uma biblioteca de orações poderosas para cada momento da sua vida. Leia, ouça e assista.',
     },
     {
       icone: 'trophy',
       cor: '#FFD700',
       titulo: 'Conquistas',
       descricao:
-        'Ganhe medalhas conforme sua sequencia de oracoes cresce. Mantenha sua chama espiritual acesa!',
+        'Ganhe medalhas conforme sua sequência de orações cresce. Mantenha sua chama espiritual acesa!',
     },
   ];
 
@@ -86,7 +86,7 @@ export default function GuiaInicialScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.appName}>A sos com o Pai</Text>
+          <Text style={styles.appName}>A Sós com o Pai</Text>
           <View style={styles.proBadge}>
             <Ionicons name="cross" size={14} color="#FFF" />
           </View>
@@ -99,7 +99,7 @@ export default function GuiaInicialScreen({ navigation }) {
             <View style={styles.playButton}>
               <Ionicons name="play" size={40} color="#FFF" />
             </View>
-            <Text style={styles.videoLabel}>Video: Como usar o app</Text>
+            <Text style={styles.videoLabel}>Vídeo: Como usar o app</Text>
             <Text style={styles.videoSub}>Toque para assistir</Text>
           </View>
         </View>
@@ -125,13 +125,13 @@ export default function GuiaInicialScreen({ navigation }) {
 
         {/* Features list */}
         <View style={styles.featuresSection}>
-          <Text style={styles.featuresTitle}>O que voce vai encontrar:</Text>
+          <Text style={styles.featuresTitle}>O que você vai encontrar:</Text>
           {[
-            { icon: 'checkmark-circle', text: 'Plano diario personalizado', cor: COLORS.success },
-            { icon: 'flame', text: 'Sistema de sequencia (streak)', cor: COLORS.streak },
+            { icon: 'checkmark-circle', text: 'Plano diário personalizado', cor: COLORS.success },
+            { icon: 'flame', text: 'Sistema de sequência (streak)', cor: COLORS.streak },
             { icon: 'medal', text: 'Medalhas e conquistas', cor: COLORS.gold },
             { icon: 'book', text: 'Devocionais inspiradores', cor: '#7B68EE' },
-            { icon: 'musical-notes', text: 'Audios e videos de oracao', cor: '#E53935' },
+            { icon: 'musical-notes', text: 'Áudios e vídeos de oração', cor: '#E53935' },
           ].map((item, i) => (
             <View key={i} style={styles.featureRow}>
               <View style={[styles.featureIcon, { backgroundColor: item.cor + '15' }]}>
@@ -151,14 +151,14 @@ export default function GuiaInicialScreen({ navigation }) {
               <Text style={styles.skipText}>Pular</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-              <Text style={styles.nextText}>Proximo</Text>
+              <Text style={styles.nextText}>Próximo</Text>
               <Ionicons name="arrow-forward" size={18} color="#FFF" />
             </TouchableOpacity>
           </View>
         ) : (
           <TouchableOpacity style={styles.startButton} onPress={handleStart}>
             <Ionicons name="cross" size={22} color="#FFF" />
-            <Text style={styles.startText}>Comecar Jornada Espiritual</Text>
+            <Text style={styles.startText}>Começar Jornada Espiritual</Text>
           </TouchableOpacity>
         )}
       </View>
