@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Asset } from 'expo-asset';
+import { useFonts } from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
 import { AppProvider } from './src/context/AppContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import SplashScreen from './src/components/SplashScreen';
@@ -17,11 +19,14 @@ const imagens = [
 ];
 
 export default function App() {
-  const [pronto, setPronto] = useState(false);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
+  const [fontsLoaded] = useFonts(Ionicons.font);
 
   useEffect(() => {
-    Asset.loadAsync(imagens).finally(() => setPronto(true));
+    Asset.loadAsync(imagens).finally(() => setAssetsLoaded(true));
   }, []);
+
+  const pronto = assetsLoaded && fontsLoaded;
 
   if (!pronto) return (
     <>
