@@ -10,7 +10,7 @@ export const PLANOS = [
     tag: null,
     economia: null,
     // Substituir pela URL real do checkout da Hubla
-    checkoutUrl: 'https://checkout.hubla.com.br/mensal',
+    checkoutUrl: 'https://payfast.greenn.com.br/9x5yedt/offer/P1P5Ua?ch_id=137178',
     features: [
       'Oração diária guiada',
       'Versículo do dia',
@@ -41,7 +41,7 @@ export const PLANOS = [
     tag: 'MAIS POPULAR',
     economia: null,
     // Substituir pela URL real do checkout da Hubla
-    checkoutUrl: 'https://checkout.hubla.com.br/semestral',
+    checkoutUrl: 'https://payfast.greenn.com.br/h928ytk/offer/H2YIwR?ch_id=137178',
     features: [
       'Tudo do plano Mensal',
       'Oração Guiada e de Glorificação',
@@ -76,7 +76,7 @@ export const PLANOS = [
     tag: 'COMPLETO',
     economia: 'economize R$ 336',
     // Substituir pela URL real do checkout da Hubla
-    checkoutUrl: 'https://checkout.hubla.com.br/anual',
+    checkoutUrl: 'https://payfast.greenn.com.br/sxkhrp3/offer/njKhBD?ch_id=137178',
     features: [
       'Tudo do plano Semestral',
       'Jejuns Intencionais Guiados',
