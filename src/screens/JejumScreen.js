@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -75,7 +76,39 @@ export default function JejumScreen({ navigation }) {
     completarJejum,
     jejumConcluido,
     clearJejumConcluido,
+    temAcesso,
   } = useApp();
+
+  const JEJUM_ACESSO = {
+    normal: 'jejumNormal',
+    parcial: 'jejumNormal',
+    daniel: 'jejumBiblico',
+    ester: 'jejumBiblico',
+  };
+
+  const mostrarAlertaUpgrade = (planoNecessario) => {
+    const msg = planoNecessario === 'anual'
+      ? 'Este recurso é exclusivo do Plano Anual.'
+      : 'Este recurso é exclusivo do Plano Semestral ou Anual.';
+    Alert.alert('🔒 Recurso bloqueado', msg + '\n\nAcesse o app e faça upgrade do seu plano.', [{ text: 'Entendi' }]);
+  };
+
+  const handleTipoPress = (tipo) => {
+    const recurso = JEJUM_ACESSO[tipo.id];
+    if (!temAcesso(recurso)) {
+      mostrarAlertaUpgrade('semestral');
+      return;
+    }
+    navigation.navigate(TELA_POR_TIPO[tipo.id]);
+  };
+
+  const handlePropositoPress = (jejum) => {
+    if (!temAcesso('jejumIntencional')) {
+      mostrarAlertaUpgrade('anual');
+      return;
+    }
+    navigation.navigate('JejumNivel', { jejum });
+  };
   const [showGuia, setShowGuia] = useState(false);
   const [now, setNow] = useState(new Date());
   const [showFullOracao, setShowFullOracao] = useState(false);
@@ -460,30 +493,39 @@ export default function JejumScreen({ navigation }) {
 
         {JEJUM_TIPOS.map((tipo) => {
           const isAtivo = jejumAtivo?.tipo === tipo.id;
+          const bloqueado = !temAcesso(JEJUM_ACESSO[tipo.id]);
           return (
             <TouchableOpacity
               key={tipo.id}
-              style={[styles.tipoCard, isAtivo && styles.tipoCardActive]}
-              onPress={() => navigation.navigate(TELA_POR_TIPO[tipo.id])}
+              style={[styles.tipoCard, isAtivo && styles.tipoCardActive, bloqueado && styles.tipoCardBloqueado]}
+              onPress={() => handleTipoPress(tipo)}
               activeOpacity={0.8}
             >
-              <View style={styles.tipoIconCircle}>
-                <Ionicons name={tipo.icone} size={28} color={COLORS.primary} />
+              <View style={[styles.tipoIconCircle, bloqueado && { backgroundColor: '#F0F0F0' }]}>
+                <Ionicons name={bloqueado ? 'lock-closed' : tipo.icone} size={28} color={bloqueado ? COLORS.textLight : COLORS.primary} />
               </View>
               <View style={styles.tipoContent}>
-                <Text style={styles.tipoTitulo}>{tipo.titulo}</Text>
+                <Text style={[styles.tipoTitulo, bloqueado && { color: COLORS.textSecondary }]}>{tipo.titulo}</Text>
                 <Text style={styles.tipoDescricao}>{tipo.descricao}</Text>
                 <View style={styles.tipoDuracaoRow}>
-                  <Ionicons name="time-outline" size={15} color={COLORS.textLight} />
-                  <Text style={styles.tipoDuracao}>{tipo.duracao}</Text>
+                  {bloqueado ? (
+                    <View style={styles.planoBadge}>
+                      <Text style={styles.planoBadgeText}>SEMESTRAL+</Text>
+                    </View>
+                  ) : (
+                    <>
+                      <Ionicons name="time-outline" size={15} color={COLORS.textLight} />
+                      <Text style={styles.tipoDuracao}>{tipo.duracao}</Text>
+                    </>
+                  )}
                 </View>
               </View>
-              {isAtivo ? (
+              {isAtivo && !bloqueado ? (
                 <View style={styles.tipoActiveBadge}>
                   <Ionicons name="checkmark-circle" size={24} color={COLORS.success} />
                 </View>
               ) : (
-                <Ionicons name="chevron-forward" size={22} color={COLORS.textLight} />
+                <Ionicons name={bloqueado ? 'lock-closed' : 'chevron-forward'} size={22} color={COLORS.textLight} />
               )}
             </TouchableOpacity>
           );
@@ -501,27 +543,47 @@ export default function JejumScreen({ navigation }) {
           onClose={clearJejumConcluido}
         />
 
-        {JEJUM_PROPOSITOS.map((jejum) => (
-          <TouchableOpacity
-            key={jejum.id}
-            style={styles.propositoCard}
-            onPress={() => navigation.navigate('JejumNivel', { jejum })}
-            activeOpacity={0.8}
-          >
-            <View style={[styles.propositoBanner, { backgroundColor: jejum.cor }]}>
-              <Ionicons name={jejum.icone} size={32} color="#FFF" />
-            </View>
-            <View style={styles.propositoContent}>
-              <Text style={styles.propositoTitulo}>{jejum.titulo}</Text>
-              <Text style={styles.propositoDescricao} numberOfLines={2}>{jejum.subtitulo}</Text>
-              <View style={styles.propositoInfo}>
-                <Ionicons name="hand-left" size={14} color={COLORS.textLight} />
-                <Text style={styles.propositoInfoText}>3 níveis de jejum</Text>
+        {!temAcesso('jejumIntencional') && (
+          <View style={styles.propositoBloqueadoBanner}>
+            <Ionicons name="lock-closed" size={20} color="#D4A017" />
+            <Text style={styles.propositoBloqueadoText}>
+              Jejuns com Propósito são exclusivos do <Text style={{ fontWeight: '700' }}>Plano Anual</Text>
+            </Text>
+          </View>
+        )}
+
+        {JEJUM_PROPOSITOS.map((jejum) => {
+          const bloqueado = !temAcesso('jejumIntencional');
+          return (
+            <TouchableOpacity
+              key={jejum.id}
+              style={[styles.propositoCard, bloqueado && styles.propositoCardBloqueado]}
+              onPress={() => handlePropositoPress(jejum)}
+              activeOpacity={0.8}
+            >
+              <View style={[styles.propositoBanner, { backgroundColor: bloqueado ? '#CCC' : jejum.cor }]}>
+                <Ionicons name={bloqueado ? 'lock-closed' : jejum.icone} size={32} color="#FFF" />
               </View>
-            </View>
-            <Ionicons name="chevron-forward" size={22} color={COLORS.textLight} />
-          </TouchableOpacity>
-        ))}
+              <View style={styles.propositoContent}>
+                <Text style={[styles.propositoTitulo, bloqueado && { color: COLORS.textSecondary }]}>{jejum.titulo}</Text>
+                <Text style={styles.propositoDescricao} numberOfLines={2}>{jejum.subtitulo}</Text>
+                <View style={styles.propositoInfo}>
+                  {bloqueado ? (
+                    <View style={styles.planoBadge}>
+                      <Text style={styles.planoBadgeText}>PLANO ANUAL</Text>
+                    </View>
+                  ) : (
+                    <>
+                      <Ionicons name="hand-left" size={14} color={COLORS.textLight} />
+                      <Text style={styles.propositoInfoText}>3 níveis de jejum</Text>
+                    </>
+                  )}
+                </View>
+              </View>
+              <Ionicons name={bloqueado ? 'lock-closed' : 'chevron-forward'} size={22} color={COLORS.textLight} />
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
     </View>
   );
@@ -883,6 +945,24 @@ const styles = StyleSheet.create({
   tipoActiveBadge: {
     marginLeft: 8,
   },
+  tipoCardBloqueado: {
+    opacity: 0.65,
+    backgroundColor: '#FAFAFA',
+  },
+  planoBadge: {
+    backgroundColor: '#D4A01720',
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderWidth: 1,
+    borderColor: '#D4A01750',
+  },
+  planoBadgeText: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: '#B8890F',
+    letterSpacing: 0.5,
+  },
 
   // ── Propósitos de Jejum ──────────────────────────────────────────────
   propositosDivider: {
@@ -942,5 +1022,26 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textLight,
     ...FONTS.medium,
+  },
+  propositoCardBloqueado: {
+    opacity: 0.6,
+  },
+  propositoBloqueadoBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginHorizontal: 20,
+    marginBottom: 12,
+    padding: 14,
+    backgroundColor: '#FFF9E6',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#D4A01740',
+  },
+  propositoBloqueadoText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#B8890F',
+    lineHeight: 18,
   },
 });

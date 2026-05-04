@@ -53,6 +53,7 @@ export default function PerfilScreen() {
     resetData,
     auth,
     logout,
+    temAcesso,
   } = useApp();
 
   const [modalStat, setModalStat] = useState(null);
@@ -261,27 +262,39 @@ export default function PerfilScreen() {
         {/* Conquistas */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Conquistas</Text>
-          <TouchableOpacity style={styles.verTudoBtn} onPress={() => setModalConquistas(true)}>
-            <Text style={styles.verTudoText}>Ver Tudo</Text>
-            <Ionicons name="chevron-forward" size={16} color={COLORS.textSecondary} />
-          </TouchableOpacity>
-        </View>
-
-        <FlatList
-          data={MEDALHAS}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.medalhasRow}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setModalConquistas(true)} activeOpacity={0.85}>
-              <MedalhaCard
-                medalha={item}
-                conquistada={(unlockedMedals || []).includes(item.id)}
-              />
+          {temAcesso('medalhas') && (
+            <TouchableOpacity style={styles.verTudoBtn} onPress={() => setModalConquistas(true)}>
+              <Text style={styles.verTudoText}>Ver Tudo</Text>
+              <Ionicons name="chevron-forward" size={16} color={COLORS.textSecondary} />
             </TouchableOpacity>
           )}
-        />
+        </View>
+
+        {temAcesso('medalhas') ? (
+          <FlatList
+            data={MEDALHAS}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.medalhasRow}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => setModalConquistas(true)} activeOpacity={0.85}>
+                <MedalhaCard
+                  medalha={item}
+                  conquistada={(unlockedMedals || []).includes(item.id)}
+                />
+              </TouchableOpacity>
+            )}
+          />
+        ) : (
+          <View style={styles.conquistasBloqueado}>
+            <Ionicons name="lock-closed" size={28} color="#D4A017" />
+            <Text style={styles.conquistasBloqueadoTitulo}>Recurso do Plano Semestral</Text>
+            <Text style={styles.conquistasBloqueadoDesc}>
+              Faça upgrade para desbloquear medalhas e acompanhar suas conquistas espirituais.
+            </Text>
+          </View>
+        )}
 
         {/* Preferences */}
         <Text style={styles.prefTitle}>Preferências</Text>
@@ -847,6 +860,29 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textLight,
     marginTop: 16,
+  },
+  conquistasBloqueado: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    padding: 24,
+    backgroundColor: '#FFF9E6',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#D4A01740',
+    alignItems: 'center',
+    gap: 8,
+  },
+  conquistasBloqueadoTitulo: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#B8890F',
+    textAlign: 'center',
+  },
+  conquistasBloqueadoDesc: {
+    fontSize: 13,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 18,
   },
   // Conquistas modal
   conquContainer: {
