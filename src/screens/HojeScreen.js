@@ -75,7 +75,7 @@ export default function HojeScreen({ navigation }) {
             <View style={styles.streakBadge}>
               <Ionicons name="add" size={16} color={COLORS.primary} />
               <Text style={styles.streakText}>{streak}</Text>
-              <Ionicons name="calendar" size={16} color={COLORS.textSecondary} />
+              <Ionicons name="flame" size={16} color={COLORS.streak} />
             </View>
           </View>
         </View>
