@@ -30,6 +30,7 @@ import JejumNormalScreen from '../screens/JejumNormalScreen';
 import JejumParcialScreen from '../screens/JejumParcialScreen';
 import PaywallScreen from '../screens/PaywallScreen';
 import LoginScreen from '../screens/LoginScreen';
+import AdminScreen from '../screens/AdminScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -67,6 +68,15 @@ function JejumStack() {
       <Stack.Screen name="JejumEster" component={JejumEsterScreen} />
       <Stack.Screen name="JejumNormal" component={JejumNormalScreen} />
       <Stack.Screen name="JejumParcial" component={JejumParcialScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function PerfilStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="PerfilMain" component={PerfilScreen} />
+      <Stack.Screen name="Admin" component={AdminScreen} />
     </Stack.Navigator>
   );
 }
@@ -162,7 +172,7 @@ function MainNavigator() {
       <Tab.Screen name="JejumTab" component={JejumStack} />
       <Tab.Screen name="HojeTab" component={HojeStack} />
       <Tab.Screen name="OracoesTab" component={OracoesStack} />
-      <Tab.Screen name="PerfilTab" component={PerfilScreen} />
+      <Tab.Screen name="PerfilTab" component={PerfilStack} />
     </Tab.Navigator>
     <PlanoConcluidoAnimacao visible={planoConcluido} onClose={clearPlanoConcluido} />
     <OracoesConcluidasAnimacao visible={todasOracoesCompletas} onClose={clearTodasOracoesCompletas} />

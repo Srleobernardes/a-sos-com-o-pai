@@ -38,7 +38,9 @@ function formatarData(dateStr) {
   return `${parseInt(d)} de ${MESES[parseInt(m) - 1]}`;
 }
 
-export default function PerfilScreen() {
+const ADMIN_EMAIL = 'leo@geneziss.com.br';
+
+export default function PerfilScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const {
     streak,
@@ -330,6 +332,15 @@ export default function PerfilScreen() {
           <Text style={styles.prefText}>Compartilhar app</Text>
           <Ionicons name="chevron-forward" size={18} color={COLORS.textLight} />
         </TouchableOpacity>
+
+        {/* Admin */}
+        {auth?.email === ADMIN_EMAIL && (
+          <TouchableOpacity style={styles.prefItem} onPress={() => navigation.navigate('Admin')}>
+            <Ionicons name="shield-checkmark-outline" size={22} color={COLORS.primary} />
+            <Text style={[styles.prefText, { color: COLORS.primary }]}>Painel Admin</Text>
+            <Ionicons name="chevron-forward" size={18} color={COLORS.textLight} />
+          </TouchableOpacity>
+        )}
 
         {/* Sair */}
         <TouchableOpacity style={styles.prefItem} onPress={handleLogout}>
