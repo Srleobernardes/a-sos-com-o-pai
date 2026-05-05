@@ -77,7 +77,7 @@ export default function PerfilScreen() {
   const handleCompartilhar = async () => {
     try {
       await Share.share({
-        message: 'Estou usando o app A Sós com o Pai para aprofundar minha vida espiritual. Você deveria experimentar! 🙏',
+        message: 'Estou usando o app A Sós com o Pai para aprofundar minha vida espiritual. Você deveria experimentar! 🙏\n\nAcesse agora: https://payfast.greenn.com.br/sxkhrp3/offer/mQssz4?ch_id=137178',
         title: 'A Sós com o Pai',
       });
     } catch {}
