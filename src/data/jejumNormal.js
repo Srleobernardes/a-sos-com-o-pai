@@ -15,10 +15,10 @@ export const CAUSAS_JEJUM = [
   },
   {
     id: 'financas',
-    titulo: 'Financas e Provisao',
+    titulo: 'Finanças e Provisão',
     icone: 'wallet',
     cor: '#1B5E20',
-    descricao: 'Ore por provisao divina, sabedoria financeira e quebra de escassez.',
+    descricao: 'Ore por provisão divina, sabedoria financeira e quebra de escassez.',
   },
   {
     id: 'proteção',
