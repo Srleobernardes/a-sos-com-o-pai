@@ -60,7 +60,7 @@ export default function SplashScreen() {
       </Animated.View>
 
       <Animated.View style={[styles.textWrapper, { opacity: textFade }]}>
-        <Text style={styles.titulo}>A Sos com o Pai</Text>
+        <Text style={styles.titulo}>A Sós com o Pai</Text>
         <Text style={styles.subtitulo}>Sua jornada espiritual diária</Text>
       </Animated.View>
 
