@@ -1,17 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Modal,
+  Animated,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, SHADOWS, FONTS } from '../theme/colors';
 import { useApp } from '../context/AppContext';
 import DailyCard from '../components/DailyCard';
 import MedalhaAnimacao from '../components/MedalhaAnimacao';
+
+const STORAGE_NAME_KEY = '@perfil_nome';
+const STORAGE_LAST_GREETING_KEY = '@ultima_saudacao_dia';
+
+function getSaudacao(nome) {
+  const hora = new Date().getHours();
+  const primeiro = nome === 'Servo do Senhor' ? 'Servo do Senhor' : nome.split(' ')[0];
+  if (hora >= 5 && hora < 12) {
+    return {
+      icone: 'cafe',
+      cor: '#D4A017',
+      titulo: `Hora do café com o A Sós! ☕`,
+      mensagem: `Bom dia, ${primeiro}! Que este momento de comunhão com o Pai ilumine o seu dia.`,
+    };
+  }
+  if (hora >= 12 && hora < 18) {
+    return {
+      icone: 'sunny',
+      cor: '#FF9800',
+      titulo: `Boa tarde, ${primeiro}!`,
+      mensagem: 'A presença de Deus está com você em cada momento deste dia. Continue firme!',
+    };
+  }
+  if (hora >= 18 && hora < 24) {
+    return {
+      icone: 'moon',
+      cor: '#7B68EE',
+      titulo: `Bem-vindo de volta, ${primeiro}!`,
+      mensagem: 'Que linda a fidelidade de quem busca a Deus até a noite. Sua chama está acesa!',
+    };
+  }
+  return {
+    icone: 'star',
+    cor: '#1E3A5F',
+    titulo: `Que fé, ${primeiro}!`,
+    mensagem: 'Mesmo na madrugada você busca a Deus. O Senhor vê e honra sua dedicação.',
+  };
+}
 
 const bannerConexao = require('../../assets/banners/conexao.png');
 const bannerVersiculo = require('../../assets/banners/versiculo.png');
@@ -22,6 +63,26 @@ export default function HojeScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { streak, getWeekDays, isTaskCompleted, completeTask, newMedalUnlocked, clearNewMedal } = useApp();
   const weekDays = getWeekDays();
+
+  const [saudacaoVisible, setSaudacaoVisible] = useState(false);
+  const [saudacao, setSaudacao] = useState(null);
+  const scaleAnim = useState(new Animated.Value(0.85))[0];
+
+  useEffect(() => {
+    async function verificarSaudacao() {
+      const hoje = new Date().toDateString();
+      const ultimoDia = await AsyncStorage.getItem(STORAGE_LAST_GREETING_KEY);
+      if (ultimoDia === hoje) return;
+
+      const nome = (await AsyncStorage.getItem(STORAGE_NAME_KEY)) || 'Servo do Senhor';
+      setSaudacao(getSaudacao(nome));
+      setSaudacaoVisible(true);
+      await AsyncStorage.setItem(STORAGE_LAST_GREETING_KEY, hoje);
+
+      Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true, bounciness: 12 }).start();
+    }
+    verificarSaudacao();
+  }, []);
 
   const tarefas = [
     {
@@ -154,6 +215,27 @@ export default function HojeScreen({ navigation }) {
         visible={!!newMedalUnlocked}
         onClose={clearNewMedal}
       />
+
+      {saudacao && (
+        <Modal visible={saudacaoVisible} transparent animationType="fade">
+          <View style={styles.saudacaoOverlay}>
+            <Animated.View style={[styles.saudacaoCard, { transform: [{ scale: scaleAnim }] }]}>
+              <View style={[styles.saudacaoIconCircle, { backgroundColor: saudacao.cor + '25' }]}>
+                <Ionicons name={saudacao.icone} size={48} color={saudacao.cor} />
+              </View>
+              <Text style={styles.saudacaoTitulo}>{saudacao.titulo}</Text>
+              <Text style={styles.saudacaoMensagem}>{saudacao.mensagem}</Text>
+              <TouchableOpacity
+                style={[styles.saudacaoBtn, { backgroundColor: saudacao.cor }]}
+                onPress={() => setSaudacaoVisible(false)}
+              >
+                <Ionicons name="heart" size={18} color="#FFF" />
+                <Text style={styles.saudacaoBtnText}>Começar o dia!</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 }
@@ -300,5 +382,57 @@ const styles = StyleSheet.create({
     fontSize: 15,
     ...FONTS.bold,
     color: COLORS.primary,
+  },
+  saudacaoOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 28,
+  },
+  saudacaoCard: {
+    backgroundColor: COLORS.background,
+    borderRadius: 28,
+    padding: 32,
+    alignItems: 'center',
+    width: '100%',
+    ...SHADOWS.large,
+  },
+  saudacaoIconCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  saudacaoTitulo: {
+    fontSize: 22,
+    ...FONTS.extrabold,
+    color: COLORS.text,
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  saudacaoMensagem: {
+    fontSize: 15,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 28,
+  },
+  saudacaoBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    borderRadius: 30,
+    gap: 8,
+    ...SHADOWS.medium,
+  },
+  saudacaoBtnText: {
+    color: '#FFF',
+    fontSize: 16,
+    ...FONTS.bold,
   },
 });
