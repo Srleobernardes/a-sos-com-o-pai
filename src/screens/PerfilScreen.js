@@ -135,13 +135,18 @@ export default function PerfilScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.8,
+      quality: 0.5,
+      base64: true,
     });
 
     if (!resultado.canceled && resultado.assets[0]) {
-      const uri = resultado.assets[0].uri;
-      setFoto(uri);
-      await AsyncStorage.setItem(STORAGE_PHOTO_KEY, uri);
+      const asset = resultado.assets[0];
+      // Salva em base64 para persistir no web/PWA (blob URIs expiram)
+      const dataUri = asset.base64
+        ? `data:image/jpeg;base64,${asset.base64}`
+        : asset.uri;
+      setFoto(dataUri);
+      await AsyncStorage.setItem(STORAGE_PHOTO_KEY, dataUri);
     }
   };
 
