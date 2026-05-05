@@ -12,6 +12,7 @@ cp web/manifest.json dist/manifest.json
 echo "📄 Copiando página de obrigado e imagens..."
 cp web/obrigado.html dist/obrigado.html
 cp web/*.jpg dist/
+cp web/*.gif dist/
 
 echo "🔤 Copiando fonte Ionicons..."
 cp node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf dist/Ionicons.ttf
