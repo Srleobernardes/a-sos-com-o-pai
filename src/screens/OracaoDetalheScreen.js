@@ -53,17 +53,6 @@ export default function OracaoDetalheScreen({ route, navigation }) {
           <Text style={styles.bannerSubtitle}>{oracaoHoje.subtitulo}</Text>
         </View>
 
-        <View style={styles.mediaRow}>
-          <TouchableOpacity style={styles.mediaButton}>
-            <Ionicons name="headset" size={22} color={COLORS.primary} />
-            <Text style={styles.mediaLabel}>Ouvir Áudio</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.mediaButton}>
-            <Ionicons name="videocam" size={22} color={COLORS.primary} />
-            <Text style={styles.mediaLabel}>Assistir Vídeo</Text>
-          </TouchableOpacity>
-        </View>
-
         <View style={styles.textCard}>
           <Text style={styles.prayerText}>{oracaoHoje.texto}</Text>
         </View>
@@ -120,15 +109,6 @@ const styles = StyleSheet.create({
   bannerSubtitle: {
     fontSize: 14, color: 'rgba(255,255,255,0.85)', marginTop: 6, textAlign: 'center',
   },
-  mediaRow: {
-    flexDirection: 'row', paddingHorizontal: 20, paddingVertical: 16, gap: 12,
-  },
-  mediaButton: {
-    flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    paddingVertical: 14, backgroundColor: COLORS.surface, borderRadius: 14,
-    gap: 8, ...SHADOWS.small, borderWidth: 1, borderColor: COLORS.borderLight,
-  },
-  mediaLabel: { fontSize: 14, ...FONTS.semibold, color: COLORS.primary },
   textCard: {
     marginHorizontal: 20, padding: 24, backgroundColor: COLORS.surface,
     borderRadius: 20, ...SHADOWS.small,
