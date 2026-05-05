@@ -9,6 +9,9 @@ cp web/icon-192.png dist/icon-192.png
 cp web/icon-512.png dist/icon-512.png
 cp web/manifest.json dist/manifest.json
 
+echo "📄 Copiando página de obrigado..."
+cp web/obrigado.html dist/obrigado.html
+
 echo "🔤 Copiando fonte Ionicons..."
 cp node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf dist/Ionicons.ttf
 
