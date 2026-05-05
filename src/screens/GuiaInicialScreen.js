@@ -92,18 +92,6 @@ export default function GuiaInicialScreen({ navigation }) {
           </View>
         </View>
 
-        {/* Video placeholder area */}
-        <View style={styles.videoArea}>
-          {/* VIDEO: 360x220px - Coloque seu video explicativo aqui */}
-          <View style={styles.videoPlaceholder}>
-            <View style={styles.playButton}>
-              <Ionicons name="play" size={40} color="#FFF" />
-            </View>
-            <Text style={styles.videoLabel}>Vídeo: Como usar o app</Text>
-            <Text style={styles.videoSub}>Toque para assistir</Text>
-          </View>
-        </View>
-
         {/* Onboarding Steps */}
         <Animated.View style={[styles.stepCard, { opacity: fadeAnim }]}>
           <View style={[styles.stepIconCircle, { backgroundColor: step.cor + '20' }]}>
@@ -193,38 +181,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  videoArea: {
-    marginHorizontal: 20,
-    marginBottom: 24,
-  },
-  videoPlaceholder: {
-    height: 220,
-    borderRadius: 20,
-    backgroundColor: '#1a1a2e',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...SHADOWS.large,
-  },
-  playButton: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: COLORS.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 12,
-    ...SHADOWS.medium,
-  },
-  videoLabel: {
-    color: '#FFF',
-    fontSize: 16,
-    ...FONTS.bold,
-  },
-  videoSub: {
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: 12,
-    marginTop: 4,
   },
   stepCard: {
     alignItems: 'center',
