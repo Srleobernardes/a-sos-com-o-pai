@@ -20,13 +20,17 @@ const imagens = [
 
 export default function App() {
   const [assetsLoaded, setAssetsLoaded] = useState(false);
-  const [fontsLoaded] = useFonts(Ionicons.font);
+  const [fontsLoaded, fontError] = useFonts(Ionicons.font);
+  const [forceReady, setForceReady] = useState(false);
 
   useEffect(() => {
     Asset.loadAsync(imagens).finally(() => setAssetsLoaded(true));
+    // Garante que o app nunca fica preso na splash por mais de 5 segundos
+    const timer = setTimeout(() => setForceReady(true), 5000);
+    return () => clearTimeout(timer);
   }, []);
 
-  const pronto = assetsLoaded && fontsLoaded;
+  const pronto = forceReady || (assetsLoaded && (fontsLoaded || !!fontError));
 
   if (!pronto) return (
     <>
