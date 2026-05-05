@@ -51,7 +51,8 @@ export function AppProvider({ children }) {
 
   const loadAuth = async () => {
     try {
-      const saved = await AsyncStorage.getItem(AUTH_KEY);
+      const timeout = new Promise((resolve) => setTimeout(() => resolve(null), 5000));
+      const saved = await Promise.race([AsyncStorage.getItem(AUTH_KEY), timeout]);
       if (saved) setAuth(JSON.parse(saved));
     } catch (e) {
       console.log('Erro ao carregar auth:', e);
