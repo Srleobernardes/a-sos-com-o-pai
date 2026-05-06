@@ -128,9 +128,13 @@
 <!-- Main Canvas -->
 <main class="flex-1 w-full max-w-[480px] mx-auto pb-xl">
 <!-- Hero Section -->
-<section class="px-md py-lg text-center">
+<section class="px-md pt-lg pb-sm text-center">
 <h2 class="text-headline-md font-headline-md text-on-background mb-sm">Parabéns pela sua compra! 🎉</h2>
-<p class="text-body-md font-body-md text-on-surface-variant">Seu acesso está liberado. Agora siga os passos abaixo para instalar o app no seu celular:</p>
+<div class="bg-primary-container rounded-xl p-md mt-sm border-2 border-primary">
+  <p class="text-title-sm font-bold text-on-primary-container mb-xs">⚠️ ATENÇÃO — Leia antes de continuar</p>
+  <p class="text-body-md text-on-primary-container leading-snug">Para instalar o app no seu celular, siga os <strong>5 passos abaixo</strong>. É rápido!<br/>Veja até o final — <strong>o botão para abrir o app aparecerá sozinho.</strong></p>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-sm">👇 Escolha o seu celular e siga o passo a passo:</p>
 </section>
 <!-- CSS-Only Interactive Platform Selector -->
 <div class="px-md relative">
@@ -242,14 +246,57 @@
 </div>
 </div>
 <!-- Warning Card -->
-<div class="mx-md mt-xl mb-lg bg-primary-container p-md rounded-lg flex gap-sm items-start">
+<div class="mx-md mt-xl mb-md bg-primary-container p-md rounded-lg flex gap-sm items-start">
 <span class="material-symbols-outlined text-on-primary-container">warning</span>
 <p class="text-on-primary-container font-body-md text-body-md leading-tight">⚠️ Use o mesmo email que você usou na compra para fazer login no aplicativo.</p>
 </div>
-<!-- Main CTA -->
-<a class="block w-[calc(100%-32px)] mx-auto bg-primary-container text-on-primary-container text-center py-4 rounded-full font-title-sm text-title-sm font-bold shadow-lg mt-md hover:opacity-90 active:scale-95 transition-all" href="https://appasoscomopai.com.br">
-            Abrir o App Agora
-        </a>
+<!-- Countdown CTA -->
+<div class="mx-md mb-lg">
+  <!-- Estado: aguardando -->
+  <div id="cta-waiting" class="bg-surface-container-low border border-outline-variant rounded-xl p-md text-center">
+    <p class="text-on-surface text-title-sm font-bold mb-sm">⏳ Siga os passos acima para liberar o botão</p>
+    <div class="w-full bg-surface-container-highest rounded-full h-4 overflow-hidden mb-xs">
+      <div id="progress-bar" class="bg-primary h-4 rounded-full" style="width: 0%; transition: width 1s linear;"></div>
+    </div>
+    <p class="text-on-surface-variant text-label-sm mt-xs">O botão aparecerá em <span id="countdown-num" class="text-primary font-bold">40</span> segundos...</p>
+  </div>
+  <!-- Botão liberado (oculto inicialmente) -->
+  <a id="cta-button" class="hidden w-full bg-primary-container text-on-primary-container text-center py-4 rounded-full font-title-sm text-title-sm font-bold shadow-lg mt-sm hover:opacity-90 active:scale-95 transition-all" href="https://appasoscomopai.com.br"
+     style="display:none; text-decoration:none;">
+    👆 Abrir o App Agora
+  </a>
+</div>
+<script>
+  (function() {
+    var total = 40;
+    var remaining = total;
+    var numEl = document.getElementById('countdown-num');
+    var bar = document.getElementById('progress-bar');
+    var waiting = document.getElementById('cta-waiting');
+    var btn = document.getElementById('cta-button');
+
+    var timer = setInterval(function() {
+      remaining--;
+      if (numEl) numEl.textContent = remaining;
+      var pct = ((total - remaining) / total * 100).toFixed(1);
+      if (bar) bar.style.width = pct + '%';
+      if (remaining <= 0) {
+        clearInterval(timer);
+        if (waiting) waiting.style.display = 'none';
+        if (btn) {
+          btn.style.display = 'block';
+          btn.style.animation = 'pulse 1s infinite';
+        }
+      }
+    }, 1000);
+  })();
+</script>
+<style>
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,160,23,0.4); }
+    50% { transform: scale(1.03); box-shadow: 0 0 0 8px rgba(212,160,23,0); }
+  }
+</style>
 </main>
 <!-- JSON Component: Footer -->
 <footer class="bg-surface-container-low dark:bg-surface-container-low flex flex-col items-center gap-sm py-lg px-md w-full max-w-[480px] mx-auto mt-auto">
