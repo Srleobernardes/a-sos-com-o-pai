@@ -56,7 +56,7 @@ export const ORACOES_GUIADAS = [
       { titulo: 'Confissão', icone: 'heart-dislike', duracao: '1 min', texto: 'Você tem sido honesto em seus relacionamentos e compromissos? Confesse qualquer área de desonestidade ou falta de integridade. Deus honra quem age com integridade.' },
       { titulo: 'Gratidão', icone: 'gift', duracao: '1 min', texto: 'Agradeça pela Palavra de Deus — a Bíblia. É uma carta de amor escrita para você. Cada vez que você a lê, Deus está falando diretamente ao seu coração.' },
       { titulo: 'Súplica', icone: 'hand-left', duracao: '1 min', texto: 'Ore por suas finanças e trabalho. Peça sabedoria para administrar o que Deus te deu. Clame por abertura de portas, criatividade e bênção sobre o trabalho das suas mãos.' },
-      { titulo: 'Silêncio', icone: 'volume-mute', duracao: '1 min', texto: 'Silencio. Deixe a gratidão preencher cada canto do seu coração. Você tem mais do que precisa quando tem a Deus. Descanse nessa verdade.' },
+      { titulo: 'Silêncio', icone: 'volume-mute', duracao: '1 min', texto: 'Silêncio. Deixe a gratidão preencher cada canto do seu coração. Você tem mais do que precisa quando tem a Deus. Descanse nessa verdade.' },
     ],
   },
   {

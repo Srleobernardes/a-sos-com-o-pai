@@ -54,7 +54,7 @@ export const CONEXOES = [
     titulo: 'A voz do Pai',
     corpo: [
       'Deus quer falar com você. Não por trovões ou visões extraordinárias — mas por Sua Palavra, pelo Espírito Santo, pela paz no coração.',
-      'Você tem ouvidado a voz d\'Ele? Neste momento, abra o coração e deixe-O falar:',
+      'Você tem ouvido a voz d\'Ele? Neste momento, abra o coração e deixe-O falar:',
     ],
     frase: '"Pai, quero ouvir a Tua voz. Afia meus ouvidos espirituais. Que eu reconheça quando és Tu que fala e tenha coragem de obedecer. Amém."',
   },
