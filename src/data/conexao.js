@@ -66,7 +66,7 @@ export const CONEXOES = [
       'Mas há uma fonte de força que nunca se esgota. Deus renova as forças de quem espera n\'Ele.',
       'Receba essa renovação agora:',
     ],
-    frase: '"Senhor, estou cansado. Mas confio que Tu renova as minhas forças. Enche-me do Teu Espírito e me dá fôlego para seguir. Em nome de Jesus, amém."',
+    frase: '"Senhor, estou cansado. Mas confio que Tu renovas as minhas forças. Enche-me do Teu Espírito e me dá fôlego para seguir. Em nome de Jesus, amém."',
   },
   {
     dia: 8,

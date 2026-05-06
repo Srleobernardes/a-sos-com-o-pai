@@ -242,7 +242,7 @@ A verdade me libertou. Em nome de Jesus, amém.`,
 
 "Graças a Deus, que nos dá a vitória por nosso Senhor Jesus Cristo." (1 Coríntios 15:57)
 
-Eu sou mais que vencedor por meio dAquele que me amou. Não me renderei, não recuarei, não desistirei.
+Eu sou mais que vencedor por meio d'Aquele que me amou. Não me renderei, não recuarei, não desistirei.
 
 Declaro vitória sobre a enfermidade — pelas chagas de Jesus, sou curado.
 Declaro vitória sobre a escassez — Cristo se fez pobre para que eu me tornasse rico.
@@ -367,7 +367,7 @@ Protege meu lar das armadilhas do inimigo. Que nenhuma divisão, nenhuma confus�
 
 Que minha casa seja um lugar de repouso, de cura e de hospitalidade. Um lugar onde o nome de Jesus é exaltado.
 
-Ungimos este lar ao Senhor. Em nome de Jesus, amém.`,
+Consagro este lar ao Senhor. Em nome de Jesus, amém.`,
       },
       {
         titulo: 'Unidade Familiar',

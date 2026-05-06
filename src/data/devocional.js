@@ -8,7 +8,7 @@ export const DEVOCIONAIS = [
 
 Muitas vezes, nos sentimos perdidos, sem direção, sem propósito. Mas Deus já escreveu cada capítulo da sua história antes mesmo de você nascer.
 
-Hoje, escolha confiar. Entregue seus medos, suas dúvidas e suas inseguranças nas mãos dAquele que nunca falha.
+Hoje, escolha confiar. Entregue seus medos, suas dúvidas e suas inseguranças nas mãos d'Aquele que nunca falha.
 
 Sua jornada começa agora. Um passo de cada vez, um dia de cada vez, na presença do Pai.`,
     oracao: 'Senhor, hoje eu começo essa jornada. Guia meus passos, abre meus olhos espirituais e transforma meu coração. Em nome de Jesus, amém.',

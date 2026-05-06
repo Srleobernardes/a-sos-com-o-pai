@@ -23,7 +23,7 @@ export const ORACOES_GUIADAS = [
     dia: 3,
     passos: [
       { titulo: 'Adoração', icone: 'musical-notes', duracao: '1 min', texto: 'Comece com um cântico no coração, mesmo que seja simples. Deus habita no louvor do Seu povo. Declare: "Tu és fiel, Senhor. Teu amor dura para sempre. Sou grato por Ti."' },
-      { titulo: 'Confissão', icone: 'heart-dislike', duracao: '1 min', texto: 'Há pensamentos ou atitudes desta semana que você precisa confessar? A Bíblia diz que se confessar nossos pecados, Ele é fiel para nos perdoar. Aproveite essa graça hoje.' },
+      { titulo: 'Confissão', icone: 'heart-dislike', duracao: '1 min', texto: 'Há pensamentos ou atitudes desta semana que você precisa confessar? A Bíblia diz que se confessarmos nossos pecados, Ele é fiel para nos perdoar. Aproveite essa graça hoje.' },
       { titulo: 'Gratidão', icone: 'gift', duracao: '1 min', texto: 'Agradeça por algo que você normalmente não percebe: o ar que respira, a cama em que dormiu, os olhos que enxergam. Os milagres cotidianos merecem reconhecimento.' },
       { titulo: 'Súplica', icone: 'hand-left', duracao: '1 min', texto: 'Ore por um sonho ou projeto que está no seu coração. Entregue-o a Deus. Peça sabedoria, aberturas e que Ele seja glorificado em tudo que você constrói.' },
       { titulo: 'Silêncio', icone: 'volume-mute', duracao: '1 min', texto: 'Agora descanse. Não precisa dizer mais nada. Apenas esteja na presença d\'Ele. O silêncio adorador é uma das formas mais profundas de comunhão com Deus.' },
@@ -45,7 +45,7 @@ export const ORACOES_GUIADAS = [
       { titulo: 'Adoração', icone: 'musical-notes', duracao: '1 min', texto: 'Deus é Criador. Pense na vastidão do universo — as estrelas, os oceanos, as montanhas. O mesmo Deus que criou tudo isso te conhece pelo nome. Adore-O com reverência.' },
       { titulo: 'Confissão', icone: 'heart-dislike', duracao: '1 min', texto: 'Confesse as preocupações que você tem carregado sem entregar a Deus. Muitas vezes a ansiedade é uma forma de controle — entregue o controle a Ele hoje.' },
       { titulo: 'Gratidão', icone: 'gift', duracao: '1 min', texto: 'Agradeça por uma oração respondida — mesmo que ainda não da forma que esperava. Deus sempre responde. Às vezes diz sim, às vezes não, às vezes "ainda não".' },
-      { titulo: 'Súplica', icone: 'hand-left', duracao: '1 min', texto: 'Ore por alguém que não conhece a Jesus. Peça que Deus abre o coração dessa pessoa e que você seja um instrumento para levá-la à fé. A maior intercessão é pela salvação de almas.' },
+      { titulo: 'Súplica', icone: 'hand-left', duracao: '1 min', texto: 'Ore por alguém que não conhece a Jesus. Peça que Deus abra o coração dessa pessoa e que você seja um instrumento para levá-la à fé. A maior intercessão é pela salvação de almas.' },
       { titulo: 'Silêncio', icone: 'volume-mute', duracao: '1 min', texto: 'Feche os olhos. Imagine-se sentado aos pés de Jesus. Não há urgência, não há ansiedade — só você e Ele. Permaneça nesse lugar por um momento.' },
     ],
   },
