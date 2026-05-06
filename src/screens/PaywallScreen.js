@@ -23,7 +23,7 @@ const logoIcon = require('../../assets/icons/logo.png');
 const CHECK_COLOR = '#D4A017';
 
 export default function PaywallScreen({ navigation }) {
-  const [planSelecionado, setPlanSelecionado] = useState('semestral');
+  const [planSelecionado, setPlanSelecionado] = useState('anual');
   const [modalInstrucao, setModalInstrucao] = useState(false);
   const { savePendingPlano } = useApp();
 
@@ -71,11 +71,11 @@ export default function PaywallScreen({ navigation }) {
             </View>
           </View>
 
-          {/* Botão Já tenho acesso — destaque */}
+          {/* Botão Já tenho acesso — destaque verde */}
           <TouchableOpacity onPress={handleJaTenhoAcesso} style={styles.jaTemAcessoBtn} activeOpacity={0.8}>
-            <Ionicons name="person-circle-outline" size={20} color="#D4A017" />
-            <Text style={styles.jaTemAcessoText}>Já paguei — Entrar com meu email</Text>
-            <Ionicons name="chevron-forward" size={18} color="#D4A017" />
+            <Ionicons name="checkmark-circle" size={22} color="#FFFFFF" />
+            <Text style={styles.jaTemAcessoText}>Já comprei — Entrar com meu email</Text>
+            <Ionicons name="chevron-forward" size={18} color="#FFFFFF" />
           </TouchableOpacity>
 
           {/* Plan Cards */}
@@ -280,19 +280,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 16,
     marginBottom: 20,
-    paddingVertical: 14,
+    paddingVertical: 16,
     paddingHorizontal: 18,
     borderRadius: 14,
-    borderWidth: 1.5,
-    borderColor: 'rgba(212, 160, 23, 0.5)',
-    backgroundColor: 'rgba(212, 160, 23, 0.08)',
+    backgroundColor: '#27AE60',
     gap: 10,
+    shadowColor: '#27AE60',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 6,
   },
   jaTemAcessoText: {
     flex: 1,
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#D4A017',
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#FFFFFF',
   },
 
   // Plans

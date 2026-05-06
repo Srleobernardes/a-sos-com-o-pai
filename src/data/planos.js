@@ -37,8 +37,8 @@ export const PLANOS = [
     precoOriginal: 'R$ 697',
     preco: '6x R$ 59,90',
     periodo: ' · 6 meses',
-    destaque: true,
-    tag: 'MAIS POPULAR',
+    destaque: false,
+    tag: null,
     economia: null,
     // Substituir pela URL real do checkout da Hubla
     checkoutUrl: 'https://payfast.greenn.com.br/h928ytk/offer/H2YIwR?ch_id=137178',
@@ -72,8 +72,8 @@ export const PLANOS = [
     precoOriginal: 'R$ 997',
     preco: '12x R$ 39,90',
     periodo: '/ano',
-    destaque: false,
-    tag: 'COMPLETO',
+    destaque: true,
+    tag: 'MAIS POPULAR',
     economia: 'economize R$ 336',
     // Substituir pela URL real do checkout da Hubla
     checkoutUrl: 'https://payfast.greenn.com.br/sxkhrp3/offer/njKhBD?ch_id=137178',
