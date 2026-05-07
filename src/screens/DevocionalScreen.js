@@ -12,10 +12,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, SHADOWS, FONTS } from '../theme/colors';
 import { useApp } from '../context/AppContext';
 import { getDevocionalDoDia } from '../data/devocional';
+import CompartilharModal from '../components/CompartilharModal';
 
 export default function DevocionalScreen({ route, navigation }) {
   const insets = useSafeAreaInsets();
-  const { completeTask, uncompleteTask, isTaskCompleted, incrementDevocionais } = useApp();
+  const {
+    completeTask, uncompleteTask, isTaskCompleted, incrementDevocionais,
+    totalDevocionais, auth,
+    promptCompartilhamento, verificarPromptCompartilhamento, marcarPromptCompartilhamento,
+  } = useApp();
   const taskId = route.params?.taskId;
   const completed = isTaskCompleted(taskId);
   const devocional = getDevocionalDoDia();
@@ -31,8 +36,17 @@ export default function DevocionalScreen({ route, navigation }) {
     } else {
       completeTask(taskId);
       incrementDevocionais(devocional.titulo);
-      setTimeout(() => navigation.goBack(), 400);
+      setTimeout(() => {
+        const devePrompt = verificarPromptCompartilhamento();
+        if (!devePrompt) navigation.goBack();
+        // Se devePrompt, o modal aparece e o goBack acontece ao fechar
+      }, 400);
     }
+  };
+
+  const handleFecharPrompt = () => {
+    marcarPromptCompartilhamento();
+    navigation.goBack();
   };
 
   return (
@@ -87,6 +101,12 @@ export default function DevocionalScreen({ route, navigation }) {
           </TouchableOpacity>
         </Animated.View>
       </ScrollView>
+      <CompartilharModal
+        visible={promptCompartilhamento}
+        totalDevocionais={totalDevocionais}
+        email={auth?.email}
+        onClose={handleFecharPrompt}
+      />
     </View>
   );
 }

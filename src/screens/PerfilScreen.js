@@ -12,7 +12,6 @@ import {
   Modal,
   KeyboardAvoidingView,
   Platform,
-  Share,
   Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,6 +23,8 @@ import { useApp } from '../context/AppContext';
 import { MEDALHAS } from '../data/medalhas';
 import MedalhaCard from '../components/MedalhaCard';
 import { getPlanoPorId } from '../data/planos';
+import { buscarTotalIndicacoes } from '../lib/supabase';
+import { gerarCodigoRef } from '../lib/referral';
 
 const PLANO_LABELS = { mensal: 'Plano Mensal', semestral: 'Plano Semestral', anual: 'Plano Anual' };
 
@@ -61,8 +62,15 @@ export default function PerfilScreen({ navigation }) {
   const [modalStat, setModalStat] = useState(null);
   const [modalConquistas, setModalConquistas] = useState(false);
   const [showWidget, setShowWidget] = useState(true);
+  const [totalIndicacoes, setTotalIndicacoes] = useState(0);
 
   const planoInfo = getPlanoPorId(auth?.plano);
+
+  useEffect(() => {
+    if (auth?.email) {
+      buscarTotalIndicacoes(auth.email).then(setTotalIndicacoes);
+    }
+  }, [auth?.email]);
 
   const handleNotificacoes = () => {
     Linking.openSettings();
@@ -76,13 +84,13 @@ export default function PerfilScreen({ navigation }) {
     Linking.openURL('mailto:suporte@asoscomopai.com?subject=Sugestão de recurso');
   };
 
-  const handleCompartilhar = async () => {
-    try {
-      await Share.share({
-        message: 'Estou usando o app A Sós com o Pai para aprofundar minha vida espiritual. Você deveria experimentar! 🙏\n\nAcesse agora: https://payfast.greenn.com.br/sxkhrp3/offer/mQssz4?ch_id=137178',
-        title: 'A Sós com o Pai',
-      });
-    } catch {}
+  const handleCompartilharWhatsApp = () => {
+    const codigo = gerarCodigoRef(auth?.email || '');
+    const link = `https://appasoscomopai.com.br?ref=${codigo}`;
+    const msg =
+      `Oi! 🙏 Uso o *A Sós com o Pai* e tem transformado minha vida de oração.\n\n` +
+      `Quero te dar 7 dias grátis para você experimentar:\n${link}`;
+    Linking.openURL(`https://wa.me/?text=${encodeURIComponent(msg)}`);
   };
 
   const handleLogout = () => {
@@ -303,6 +311,41 @@ export default function PerfilScreen({ navigation }) {
           </View>
         )}
 
+        {/* Indique e Ganhe */}
+        <View style={styles.indicacaoCard}>
+          <View style={styles.indicacaoTop}>
+            <View>
+              <Text style={styles.indicacaoTitulo}>Indique e Ganhe 🎁</Text>
+              <Text style={styles.indicacaoSubtitulo}>3 indicações = 1 mês grátis</Text>
+            </View>
+            <View style={styles.indicacaoContador}>
+              <Text style={styles.indicacaoNum}>{totalIndicacoes}</Text>
+              <Text style={styles.indicacaoNumLabel}>indicadas</Text>
+            </View>
+          </View>
+
+          {/* Progresso no ciclo atual */}
+          <View style={styles.progressRow}>
+            {[1, 2, 3].map((i) => {
+              const cicloAtual = totalIndicacoes % 3;
+              const preenchido = cicloAtual === 0 && totalIndicacoes > 0 ? true : i <= cicloAtual;
+              return (
+                <View key={i} style={[styles.progressDot, preenchido && styles.progressDotFilled]}>
+                  {preenchido && <Ionicons name="checkmark" size={12} color="#FFF" />}
+                </View>
+              );
+            })}
+            <Text style={styles.progressLabel}>
+              {totalIndicacoes % 3}/3 para 1 mês grátis
+            </Text>
+          </View>
+
+          <TouchableOpacity style={styles.btnIndicar} onPress={handleCompartilharWhatsApp} activeOpacity={0.85}>
+            <Ionicons name="logo-whatsapp" size={18} color="#FFF" />
+            <Text style={styles.btnIndicarText}>Compartilhar agora</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Preferences */}
         <Text style={styles.prefTitle}>Preferências</Text>
 
@@ -327,7 +370,7 @@ export default function PerfilScreen({ navigation }) {
           <Ionicons name="chevron-forward" size={18} color={COLORS.textLight} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.prefItem} onPress={handleCompartilhar}>
+        <TouchableOpacity style={styles.prefItem} onPress={handleCompartilharWhatsApp}>
           <Ionicons name="share-social-outline" size={22} color={COLORS.text} />
           <Text style={styles.prefText}>Compartilhar app</Text>
           <Ionicons name="chevron-forward" size={18} color={COLORS.textLight} />
@@ -876,6 +919,91 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textLight,
     marginTop: 16,
+  },
+  // Indique e Ganhe
+  indicacaoCard: {
+    marginHorizontal: 20,
+    marginTop: 28,
+    marginBottom: 8,
+    padding: 20,
+    backgroundColor: '#FFF9E6',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLORS.primaryLight + '50',
+  },
+  indicacaoTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  indicacaoTitulo: {
+    fontSize: 17,
+    ...FONTS.bold,
+    color: COLORS.text,
+    marginBottom: 2,
+  },
+  indicacaoSubtitulo: {
+    fontSize: 12,
+    color: COLORS.textSecondary,
+    ...FONTS.medium,
+  },
+  indicacaoContador: {
+    alignItems: 'center',
+    backgroundColor: COLORS.primaryLight + '30',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  indicacaoNum: {
+    fontSize: 22,
+    ...FONTS.extrabold,
+    color: COLORS.primaryDark,
+  },
+  indicacaoNumLabel: {
+    fontSize: 10,
+    color: COLORS.textSecondary,
+    ...FONTS.medium,
+  },
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 16,
+  },
+  progressDot: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#F0F0F0',
+    borderWidth: 1.5,
+    borderColor: '#E0E0E0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progressDotFilled: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  progressLabel: {
+    fontSize: 13,
+    color: COLORS.textSecondary,
+    ...FONTS.medium,
+    marginLeft: 4,
+  },
+  btnIndicar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#25D366',
+    borderRadius: 14,
+    height: 48,
+  },
+  btnIndicarText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#FFF',
   },
   conquistasBloqueado: {
     marginHorizontal: 20,

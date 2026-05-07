@@ -40,6 +40,19 @@ export async function buscarAssinante(email) {
   return data;
 }
 
+// Busca total de indicações convertidas de um usuário
+export async function buscarTotalIndicacoes(email) {
+  try {
+    const { count } = await supabase
+      .from('indicacoes')
+      .select('*', { count: 'exact', head: true })
+      .eq('indicador_email', email.toLowerCase().trim());
+    return count ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
 // Salva o código de indicação do usuário (apenas se ainda não tiver um)
 export async function salvarCodigoIndicacao(email, codigo) {
   try {

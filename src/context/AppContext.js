@@ -33,6 +33,7 @@ const defaultState = {
   primeiroAcesso: true,
   unlockedMedals: [],
   giftModalVisto: false,
+  ultimoPromptCompartilhamento: null,
 };
 
 export function AppProvider({ children }) {
@@ -42,6 +43,7 @@ export function AppProvider({ children }) {
   const [jejumConcluido, setJejumConcluido] = useState(false);
   const [planoConcluido, setPlanoConcluido] = useState(false);
   const [todasOracoesCompletas, setTodasOracoesCompletas] = useState(false);
+  const [promptCompartilhamento, setPromptCompartilhamento] = useState(false);
 
   // Auth state
   const [auth, setAuth] = useState(null);
@@ -471,6 +473,19 @@ export function AppProvider({ children }) {
         // Gift referral
         giftModalVisto: state.giftModalVisto,
         marcarGiftVisto: () => updateState({ giftModalVisto: true }),
+        // Prompt de compartilhamento periódico (a cada 10 dias após devocional)
+        promptCompartilhamento,
+        verificarPromptCompartilhamento: () => {
+          const hoje = getTodayStr();
+          const ultimo = state.ultimoPromptCompartilhamento;
+          const deve = !ultimo || Math.floor((new Date(hoje) - new Date(ultimo)) / 86400000) >= 10;
+          if (deve) setPromptCompartilhamento(true);
+          return deve;
+        },
+        marcarPromptCompartilhamento: () => {
+          setPromptCompartilhamento(false);
+          updateState({ ultimoPromptCompartilhamento: getTodayStr() });
+        },
       }}
     >
       {children}
