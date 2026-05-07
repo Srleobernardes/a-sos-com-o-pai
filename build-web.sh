@@ -28,7 +28,8 @@ html = html.replace(
 );
 
 const fontFace = '<style>@font-face{font-family:\"Ionicons\";src:url(\"/Ionicons.ttf\") format(\"truetype\");font-weight:normal;font-style:normal;}</style>';
-html = html.replace('</head>', fontFace + '\n</head>');
+const bgFix = '<style>html,body{background-color:#F5F2EB!important;margin:0;padding:0;}</style>';
+html = html.replace('</head>', fontFace + '\n' + bgFix + '\n</head>');
 
 fs.writeFileSync('dist/index.html', html);
 "
