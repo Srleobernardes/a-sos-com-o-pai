@@ -5,8 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
+import UpgradeModal from '../components/UpgradeModal';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -79,6 +79,8 @@ export default function JejumScreen({ navigation }) {
     temAcesso,
   } = useApp();
 
+  const [upgradeModal, setUpgradeModal] = useState({ visible: false, recurso: null });
+
   const JEJUM_ACESSO = {
     normal: 'jejumNormal',
     parcial: 'jejumNormal',
@@ -86,17 +88,10 @@ export default function JejumScreen({ navigation }) {
     ester: 'jejumBiblico',
   };
 
-  const mostrarAlertaUpgrade = (planoNecessario) => {
-    const msg = planoNecessario === 'anual'
-      ? 'Este recurso é exclusivo do Plano Anual.'
-      : 'Este recurso é exclusivo do Plano Semestral ou Anual.';
-    Alert.alert('🔒 Recurso bloqueado', msg + '\n\nAcesse o app e faça upgrade do seu plano.', [{ text: 'Entendi' }]);
-  };
-
   const handleTipoPress = (tipo) => {
     const recurso = JEJUM_ACESSO[tipo.id];
     if (!temAcesso(recurso)) {
-      mostrarAlertaUpgrade('semestral');
+      setUpgradeModal({ visible: true, recurso: 'jejumBiblico' });
       return;
     }
     navigation.navigate(TELA_POR_TIPO[tipo.id]);
@@ -104,7 +99,7 @@ export default function JejumScreen({ navigation }) {
 
   const handlePropositoPress = (jejum) => {
     if (!temAcesso('jejumIntencional')) {
-      mostrarAlertaUpgrade('anual');
+      setUpgradeModal({ visible: true, recurso: 'jejumIntencional' });
       return;
     }
     navigation.navigate('JejumNivel', { jejum });
@@ -585,6 +580,13 @@ export default function JejumScreen({ navigation }) {
           );
         })}
       </ScrollView>
+
+      <UpgradeModal
+        visible={upgradeModal.visible}
+        recurso={upgradeModal.recurso}
+        onClose={() => setUpgradeModal({ visible: false, recurso: null })}
+        navigation={navigation}
+      />
     </View>
   );
 }

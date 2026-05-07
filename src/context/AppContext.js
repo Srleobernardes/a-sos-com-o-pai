@@ -53,7 +53,31 @@ export function AppProvider({ children }) {
     try {
       const timeout = new Promise((resolve) => setTimeout(() => resolve(null), 5000));
       const saved = await Promise.race([AsyncStorage.getItem(AUTH_KEY), timeout]);
-      if (saved) setAuth(JSON.parse(saved));
+      if (!saved) return;
+
+      const authData = JSON.parse(saved);
+      setAuth(authData);
+
+      // Re-valida no Supabase em background para detectar assinatura expirada/cancelada
+      try {
+        const assinante = await buscarAssinante(authData.email);
+        if (!assinante || !assinaturaAtiva(assinante)) {
+          await AsyncStorage.removeItem(AUTH_KEY);
+          setAuth(null);
+        } else {
+          // Atualiza dados caso plano/status tenha mudado
+          const atualizado = {
+            email: assinante.email,
+            plano: assinante.plano,
+            status: assinante.status,
+            trialFim: assinante.trial_fim,
+          };
+          await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(atualizado));
+          setAuth(atualizado);
+        }
+      } catch {
+        // Sem internet: mantém sessão salva localmente
+      }
     } catch (e) {
       console.log('Erro ao carregar auth:', e);
     } finally {
