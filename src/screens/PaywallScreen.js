@@ -37,7 +37,12 @@ export default function PaywallScreen({ navigation }) {
   const handleIrParaCheckout = async () => {
     setModalInstrucao(false);
     try {
-      await Linking.openURL(planoAtual.checkoutUrl);
+      let url = planoAtual.checkoutUrl;
+      if (typeof window !== 'undefined') {
+        const refCodigo = localStorage.getItem('@sos_ref_indicacao');
+        if (refCodigo) url += `&utm_content=${encodeURIComponent(refCodigo)}`;
+      }
+      await Linking.openURL(url);
     } catch {}
   };
 

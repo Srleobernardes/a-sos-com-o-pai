@@ -11,19 +11,11 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { gerarCodigoRef } from '../lib/referral';
 
 const { width } = Dimensions.get('window');
 const CARD_W = Math.min(width - 40, 400);
 const APP_URL = 'https://appasoscomopai.com.br';
-
-function gerarCodigoRef(email = '') {
-  const base = (email.split('@')[0] || '')
-    .replace(/[^a-zA-Z0-9]/g, '')
-    .toUpperCase()
-    .slice(0, 6) || 'AMIGO';
-  const hash = [...email].reduce((a, c) => a + c.charCodeAt(0), 0);
-  return `${base}${(hash % 9000) + 1000}`;
-}
 
 const PARTICULAS_CONFIG = [
   { angle: 0,                   cor: '#FFD54F', dist: 100 },

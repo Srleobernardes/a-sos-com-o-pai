@@ -40,6 +40,19 @@ export async function buscarAssinante(email) {
   return data;
 }
 
+// Salva o código de indicação do usuário (apenas se ainda não tiver um)
+export async function salvarCodigoIndicacao(email, codigo) {
+  try {
+    await supabase
+      .from('assinantes')
+      .update({ codigo_indicacao: codigo })
+      .eq('email', email.toLowerCase().trim())
+      .is('codigo_indicacao', null);
+  } catch {
+    // Falha silenciosa — não impede o login
+  }
+}
+
 // Verifica se a assinatura está ativa (trial ou ativo, e dentro do prazo)
 export function assinaturaAtiva(assinante) {
   if (!assinante) return false;

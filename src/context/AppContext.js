@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { MEDALHAS } from '../data/medalhas';
 import { temAcesso } from '../data/planos';
-import { buscarAssinante, assinaturaAtiva } from '../lib/supabase';
+import { buscarAssinante, assinaturaAtiva, salvarCodigoIndicacao } from '../lib/supabase';
+import { gerarCodigoRef } from '../lib/referral';
 
 const AppContext = createContext();
 
@@ -48,6 +50,14 @@ export function AppProvider({ children }) {
   useEffect(() => {
     loadState();
     loadAuth();
+    // Captura ?ref da URL quando o app abre no browser (link de indicação)
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get('ref');
+      if (ref) {
+        try { localStorage.setItem('@sos_ref_indicacao', ref); } catch {}
+      }
+    }
   }, []);
 
   const loadAuth = async () => {
@@ -102,11 +112,18 @@ export function AppProvider({ children }) {
       throw err;
     }
 
+    // Salva o código de indicação no banco se ainda não tiver
+    const codigoGerado = gerarCodigoRef(assinante.email);
+    if (!assinante.codigo_indicacao) {
+      await salvarCodigoIndicacao(assinante.email, codigoGerado);
+    }
+
     const authData = {
       email: assinante.email,
       plano: assinante.plano,
       status: assinante.status,
       trialFim: assinante.trial_fim,
+      codigoIndicacao: assinante.codigo_indicacao || codigoGerado,
     };
     await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(authData));
     await AsyncStorage.removeItem(PENDING_PLANO_KEY);
