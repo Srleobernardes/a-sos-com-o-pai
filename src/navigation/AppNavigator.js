@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, View, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -114,6 +114,15 @@ function MainNavigator() {
     auth, giftModalVisto, marcarGiftVisto,
   } = useApp();
 
+  const [showGift, setShowGift] = useState(false);
+
+  useEffect(() => {
+    if (auth && !giftModalVisto) {
+      setShowGift(true);
+      marcarGiftVisto(); // marca imediatamente para não repetir
+    }
+  }, [auth, giftModalVisto]);
+
   return (
     <>
     <Tab.Navigator
@@ -182,7 +191,7 @@ function MainNavigator() {
     </Tab.Navigator>
     <PlanoConcluidoAnimacao visible={planoConcluido} onClose={clearPlanoConcluido} />
     <OracoesConcluidasAnimacao visible={todasOracoesCompletas} onClose={clearTodasOracoesCompletas} />
-    <GiftModal visible={!giftModalVisto} email={auth?.email} onClose={marcarGiftVisto} />
+    <GiftModal visible={showGift} email={auth?.email} onClose={() => setShowGift(false)} />
     </>
   );
 }
