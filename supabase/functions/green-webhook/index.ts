@@ -50,6 +50,8 @@ function extrairCodigoRef(payload: any): string {
   ).toString().trim();
 }
 
+const INDICACOES_PARA_RECOMPENSA = 3;
+
 async function processarIndicacao(emailIndicado: string, codigoRef: string, plano: string) {
   if (!codigoRef) return;
 
@@ -64,26 +66,45 @@ async function processarIndicacao(emailIndicado: string, codigoRef: string, plan
     return;
   }
 
-  // Registra a indicação
+  // Registra a indicação (sem recompensa ainda)
   await supabase.from('indicacoes').insert({
-    indicador_email: indicador.email,
-    indicado_email:  emailIndicado,
-    codigo_ref:      codigoRef,
-    plano_indicado:  plano,
-    recompensa_aplicada: true,
+    indicador_email:     indicador.email,
+    indicado_email:      emailIndicado,
+    codigo_ref:          codigoRef,
+    plano_indicado:      plano,
+    recompensa_aplicada: false,
   });
 
-  // Aplica recompensa: +30 dias no trial do indicador
-  const base = indicador.trial_fim ? new Date(indicador.trial_fim) : new Date();
-  if (base < new Date()) base.setTime(new Date().getTime()); // se já expirou, parte de hoje
-  base.setDate(base.getDate() + 30);
+  // Conta o total de indicações deste indicador
+  const { count } = await supabase
+    .from('indicacoes')
+    .select('*', { count: 'exact', head: true })
+    .eq('indicador_email', indicador.email);
 
-  await supabase
-    .from('assinantes')
-    .update({ trial_fim: base.toISOString() })
-    .eq('email', indicador.email);
+  const total = count ?? 0;
 
-  console.log(`Indicação registrada: ${indicador.email} → ${emailIndicado} (+30 dias)`);
+  // Recompensa apenas a cada múltiplo de 3 indicações
+  if (total % INDICACOES_PARA_RECOMPENSA === 0) {
+    const base = indicador.trial_fim ? new Date(indicador.trial_fim) : new Date();
+    if (base < new Date()) base.setTime(new Date().getTime());
+    base.setDate(base.getDate() + 30);
+
+    await supabase
+      .from('assinantes')
+      .update({ trial_fim: base.toISOString() })
+      .eq('email', indicador.email);
+
+    // Marca as indicações pendentes deste ciclo como recompensadas
+    await supabase
+      .from('indicacoes')
+      .update({ recompensa_aplicada: true })
+      .eq('indicador_email', indicador.email)
+      .eq('recompensa_aplicada', false);
+
+    console.log(`Recompensa aplicada: ${indicador.email} atingiu ${total} indicações → +30 dias`);
+  } else {
+    console.log(`Indicação registrada: ${indicador.email} → ${emailIndicado} (${total}/${INDICACOES_PARA_RECOMPENSA} para recompensa)`);
+  }
 }
 
 Deno.serve(async (req) => {
