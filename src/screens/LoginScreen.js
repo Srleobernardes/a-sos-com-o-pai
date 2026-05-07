@@ -11,8 +11,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Alert,
   ScrollView,
+  Linking,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,33 +26,71 @@ const isIOSSafariNaoBrowser = Platform.OS === 'web' &&
 
 const logoIcon = require('../../assets/icons/logo.png');
 
+const ERROS = {
+  SEM_CONEXAO: {
+    icone: 'wifi-outline',
+    cor: '#FF7043',
+    titulo: 'Sem conexão',
+    mensagem: 'Verifique sua internet e tente novamente.',
+  },
+  SERVIDOR_INDISPONIVEL: {
+    icone: 'cloud-offline-outline',
+    cor: '#FF7043',
+    titulo: 'Serviço indisponível',
+    mensagem: 'Nossos servidores estão temporariamente fora. Tente novamente em alguns instantes.',
+  },
+  EMAIL_NAO_ENCONTRADO: {
+    icone: 'mail-unread-outline',
+    cor: '#8899AA',
+    titulo: 'E-mail não encontrado',
+    mensagem: 'Verifique se usou o mesmo e-mail do checkout. Cada letra importa!',
+  },
+  ASSINATURA_INATIVA: {
+    icone: 'alert-circle-outline',
+    cor: '#FF7043',
+    titulo: 'Assinatura inativa',
+    mensagem: 'Sua assinatura está inativa ou expirada. Entre em contato com o suporte.',
+    suporte: true,
+  },
+  DEFAULT: {
+    icone: 'alert-circle-outline',
+    cor: '#FF7043',
+    titulo: 'Erro ao acessar',
+    mensagem: 'Não foi possível acessar. Tente novamente.',
+  },
+};
+
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState(null);
   const { login } = useApp();
 
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
+  const handleChangeEmail = (text) => {
+    setEmail(text);
+    if (erro) setErro(null);
+  };
+
   const handleEntrar = async () => {
     if (!emailValido) {
-      Alert.alert('E-mail inválido', 'Por favor, insira um e-mail válido.');
+      setErro({ codigo: 'DEFAULT', mensagem: 'Por favor, insira um e-mail válido.' });
       return;
     }
 
     setCarregando(true);
+    setErro(null);
     try {
       await login(email.trim().toLowerCase());
-      // Navegação automática pelo AppNavigator ao detectar isAuthenticated
     } catch (e) {
-      Alert.alert('Acesso negado', e.message || 'Não foi possível acessar. Tente novamente.');
+      setErro({ codigo: e.code || 'DEFAULT' });
     } finally {
       setCarregando(false);
     }
   };
 
-  const handleVoltar = () => {
-    navigation.goBack();
-  };
+  const erroConfig = erro ? (ERROS[erro.codigo] || ERROS.DEFAULT) : null;
 
   return (
     <View style={styles.container}>
@@ -73,7 +111,7 @@ export default function LoginScreen({ navigation }) {
             showsVerticalScrollIndicator={false}
           >
             {/* Back button */}
-            <TouchableOpacity onPress={handleVoltar} style={styles.backButton}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
               <Ionicons name="arrow-back" size={22} color="#AABBCC" />
               <Text style={styles.backText}>Voltar</Text>
             </TouchableOpacity>
@@ -101,14 +139,23 @@ export default function LoginScreen({ navigation }) {
                 Use o e-mail que você cadastrou no checkout para entrar no app.
               </Text>
 
-              <View style={styles.inputContainer}>
-                <Ionicons name="mail-outline" size={20} color="#8899AA" style={styles.inputIcon} />
+              {/* Input com borda vermelha quando há erro */}
+              <View style={[
+                styles.inputContainer,
+                erroConfig && { borderColor: erroConfig.cor },
+              ]}>
+                <Ionicons
+                  name="mail-outline"
+                  size={20}
+                  color={erroConfig ? erroConfig.cor : '#8899AA'}
+                  style={styles.inputIcon}
+                />
                 <TextInput
                   style={styles.input}
                   placeholder="seu@email.com"
                   placeholderTextColor="#8899AA"
                   value={email}
-                  onChangeText={setEmail}
+                  onChangeText={handleChangeEmail}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -116,6 +163,22 @@ export default function LoginScreen({ navigation }) {
                   onSubmitEditing={handleEntrar}
                 />
               </View>
+
+              {/* Card de erro inline */}
+              {erroConfig && (
+                <View style={[styles.erroCard, { borderColor: erroConfig.cor + '50' }]}>
+                  <Ionicons name={erroConfig.icone} size={20} color={erroConfig.cor} style={styles.erroIcone} />
+                  <View style={styles.erroTextos}>
+                    <Text style={[styles.erroTitulo, { color: erroConfig.cor }]}>{erroConfig.titulo}</Text>
+                    <Text style={styles.erroMensagem}>{erroConfig.mensagem}</Text>
+                    {erroConfig.suporte && (
+                      <TouchableOpacity onPress={() => Linking.openURL('mailto:suporte@asoscomopai.com')}>
+                        <Text style={styles.erroSuporte}>Falar com o suporte →</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              )}
 
               <TouchableOpacity
                 activeOpacity={0.85}
@@ -251,7 +314,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingHorizontal: 16,
     height: 54,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   inputIcon: {
     marginRight: 10,
@@ -262,6 +325,40 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#FFFFFF',
     height: '100%',
+  },
+
+  erroCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 16,
+    gap: 10,
+  },
+  erroIcone: {
+    marginTop: 1,
+    flexShrink: 0,
+  },
+  erroTextos: {
+    flex: 1,
+  },
+  erroTitulo: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  erroMensagem: {
+    fontSize: 13,
+    color: '#AABBCC',
+    lineHeight: 18,
+  },
+  erroSuporte: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#D4A017',
+    marginTop: 6,
   },
 
   btnWrapper: {

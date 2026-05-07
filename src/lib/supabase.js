@@ -12,14 +12,31 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
 });
 
 // Busca o registro do assinante pelo email
+// Lança erros distintos para cada situação
 export async function buscarAssinante(email) {
-  const { data, error } = await supabase
-    .from('assinantes')
-    .select('*')
-    .eq('email', email.toLowerCase().trim())
-    .single();
+  let data, error;
 
-  if (error) return null;
+  try {
+    ({ data, error } = await supabase
+      .from('assinantes')
+      .select('*')
+      .eq('email', email.toLowerCase().trim())
+      .single());
+  } catch {
+    const err = new Error('Sem conexão com a internet. Verifique sua rede e tente novamente.');
+    err.code = 'SEM_CONEXAO';
+    throw err;
+  }
+
+  // PGRST116 = nenhuma linha encontrada (email não cadastrado)
+  if (error?.code === 'PGRST116') return null;
+
+  if (error) {
+    const err = new Error('Nossos servidores estão temporariamente indisponíveis. Tente novamente em instantes.');
+    err.code = 'SERVIDOR_INDISPONIVEL';
+    throw err;
+  }
+
   return data;
 }
 

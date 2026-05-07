@@ -86,14 +86,19 @@ export function AppProvider({ children }) {
   };
 
   const login = async (email) => {
+    // buscarAssinante já lança erro tipado para sem conexão / servidor fora
     const assinante = await buscarAssinante(email);
 
     if (!assinante) {
-      throw new Error('Email não encontrado. Verifique se usou o mesmo email do checkout.');
+      const err = new Error('E-mail não encontrado. Verifique se usou o mesmo e-mail do checkout.');
+      err.code = 'EMAIL_NAO_ENCONTRADO';
+      throw err;
     }
 
     if (!assinaturaAtiva(assinante)) {
-      throw new Error('Sua assinatura está inativa ou expirada. Entre em contato com o suporte.');
+      const err = new Error('Sua assinatura está inativa ou expirada. Entre em contato com o suporte.');
+      err.code = 'ASSINATURA_INATIVA';
+      throw err;
     }
 
     const authData = {
