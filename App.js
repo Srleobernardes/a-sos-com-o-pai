@@ -40,7 +40,7 @@ export default function App() {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#F5F2EB' }}>
       <SafeAreaProvider>
         <AppProvider>
           <NavigationContainer>
