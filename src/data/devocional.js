@@ -420,3 +420,12 @@ Este não é o fim de uma jornada — é o começo de uma vida inteira de intimi
     oracao: 'Pai fiel, obrigado por cada dia desta jornada. Tuas misericórdias são novas a cada manhã — e eu começo hoje de novo, com a certeza de que Tu és fiel. Segura minha mão, Senhor, para sempre. Em nome de Jesus, amém.',
   },
 ];
+
+export function getDevocionalDoDia() {
+  const hoje = new Date();
+  const diaDoAno = Math.floor(
+    (hoje - new Date(hoje.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)
+  );
+  const index = diaDoAno % DEVOCIONAIS.length;
+  return DEVOCIONAIS[index];
+}
