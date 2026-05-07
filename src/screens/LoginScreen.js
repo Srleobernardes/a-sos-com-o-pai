@@ -213,6 +213,15 @@ export default function LoginScreen({ navigation }) {
                   Ainda não fez o checkout? Volte e escolha um plano para começar seus 7 dias grátis.
                 </Text>
               </View>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('EsqueciEmail')}
+                style={styles.esqueciBtn}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="help-circle-outline" size={15} color="#8899AA" />
+                <Text style={styles.esqueciText}>Não lembro qual e-mail usei</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -395,5 +404,19 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#8899AA',
     lineHeight: 18,
+  },
+
+  esqueciBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    marginTop: 20,
+    paddingVertical: 8,
+  },
+  esqueciText: {
+    fontSize: 13,
+    color: '#8899AA',
+    fontWeight: '500',
   },
 });

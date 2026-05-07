@@ -30,6 +30,7 @@ import JejumNormalScreen from '../screens/JejumNormalScreen';
 import JejumParcialScreen from '../screens/JejumParcialScreen';
 import PaywallScreen from '../screens/PaywallScreen';
 import LoginScreen from '../screens/LoginScreen';
+import EsqueciEmailScreen from '../screens/EsqueciEmailScreen';
 import AdminScreen from '../screens/AdminScreen';
 
 const Tab = createBottomTabNavigator();
@@ -193,6 +194,7 @@ export default function AppNavigator() {
         <>
           <Root.Screen name="Paywall" component={PaywallScreen} />
           <Root.Screen name="Login" component={LoginScreen} />
+          <Root.Screen name="EsqueciEmail" component={EsqueciEmailScreen} />
         </>
       )}
     </Root.Navigator>
