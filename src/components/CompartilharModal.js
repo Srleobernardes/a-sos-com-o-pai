@@ -11,10 +11,9 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, SHADOWS } from '../theme/colors';
-import { gerarCodigoRef } from '../lib/referral';
+import { gerarLinkRef } from '../lib/referral';
 
 const { width } = Dimensions.get('window');
-const APP_URL = 'https://appasoscomopai.com.br';
 
 export default function CompartilharModal({ visible, totalDevocionais, email, onClose }) {
   const scaleAnim   = useRef(new Animated.Value(0.88)).current;
@@ -32,8 +31,7 @@ export default function CompartilharModal({ visible, totalDevocionais, email, on
   }, [visible]);
 
   const handleCompartilhar = () => {
-    const codigo = gerarCodigoRef(email);
-    const link = `${APP_URL}?ref=${codigo}`;
+    const link = gerarLinkRef(email);
     const msg =
       `Oi! 🙏 Uso o *A Sós com o Pai* há ${totalDevocionais} devocionais e ` +
       `tem transformado minha vida de oração.\n\n` +

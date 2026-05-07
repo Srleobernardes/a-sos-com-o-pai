@@ -11,11 +11,10 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { gerarCodigoRef } from '../lib/referral';
+import { gerarLinkRef } from '../lib/referral';
 
 const { width } = Dimensions.get('window');
 const CARD_W = Math.min(width - 40, 400);
-const APP_URL = 'https://appasoscomopai.com.br';
 
 const PARTICULAS_CONFIG = [
   { angle: 0,                   cor: '#FFD54F', dist: 100 },
@@ -153,8 +152,7 @@ export default function GiftModal({ visible, email, onClose }) {
   };
 
   const handleCompartilhar = useCallback(() => {
-    const codigo = gerarCodigoRef(email);
-    const link = `${APP_URL}?ref=${codigo}`;
+    const link = gerarLinkRef(email);
     const msg =
       `Oi! 🙏 Quero te dar um presente especial: 7 dias GRÁTIS no *A Sós com o Pai*, ` +
       `um app que tem transformado minha vida de oração.\n\n` +

@@ -24,7 +24,7 @@ import { MEDALHAS } from '../data/medalhas';
 import MedalhaCard from '../components/MedalhaCard';
 import { getPlanoPorId } from '../data/planos';
 import { buscarTotalIndicacoes } from '../lib/supabase';
-import { gerarCodigoRef } from '../lib/referral';
+import { gerarLinkRef } from '../lib/referral';
 
 const PLANO_LABELS = { mensal: 'Plano Mensal', semestral: 'Plano Semestral', anual: 'Plano Anual' };
 
@@ -85,8 +85,7 @@ export default function PerfilScreen({ navigation }) {
   };
 
   const handleCompartilharWhatsApp = () => {
-    const codigo = gerarCodigoRef(auth?.email || '');
-    const link = `https://appasoscomopai.com.br?ref=${codigo}`;
+    const link = gerarLinkRef(auth?.email || '');
     const msg =
       `Oi! 🙏 Uso o *A Sós com o Pai* e tem transformado minha vida de oração.\n\n` +
       `Quero te dar 7 dias grátis para você experimentar:\n${link}`;
