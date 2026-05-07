@@ -30,6 +30,7 @@ const defaultState = {
   devocionaisHistorico: [],
   primeiroAcesso: true,
   unlockedMedals: [],
+  giftModalVisto: false,
 };
 
 export function AppProvider({ children }) {
@@ -450,6 +451,9 @@ export function AppProvider({ children }) {
         savePendingPlano,
         getPendingPlano,
         temAcesso: (recurso) => temAcesso(auth?.plano, recurso),
+        // Gift referral
+        giftModalVisto: state.giftModalVisto,
+        marcarGiftVisto: () => updateState({ giftModalVisto: true }),
       }}
     >
       {children}

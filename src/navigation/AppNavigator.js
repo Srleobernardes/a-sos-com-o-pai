@@ -8,6 +8,7 @@ import { useApp } from '../context/AppContext';
 import PlanoConcluidoAnimacao from '../components/PlanoConcluidoAnimacao';
 import OracoesConcluidasAnimacao from '../components/OracoesConcluidasAnimacao';
 import SplashScreen from '../components/SplashScreen';
+import GiftModal from '../components/GiftModal';
 
 const logoIcon = require('../../assets/icons/logo.png');
 
@@ -107,7 +108,11 @@ const TAB_LABELS = {
 };
 
 function MainNavigator() {
-  const { planoConcluido, clearPlanoConcluido, todasOracoesCompletas, clearTodasOracoesCompletas } = useApp();
+  const {
+    planoConcluido, clearPlanoConcluido,
+    todasOracoesCompletas, clearTodasOracoesCompletas,
+    auth, giftModalVisto, marcarGiftVisto,
+  } = useApp();
 
   return (
     <>
@@ -177,6 +182,7 @@ function MainNavigator() {
     </Tab.Navigator>
     <PlanoConcluidoAnimacao visible={planoConcluido} onClose={clearPlanoConcluido} />
     <OracoesConcluidasAnimacao visible={todasOracoesCompletas} onClose={clearTodasOracoesCompletas} />
+    <GiftModal visible={!giftModalVisto} email={auth?.email} onClose={marcarGiftVisto} />
     </>
   );
 }
