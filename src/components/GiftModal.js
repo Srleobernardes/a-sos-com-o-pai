@@ -166,8 +166,7 @@ export default function GiftModal({ visible, email, onClose }) {
     const msg =
       `Oi! 🙏 Quero te dar um presente especial: 7 dias GRÁTIS no *A Sós com o Pai*, ` +
       `um app que tem transformado minha vida de oração.\n\n` +
-      `Clica aqui para resgatar o seu presente:\n${link}\n\n` +
-      `É completamente de graça, não precisa colocar cartão! ❤️`;
+      `Clica aqui para resgatar o seu presente:\n${link}`;
     Linking.openURL(`https://wa.me/?text=${encodeURIComponent(msg)}`);
   }, [email]);
 
