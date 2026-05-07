@@ -15,6 +15,7 @@ import {
   Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -29,10 +30,10 @@ import { gerarLinkRef } from '../lib/referral';
 const PLANO_LABELS = { mensal: 'Plano Mensal', semestral: 'Plano Semestral', anual: 'Plano Anual' };
 
 const TITULOS = [
-  { minimo: 15, label: 'Líder',        cor: '#F59E0B', bg: '#FEF3C7', border: '#FCD34D' },
-  { minimo: 7,  label: 'Embaixador',   cor: '#7C3AED', bg: '#EDE9FE', border: '#C4B5FD' },
-  { minimo: 3,  label: 'Intercessor',  cor: '#0369A1', bg: '#E0F2FE', border: '#7DD3FC' },
-  { minimo: 1,  label: 'Mensageiro',   cor: '#059669', bg: '#D1FAE5', border: '#6EE7B7' },
+  { minimo: 15, label: 'Líder',       icone: '👑', gradiente: ['#F59E0B', '#D97706'], sombra: '#F59E0B' },
+  { minimo: 7,  label: 'Embaixador',  icone: '⚜️', gradiente: ['#8B5CF6', '#6D28D9'], sombra: '#8B5CF6' },
+  { minimo: 3,  label: 'Intercessor', icone: '🙏', gradiente: ['#3B82F6', '#1D4ED8'], sombra: '#3B82F6' },
+  { minimo: 1,  label: 'Mensageiro',  icone: '🕊️', gradiente: ['#10B981', '#059669'], sombra: '#10B981' },
 ];
 
 function getTitulo(total) {
@@ -191,9 +192,21 @@ export default function PerfilScreen({ navigation }) {
             {getTitulo(totalIndicacoes) && (() => {
               const t = getTitulo(totalIndicacoes);
               return (
-                <View style={[styles.tituloTag, { backgroundColor: t.bg, borderColor: t.border }]}>
-                  <Text style={[styles.tituloTagText, { color: t.cor }]}>✦ {t.label}</Text>
-                </View>
+                <LinearGradient
+                  colors={t.gradiente}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={[styles.tituloTag, {
+                    shadowColor: t.sombra,
+                    shadowOffset: { width: 0, height: 3 },
+                    shadowOpacity: 0.5,
+                    shadowRadius: 6,
+                    elevation: 6,
+                  }]}
+                >
+                  <Text style={styles.tituloTagEmoji}>{t.icone}</Text>
+                  <Text style={styles.tituloTagText}>{t.label.toUpperCase()}</Text>
+                </LinearGradient>
               );
             })()}
           </View>
@@ -672,15 +685,21 @@ const styles = StyleSheet.create({
     color: COLORS.text,
   },
   tituloTag: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
     borderRadius: 20,
-    borderWidth: 1,
+  },
+  tituloTagEmoji: {
+    fontSize: 13,
   },
   tituloTagText: {
-    fontSize: 12,
-    ...FONTS.bold,
-    letterSpacing: 0.3,
+    fontSize: 11,
+    ...FONTS.extrabold,
+    color: '#FFFFFF',
+    letterSpacing: 1,
   },
   settingsButton: {
     width: 42,
