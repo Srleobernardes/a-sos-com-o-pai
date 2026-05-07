@@ -18,6 +18,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../context/AppContext';
 
+// Detecta se está rodando no iOS Safari fora do modo PWA instalado
+const isIOSSafariNaoBrowser = Platform.OS === 'web' &&
+  typeof window !== 'undefined' &&
+  /iphone|ipad|ipod/i.test(window.navigator.userAgent) &&
+  window.navigator.standalone !== true;
+
 const logoIcon = require('../../assets/icons/logo.png');
 
 export default function LoginScreen({ navigation }) {
@@ -71,6 +77,16 @@ export default function LoginScreen({ navigation }) {
               <Ionicons name="arrow-back" size={22} color="#AABBCC" />
               <Text style={styles.backText}>Voltar</Text>
             </TouchableOpacity>
+
+            {/* Aviso PWA - só aparece no iOS Safari fora do app instalado */}
+            {isIOSSafariNaoBrowser && (
+              <View style={styles.pwaBanner}>
+                <Ionicons name="warning-outline" size={18} color="#D4A017" />
+                <Text style={styles.pwaBannerText}>
+                  Você está no Safari. Para não perder seu acesso, abra o app pelo ícone na tela de início do celular.
+                </Text>
+              </View>
+            )}
 
             {/* Logo */}
             <View style={styles.logoContainer}>
@@ -156,6 +172,25 @@ const styles = StyleSheet.create({
   scroll: {
     flexGrow: 1,
     paddingBottom: 40,
+  },
+
+  pwaBanner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+    marginHorizontal: 20,
+    marginTop: 12,
+    backgroundColor: 'rgba(212, 160, 23, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(212, 160, 23, 0.35)',
+    borderRadius: 12,
+    padding: 12,
+  },
+  pwaBannerText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#D4A017',
+    lineHeight: 18,
   },
 
   backButton: {
