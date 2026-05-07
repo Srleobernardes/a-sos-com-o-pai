@@ -28,6 +28,17 @@ import { gerarLinkRef } from '../lib/referral';
 
 const PLANO_LABELS = { mensal: 'Plano Mensal', semestral: 'Plano Semestral', anual: 'Plano Anual' };
 
+const TITULOS = [
+  { minimo: 15, label: 'Líder',        cor: '#F59E0B', bg: '#FEF3C7', border: '#FCD34D' },
+  { minimo: 7,  label: 'Embaixador',   cor: '#7C3AED', bg: '#EDE9FE', border: '#C4B5FD' },
+  { minimo: 3,  label: 'Intercessor',  cor: '#0369A1', bg: '#E0F2FE', border: '#7DD3FC' },
+  { minimo: 1,  label: 'Mensageiro',   cor: '#059669', bg: '#D1FAE5', border: '#6EE7B7' },
+];
+
+function getTitulo(total) {
+  return TITULOS.find(t => total >= t.minimo) ?? null;
+}
+
 const STORAGE_NAME_KEY = '@perfil_nome';
 const STORAGE_PHOTO_KEY = '@perfil_foto';
 
@@ -175,7 +186,17 @@ export default function PerfilScreen({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.titulo}>Perfil</Text>
+          <View style={styles.headerLeft}>
+            <Text style={styles.titulo}>Perfil</Text>
+            {getTitulo(totalIndicacoes) && (() => {
+              const t = getTitulo(totalIndicacoes);
+              return (
+                <View style={[styles.tituloTag, { backgroundColor: t.bg, borderColor: t.border }]}>
+                  <Text style={[styles.tituloTagText, { color: t.cor }]}>✦ {t.label}</Text>
+                </View>
+              );
+            })()}
+          </View>
           <TouchableOpacity style={styles.settingsButton}>
             <Ionicons name="settings-outline" size={24} color={COLORS.text} />
           </TouchableOpacity>
@@ -640,10 +661,26 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 16,
   },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   titulo: {
     fontSize: 28,
     ...FONTS.extrabold,
     color: COLORS.text,
+  },
+  tituloTag: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+    borderWidth: 1,
+  },
+  tituloTagText: {
+    fontSize: 12,
+    ...FONTS.bold,
+    letterSpacing: 0.3,
   },
   settingsButton: {
     width: 42,
