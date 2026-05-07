@@ -24,7 +24,7 @@ let html = fs.readFileSync('dist/index.html', 'utf8');
 
 html = html.replace(
   '<link rel=\"icon\" href=\"/favicon.ico\" />',
-  '<link rel=\"icon\" href=\"/favicon.ico\" />\n<link rel=\"apple-touch-icon\" href=\"/icon-192.png\" />\n<link rel=\"manifest\" href=\"/manifest.json\" />'
+  '<link rel=\"icon\" href=\"/favicon.ico\" />\n<link rel=\"apple-touch-icon\" href=\"/icon-192.png\" />\n<link rel=\"manifest\" href=\"/manifest.json\" />\n<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black-translucent\" />\n<meta name=\"apple-mobile-web-app-title\" content=\"A Sós com o Pai\" />'
 );
 
 const fontFace = '<style>@font-face{font-family:\"Ionicons\";src:url(\"/Ionicons.ttf\") format(\"truetype\");font-weight:normal;font-style:normal;}</style>';
