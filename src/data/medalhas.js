@@ -129,4 +129,11 @@ export const JEJUM_TIPOS = [
     duracao: '3 dias',
     icone: 'star-outline',
   },
+  {
+    id: 'ester-casamento',
+    titulo: 'Jejum de Ester — Casamento',
+    descricao: '7 dias de jejum e oração pelo seu casamento',
+    duracao: '7 dias',
+    icone: 'heart',
+  },
 ];

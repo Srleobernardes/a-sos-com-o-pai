@@ -12,26 +12,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, SHADOWS, FONTS } from '../theme/colors';
 import { useApp } from '../context/AppContext';
-import { JEJUM_ESTER } from '../data/jejumEster';
+import { JEJUM_ESTER_CASAMENTO } from '../data/jejumEsterCasamento';
 
-const COR = JEJUM_ESTER.cor;
+const COR = JEJUM_ESTER_CASAMENTO.cor;
 
 const PERIODO_ICONES = {
-  'Início': 'play-circle',
+  'Início': 'sunny-outline',
   'Meio-Dia': 'sunny',
   'Tarde': 'cloudy',
   'Noite': 'moon',
   'Encerramento': 'checkmark-done-circle',
 };
 
-export default function JejumEsterScreen({ navigation }) {
+export default function JejumEsterCasamentoScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { jejumDias, toggleJejumDia, startJejum, jejumAtivo } = useApp();
   const [expandedDia, setExpandedDia] = useState(null);
   const [expandedOracao, setExpandedOracao] = useState(null);
 
-  const diasCompletos = Object.values(jejumDias).filter(Boolean).length;
-  const isEsteJejumAtivo = jejumAtivo?.tipo === 'ester';
+  const totalDias = JEJUM_ESTER_CASAMENTO.dias.length;
+  const diasCompletos = Array.from({ length: totalDias }, (_, i) => jejumDias[`dia_${i + 1}`]).filter(Boolean).length;
+  const isEsteJejumAtivo = jejumAtivo?.tipo === 'ester-casamento';
 
   const handleIniciarJejum = () => {
     if (isEsteJejumAtivo) {
@@ -39,7 +40,7 @@ export default function JejumEsterScreen({ navigation }) {
       return;
     }
     const doStart = () => {
-      startJejum('ester');
+      startJejum('ester-casamento');
       navigation.navigate('JejumMain');
     };
     if (!jejumAtivo) {
@@ -74,11 +75,11 @@ export default function JejumEsterScreen({ navigation }) {
         {/* Banner */}
         <View style={styles.bannerArea}>
           <View style={styles.bannerIconCircle}>
-            <Ionicons name={JEJUM_ESTER.icone} size={40} color="#FFF" />
+            <Ionicons name="heart" size={40} color="#FFF" />
           </View>
-          <Text style={styles.bannerTitulo}>3 Dias</Text>
+          <Text style={styles.bannerTitulo}>7 Dias</Text>
           <Text style={styles.bannerSubtitulo}>Jejum de Ester</Text>
-          <Text style={styles.bannerDescricao}>Jejum, Intercessão e Livramento</Text>
+          <Text style={styles.bannerDescricao}>Orações Diárias</Text>
         </View>
 
         {/* Description */}
@@ -87,7 +88,7 @@ export default function JejumEsterScreen({ navigation }) {
             <Ionicons name="information-circle" size={20} color={COR} />
             <Text style={styles.sectionTitle}>Sobre este jejum</Text>
           </View>
-          <Text style={styles.bodyText}>{JEJUM_ESTER.descricao}</Text>
+          <Text style={styles.bodyText}>{JEJUM_ESTER_CASAMENTO.descricao}</Text>
         </View>
 
         {/* Benefits */}
@@ -96,7 +97,7 @@ export default function JejumEsterScreen({ navigation }) {
             <Ionicons name="star" size={20} color={COR} />
             <Text style={styles.sectionTitle}>No que ajuda</Text>
           </View>
-          {JEJUM_ESTER.beneficios.map((b, i) => (
+          {JEJUM_ESTER_CASAMENTO.beneficios.map((b, i) => (
             <View key={i} style={styles.beneficioRow}>
               <Ionicons name="checkmark-circle" size={18} color={COLORS.success} />
               <Text style={styles.beneficioText}>{b}</Text>
@@ -109,11 +110,12 @@ export default function JejumEsterScreen({ navigation }) {
           <View style={styles.progressHeader}>
             <Ionicons name="flame" size={20} color={COR} />
             <Text style={styles.sectionTitle}>Seu progresso</Text>
-            <Text style={styles.progressCount}>{Math.min(diasCompletos, 3)}/3</Text>
+            <Text style={styles.progressCount}>{Math.min(diasCompletos, totalDias)}/{totalDias}</Text>
           </View>
           <View style={styles.progressBar}>
-            <View style={[styles.progressFill, { width: `${Math.min((diasCompletos / 3) * 100, 100)}%` }]} />
+            <View style={[styles.progressFill, { width: `${Math.min((diasCompletos / totalDias) * 100, 100)}%` }]} />
           </View>
+          <Text style={styles.progressLabel}>{Math.round(Math.min((diasCompletos / totalDias) * 100, 100))}% concluído</Text>
         </View>
 
         {/* Iniciar Jejum */}
@@ -132,32 +134,18 @@ export default function JejumEsterScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
 
-        {/* Propósito: Casamento */}
-        <TouchableOpacity
-          style={styles.casamentoCard}
-          onPress={() => navigation.navigate('JejumEsterCasamento')}
-          activeOpacity={0.85}
-        >
-          <View style={styles.casamentoCardLeft}>
-            <View style={styles.casamentoIconCircle}>
-              <Ionicons name="heart" size={22} color="#C49A19" />
-            </View>
-            <View style={styles.casamentoCardTexto}>
-              <Text style={styles.casamentoCardTag}>PROPÓSITO</Text>
-              <Text style={styles.casamentoCardTitulo}>Casamento</Text>
-              <Text style={styles.casamentoCardSubtitulo}>7 dias de jejum e oração pelo seu casamento</Text>
-            </View>
+        {/* Week header */}
+        <View style={styles.semanaHeader}>
+          <View style={styles.semanaHeaderLeft}>
+            <Ionicons name="calendar" size={22} color={COR} />
+            <Text style={styles.semanaTitle}>Semana 1</Text>
           </View>
-          <Ionicons name="chevron-forward" size={20} color="#C49A19" />
-        </TouchableOpacity>
-
-        {/* Days */}
-        <View style={styles.diasHeader}>
-          <Ionicons name="calendar" size={22} color={COR} />
-          <Text style={styles.diasTitle}>Os 3 Dias</Text>
+          <View style={styles.semanaTag}>
+            <Text style={styles.semanaTagText}>Dias 1-7</Text>
+          </View>
         </View>
 
-        {JEJUM_ESTER.dias.map((diaData) => {
+        {JEJUM_ESTER_CASAMENTO.dias.map((diaData) => {
           const key = `dia_${diaData.dia}`;
           const completo = jejumDias[key];
           const isExpanded = expandedDia === diaData.dia;
@@ -181,9 +169,18 @@ export default function JejumEsterScreen({ navigation }) {
                   )}
                 </View>
                 <View style={styles.diaContent}>
-                  <Text style={styles.diaDiaLabel}>Dia {diaData.dia}</Text>
+                  <Text style={styles.diaDiaLabel}>DIA {diaData.dia}</Text>
                   <Text style={styles.diaTitulo}>{diaData.titulo}</Text>
-                  <Text style={styles.diaSubtitulo}>{diaData.subtitulo}</Text>
+                  <View style={styles.diaMetaRow}>
+                    <View style={styles.diaMetaBadge}>
+                      <Ionicons name="time-outline" size={11} color={COR} />
+                      <Text style={styles.diaMetaText}>{diaData.horarioPrincipal}</Text>
+                    </View>
+                    <View style={styles.diaMetaBadge}>
+                      <Ionicons name="hourglass-outline" size={11} color={COR} />
+                      <Text style={styles.diaMetaText}>{diaData.duracao}</Text>
+                    </View>
+                  </View>
                 </View>
                 <Ionicons
                   name={isExpanded ? 'chevron-up' : 'chevron-down'}
@@ -221,7 +218,7 @@ export default function JejumEsterScreen({ navigation }) {
                             />
                           </View>
                           <View style={styles.oracaoInfo}>
-                            <Text style={styles.oracaoPeriodo}>{oracao.horario} - {oracao.periodo}</Text>
+                            <Text style={styles.oracaoPeriodo}>{oracao.horario} · {oracao.periodo}</Text>
                             <Text style={styles.oracaoTitulo}>{oracao.titulo}</Text>
                           </View>
                           <Ionicons
@@ -310,11 +307,25 @@ const styles = StyleSheet.create({
   progressCount: { fontSize: 15, ...FONTS.bold, color: COR, marginLeft: 'auto' },
   progressBar: { height: 8, backgroundColor: COLORS.borderLight, borderRadius: 4, overflow: 'hidden' },
   progressFill: { height: '100%', backgroundColor: COR, borderRadius: 4 },
-  diasHeader: {
-    flexDirection: 'row', alignItems: 'center', gap: 10,
+  progressLabel: { fontSize: 12, color: COLORS.textLight, marginTop: 6, textAlign: 'right' },
+  iniciarButton: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    gap: 10, marginHorizontal: 16, marginTop: 20, marginBottom: 4,
+    paddingVertical: 16, borderRadius: 14, backgroundColor: COR, ...SHADOWS.medium,
+  },
+  iniciarButtonAtivo: { backgroundColor: COLORS.success },
+  iniciarButtonText: { fontSize: 17, ...FONTS.bold, color: '#FFF' },
+  semanaHeader: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: 20, marginTop: 24, marginBottom: 12,
   },
-  diasTitle: { fontSize: 20, ...FONTS.bold, color: COLORS.text },
+  semanaHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  semanaTitle: { fontSize: 20, ...FONTS.bold, color: COLORS.text },
+  semanaTag: {
+    backgroundColor: COR + '20', paddingHorizontal: 10, paddingVertical: 4,
+    borderRadius: 20,
+  },
+  semanaTagText: { fontSize: 12, ...FONTS.bold, color: COR },
   diaCard: {
     marginHorizontal: 16, marginBottom: 12,
     backgroundColor: COLORS.surface, borderRadius: 16,
@@ -330,9 +341,15 @@ const styles = StyleSheet.create({
   diaNumeroCompleto: { backgroundColor: COR },
   diaNumeroText: { fontSize: 18, ...FONTS.bold, color: COR },
   diaContent: { flex: 1, marginLeft: 14 },
-  diaDiaLabel: { fontSize: 11, color: COR, ...FONTS.bold, textTransform: 'uppercase' },
-  diaTitulo: { fontSize: 16, ...FONTS.bold, color: COLORS.text, marginTop: 1 },
-  diaSubtitulo: { fontSize: 12, color: COLORS.textSecondary, marginTop: 2 },
+  diaDiaLabel: { fontSize: 11, color: COR, ...FONTS.bold, textTransform: 'uppercase', letterSpacing: 0.5 },
+  diaTitulo: { fontSize: 16, ...FONTS.bold, color: COLORS.text, marginTop: 1, marginBottom: 6 },
+  diaMetaRow: { flexDirection: 'row', gap: 6 },
+  diaMetaBadge: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    backgroundColor: COR + '15', paddingHorizontal: 8, paddingVertical: 3,
+    borderRadius: 20,
+  },
+  diaMetaText: { fontSize: 10, color: COR, ...FONTS.semibold },
   diaExpanded: { paddingHorizontal: 16, paddingBottom: 16, borderTopWidth: 1, borderTopColor: COLORS.borderLight },
   diaDescricao: { fontSize: 14, color: COLORS.textSecondary, lineHeight: 22, marginTop: 14, marginBottom: 14 },
   oracoesLabel: { fontSize: 13, color: COLORS.textLight, ...FONTS.medium, marginBottom: 10 },
@@ -365,26 +382,4 @@ const styles = StyleSheet.create({
   marcarButtonCompleto: { backgroundColor: COLORS.surface, borderWidth: 1, borderColor: '#E53935' },
   marcarText: { fontSize: 14, ...FONTS.bold, color: '#FFF' },
   marcarTextCompleto: { color: '#E53935' },
-  iniciarButton: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    gap: 10, marginHorizontal: 16, marginTop: 20, marginBottom: 4,
-    paddingVertical: 16, borderRadius: 14, backgroundColor: COR, ...SHADOWS.medium,
-  },
-  iniciarButtonAtivo: { backgroundColor: COLORS.success },
-  iniciarButtonText: { fontSize: 17, ...FONTS.bold, color: '#FFF' },
-  casamentoCard: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    marginHorizontal: 16, marginTop: 20, marginBottom: 4,
-    padding: 16, backgroundColor: COLORS.surface, borderRadius: 16,
-    borderWidth: 1.5, borderColor: '#C49A19' + '50', ...SHADOWS.small,
-  },
-  casamentoCardLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  casamentoIconCircle: {
-    width: 46, height: 46, borderRadius: 23,
-    backgroundColor: '#C49A19' + '18', alignItems: 'center', justifyContent: 'center',
-  },
-  casamentoCardTexto: { flex: 1, marginLeft: 12 },
-  casamentoCardTag: { fontSize: 10, color: '#C49A19', ...FONTS.bold, textTransform: 'uppercase', letterSpacing: 0.5 },
-  casamentoCardTitulo: { fontSize: 16, ...FONTS.bold, color: COLORS.text, marginTop: 1 },
-  casamentoCardSubtitulo: { fontSize: 12, color: COLORS.textSecondary, marginTop: 2, lineHeight: 16, paddingRight: 8 },
 });

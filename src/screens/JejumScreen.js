@@ -16,6 +16,7 @@ import JejumConcluidoAnimacao from '../components/JejumConcluidoAnimacao';
 import { JEJUM_TIPOS } from '../data/medalhas';
 import { JEJUM_PROPOSITOS } from '../data/jejuns';
 import { JEJUM_ESTER } from '../data/jejumEster';
+import { JEJUM_ESTER_CASAMENTO } from '../data/jejumEsterCasamento';
 import { JEJUM_DANIEL_MEDITACOES } from '../data/jejumDaniel';
 import { JEJUM_PARCIAL_DIAS } from '../data/jejumParcial';
 import { CAUSAS_JEJUM, REFEICOES, ORACOES_POR_REFEICAO } from '../data/jejumNormal';
@@ -33,6 +34,10 @@ const getOracoesParaTipo = (tipo, diaAtual, refeicaoId = null) => {
   switch (tipo) {
     case 'ester': {
       const dia = JEJUM_ESTER.dias?.[diaAtual - 1];
+      return dia?.oracoes || [];
+    }
+    case 'ester-casamento': {
+      const dia = JEJUM_ESTER_CASAMENTO.dias?.[diaAtual - 1];
       return dia?.oracoes || [];
     }
     case 'daniel': {
@@ -113,6 +118,7 @@ export default function JejumScreen({ navigation }) {
     parcial: 'JejumParcial',
     daniel: 'JejumDaniel',
     ester: 'JejumEster',
+    'ester-casamento': 'JejumEsterCasamento',
   };
 
   useEffect(() => {
