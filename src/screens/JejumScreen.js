@@ -91,6 +91,7 @@ export default function JejumScreen({ navigation }) {
     parcial: 'jejumNormal',
     daniel: 'jejumBiblico',
     ester: 'jejumBiblico',
+    'ester-casamento': 'jejumBiblico',
   };
 
   const handleTipoPress = (tipo) => {
@@ -316,6 +317,7 @@ export default function JejumScreen({ navigation }) {
               normal: { tela: 'JejumNormal', icone: 'fast-food', label: 'Ver Orações do Jejum' },
               parcial: { tela: 'JejumParcial', icone: 'leaf', label: 'Ver Orações do Jejum' },
               ester: { tela: 'JejumEster', icone: 'star', label: 'Ver Orações e Meditações' },
+              'ester-casamento': { tela: 'JejumEsterCasamento', icone: 'heart', label: 'Ver Orações do Casamento' },
             };
             const nav = NAV_MAP[tipo] || NAV_MAP.normal;
             navLabel = nav.label;
@@ -492,7 +494,7 @@ export default function JejumScreen({ navigation }) {
           {jejumAtivo ? 'Trocar tipo de jejum:' : 'Escolha seu tipo de jejum:'}
         </Text>
 
-        {JEJUM_TIPOS.map((tipo) => {
+        {JEJUM_TIPOS.filter((t) => !t.oculto).map((tipo) => {
           const isAtivo = jejumAtivo?.tipo === tipo.id;
           const bloqueado = !temAcesso(JEJUM_ACESSO[tipo.id]);
           return (
@@ -591,7 +593,6 @@ export default function JejumScreen({ navigation }) {
         visible={upgradeModal.visible}
         recurso={upgradeModal.recurso}
         onClose={() => setUpgradeModal({ visible: false, recurso: null })}
-        navigation={navigation}
       />
     </View>
   );

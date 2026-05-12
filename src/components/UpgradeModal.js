@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Modal,
   ScrollView,
+  Linking,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -44,7 +45,7 @@ const RECURSO_CONFIG = {
   },
 };
 
-export default function UpgradeModal({ visible, onClose, recurso, navigation }) {
+export default function UpgradeModal({ visible, onClose, recurso }) {
   const config = RECURSO_CONFIG[recurso] || {
     planoNecessario: 'anual',
     titulo: 'Recurso Premium',
@@ -56,7 +57,7 @@ export default function UpgradeModal({ visible, onClose, recurso, navigation }) 
 
   const handleUpgrade = () => {
     onClose();
-    navigation.navigate('Paywall');
+    Linking.openURL(plano.checkoutUrl);
   };
 
   return (

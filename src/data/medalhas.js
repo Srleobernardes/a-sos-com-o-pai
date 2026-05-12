@@ -135,5 +135,6 @@ export const JEJUM_TIPOS = [
     descricao: '7 dias de jejum e oração pelo seu casamento',
     duracao: '7 dias',
     icone: 'heart',
+    oculto: true,
   },
 ];
