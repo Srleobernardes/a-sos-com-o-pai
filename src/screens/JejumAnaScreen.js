@@ -75,7 +75,7 @@ export default function JejumAnaScreen({ navigation }) {
         {/* Banner */}
         <View style={styles.bannerArea}>
           <View style={styles.bannerIconCircle}>
-            <Ionicons name="woman" size={40} color="#FFF" />
+            <Ionicons name="heart-circle" size={40} color="#FFF" />
           </View>
           <Text style={styles.bannerTitulo}>7 Dias</Text>
           <Text style={styles.bannerSubtitulo}>Jejum de Ana</Text>

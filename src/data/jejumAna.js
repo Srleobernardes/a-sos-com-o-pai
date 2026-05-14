@@ -3,7 +3,7 @@ export const JEJUM_ANA = {
   subtitulo: 'Para Mulheres que Desejam Engravidar',
   descricao: 'Baseado em 1 Samuel 1, o Jejum de Ana acompanha a história da mulher que, diante da dor de não ter filhos, não desistiu — ela orou. Ana foi ao templo, chorou diante de Deus, fez um voto e partiu em paz antes de receber a resposta. Este jejum de 7 dias segue o mesmo caminho: da dor à entrega, do silêncio à fé, e da fé ao cântico de quem já confia no desfecho de Deus.',
   cor: '#C49A19',
-  icone: 'woman',
+  icone: 'heart-circle',
   beneficios: [
     'Libertação da ansiedade e da amargura da espera',
     'Fortalecimento da fé mesmo antes de ver o milagre',
