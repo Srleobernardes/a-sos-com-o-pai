@@ -75,11 +75,11 @@ export default function JejumAnaScreen({ navigation }) {
         {/* Banner */}
         <View style={styles.bannerArea}>
           <View style={styles.bannerIconCircle}>
-            <Ionicons name="flower" size={40} color="#FFF" />
+            <Ionicons name="woman" size={40} color="#FFF" />
           </View>
-          <Text style={styles.bannerTitulo}>3 Dias</Text>
+          <Text style={styles.bannerTitulo}>7 Dias</Text>
           <Text style={styles.bannerSubtitulo}>Jejum de Ana</Text>
-          <Text style={styles.bannerDescricao}>Para Mulheres que Desejam Engravidar</Text>
+          <Text style={styles.bannerDescricao}>Orações Diárias</Text>
         </View>
 
         {/* Descrição */}
@@ -138,10 +138,10 @@ export default function JejumAnaScreen({ navigation }) {
         <View style={styles.semanaHeader}>
           <View style={styles.semanaHeaderLeft}>
             <Ionicons name="calendar" size={22} color={COR} />
-            <Text style={styles.semanaTitle}>3 Dias com Ana</Text>
+            <Text style={styles.semanaTitle}>Semana 1</Text>
           </View>
           <View style={styles.semanaTag}>
-            <Text style={styles.semanaTagText}>Dias 1-3</Text>
+            <Text style={styles.semanaTagText}>Dias 1-7</Text>
           </View>
         </View>
 

@@ -141,7 +141,7 @@ export const JEJUM_TIPOS = [
     id: 'ana',
     titulo: 'Jejum de Ana',
     descricao: 'Para mulheres que desejam engravidar',
-    duracao: '3 dias',
-    icone: 'flower',
+    duracao: '7 dias',
+    icone: 'woman',
   },
 ];
