@@ -17,6 +17,7 @@ import { JEJUM_TIPOS } from '../data/medalhas';
 import { JEJUM_PROPOSITOS } from '../data/jejuns';
 import { JEJUM_ESTER } from '../data/jejumEster';
 import { JEJUM_ESTER_CASAMENTO } from '../data/jejumEsterCasamento';
+import { JEJUM_ANA } from '../data/jejumAna';
 import { JEJUM_DANIEL_MEDITACOES } from '../data/jejumDaniel';
 import { JEJUM_PARCIAL_DIAS } from '../data/jejumParcial';
 import { CAUSAS_JEJUM, REFEICOES, ORACOES_POR_REFEICAO } from '../data/jejumNormal';
@@ -38,6 +39,10 @@ const getOracoesParaTipo = (tipo, diaAtual, refeicaoId = null) => {
     }
     case 'ester-casamento': {
       const dia = JEJUM_ESTER_CASAMENTO.dias?.[diaAtual - 1];
+      return dia?.oracoes || [];
+    }
+    case 'ana': {
+      const dia = JEJUM_ANA.dias?.[diaAtual - 1];
       return dia?.oracoes || [];
     }
     case 'daniel': {
@@ -92,6 +97,7 @@ export default function JejumScreen({ navigation }) {
     daniel: 'jejumBiblico',
     ester: 'jejumBiblico',
     'ester-casamento': 'jejumBiblico',
+    ana: 'jejumBiblico',
   };
 
   const handleTipoPress = (tipo) => {
@@ -120,6 +126,7 @@ export default function JejumScreen({ navigation }) {
     daniel: 'JejumDaniel',
     ester: 'JejumEster',
     'ester-casamento': 'JejumEsterCasamento',
+    ana: 'JejumAna',
   };
 
   useEffect(() => {
@@ -318,6 +325,7 @@ export default function JejumScreen({ navigation }) {
               parcial: { tela: 'JejumParcial', icone: 'leaf', label: 'Ver Orações do Jejum' },
               ester: { tela: 'JejumEster', icone: 'star', label: 'Ver Orações e Meditações' },
               'ester-casamento': { tela: 'JejumEsterCasamento', icone: 'heart', label: 'Ver Orações do Casamento' },
+              ana: { tela: 'JejumAna', icone: 'flower', label: 'Ver Orações do Jejum de Ana' },
             };
             const nav = NAV_MAP[tipo] || NAV_MAP.normal;
             navLabel = nav.label;

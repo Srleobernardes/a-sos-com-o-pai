@@ -1,0 +1,87 @@
+export const JEJUM_ANA = {
+  titulo: 'Jejum de Ana',
+  subtitulo: 'Para Mulheres que Desejam Engravidar',
+  descricao: 'Baseado em 1 Samuel 1, o Jejum de Ana acompanha a história da mulher que, diante da dor de não ter filhos, não desistiu — ela orou. Ana foi ao templo, chorou diante de Deus, fez um voto e partiu em paz antes de receber a resposta. Este jejum de 3 dias segue o mesmo caminho: da dor à entrega, da entrega à fé, e da fé ao cântico de quem já confia no desfecho de Deus.',
+  cor: '#AD1457',
+  icone: 'flower',
+  beneficios: [
+    'Libertação da ansiedade e da amargura da espera',
+    'Fortalecimento da fé mesmo antes de ver o milagre',
+    'Consagração do desejo de ser mãe diante de Deus',
+    'Paz sobrenatural que precede e acompanha o milagre',
+  ],
+  dias: [
+    {
+      dia: 1,
+      titulo: 'O Choro Diante de Deus',
+      subtitulo: 'Quando a dor vira oração',
+      duracao: '15 minutos',
+      horarioPrincipal: '06h00 (Ao despertar)',
+      descricao: 'Ana não fingiu que estava bem. No meio do templo, com o coração partido, ela chorou e orou com amargura de alma (1 Samuel 1:10). Não havia palavras perfeitas — só dor entregue nas mãos de Deus. Hoje você jejua o almoço. Ao acordar, reserve 15 minutos para trazer sua dor diante do Senhor, exatamente como ela é — sem embelezar, sem esconder.',
+      oracoes: [
+        {
+          horario: '06h00 (Ao despertar)',
+          periodo: 'Início',
+          titulo: 'Levando a Dor ao Altar',
+          referencia: '1 Samuel 1:10 e Salmos 34:18',
+          texto: 'Senhor, assim como Ana, venho diante de Ti com amargura de alma. O meu coração não consegue fingir que está bem. Cada mês que passa, cada esperança que não se cumpre, cada olhar que me pergunta sem palavras — tudo isso eu trago para Ti agora. Tua Palavra diz que estás perto dos que têm o coração quebrantado e salvas os de espírito contrito. Não te peço que entendas a minha dor — Tu já a conheces. Peço que a recebas. Que ela se transforme em oração no altar do Teu trono. Amém.',
+        },
+        {
+          horario: '21h00 (Noite)',
+          periodo: 'Noite',
+          titulo: 'O Voto que Nasce do Amor',
+          referencia: '1 Samuel 1:11 e Salmos 127:3',
+          texto: 'Pai, Ana fez um voto: se Tu me deres um filho, eu o devolverei a Ti por todos os dias de sua vida. Ela não pediu o filho para si — ela pediu para oferecer. Esta noite, examino o meu coração: será que quero esta criança para o Senhor, ou apenas para mim? Transforma o meu desejo, Pai. Que o filho que peço seja fruto do amor, consagrado desde o ventre para a Tua glória. Os filhos são herança do Senhor; o fruto do ventre, Teu galardão. Recebe o meu voto esta noite. Amém.',
+        },
+      ],
+    },
+    {
+      dia: 2,
+      titulo: 'A Fé que Antecipa o Milagre',
+      subtitulo: 'Partir em paz antes de ver a resposta',
+      duracao: '15 minutos',
+      horarioPrincipal: '06h00 (Ao despertar)',
+      descricao: 'Depois de orar, a Bíblia diz que Ana "foi embora, comeu, e não estava mais com o semblante triste" (1 Samuel 1:18). O milagre ainda não havia acontecido — mas ela partiu como se já tivesse recebido a resposta. Isso é fé real: não a ausência de lágrimas, mas a paz que vem quando você entrega e confia. Hoje você jejua o café da manhã. Ao acordar, ore pela paz sobrenatural que só Deus dá.',
+      oracoes: [
+        {
+          horario: '06h00 (Ao despertar)',
+          periodo: 'Início',
+          titulo: 'A Paz que Precede o Milagre',
+          referencia: 'Filipenses 4:6-7 e 1 Samuel 1:18',
+          texto: 'Senhor, assim como Ana foi embora sem mais estar triste, peço que esta paz seja minha também. Não porque o milagre já aconteceu, mas porque confio em Quem ouviu a minha oração. Em nada sejais ansiosos; antes, em tudo, mediante oração e súplica com ação de graças, apresentai os vossos pedidos a Deus. E a paz de Deus, que excede todo entendimento, guardará os vossos corações e as vossas mentes em Cristo Jesus. Guarda o meu coração hoje, Pai. Que eu parta desta oração em paz. Amém.',
+        },
+        {
+          horario: '21h00 (Noite)',
+          periodo: 'Noite',
+          titulo: 'Crendo Antes de Ver',
+          referencia: 'Hebreus 11:1 e Romanos 4:18',
+          texto: 'Pai, a fé é a certeza de coisas que se esperam, a convicção de fatos que não se veem. Abraão, contrariando toda esperança, creu na esperança, para se tornar pai de muitas nações. Esta noite, eu escolho crer contrariando toda esperança humana. Não os números, não as estatísticas, não o que os médicos disseram ou deixaram de dizer. Minha fé não está nas circunstâncias — está em Ti, Deus que crias do nada e chamas para a existência as coisas que não existem. Recebo em fé a resposta que ainda não vejo. Amém.',
+        },
+      ],
+    },
+    {
+      dia: 3,
+      titulo: 'A Entrega que Recebe de Volta',
+      subtitulo: 'Como Ana recebeu e depois devolveu',
+      duracao: '15 minutos',
+      horarioPrincipal: '06h00 (Ao despertar)',
+      descricao: 'Ana recebeu Samuel — e cumpriu o voto. Ela o amamentou, esperou, e então o levou ao templo dizendo: "Por este menino eu orava, e o Senhor me concedeu o que lhe pedi" (1 Samuel 1:27). A maior prova de fé de Ana não foi pedir — foi entregar de volta. Hoje você jejua o jantar. Encerre o jejum com um ato de entrega: declare que a criança que você pede, se o Senhor der, pertence a Deus.',
+      oracoes: [
+        {
+          horario: '06h00 (Ao despertar)',
+          periodo: 'Início',
+          titulo: 'Por Este(a) Filho(a) Eu Orava',
+          referencia: '1 Samuel 1:27 e Salmos 113:9',
+          texto: 'Senhor, assim como Ana disse "por este menino eu orava", declaro hoje: por este filho ou filha que ainda carrego em oração, eu chamo a Tua graça. Tua Palavra diz que fazes a mulher estéril habitar na casa, tornando-a alegre mãe de filhos. Esta é a Tua promessa, e em Ti confio. Hoje não peço mais com amargura — peço com gratidão antecipada, como quem já recebeu a resposta e quer reconhecer a Tua mão. Age na minha vida, no meu corpo, no meu ventre. Seja feito segundo a Tua vontade e a Tua misericórdia. Amém.',
+        },
+        {
+          horario: '18h00 (Encerramento)',
+          periodo: 'Encerramento',
+          titulo: 'O Cântico de Entrega',
+          referencia: '1 Samuel 2:1-2 e Lucas 1:46-47',
+          texto: 'Minha alma exulta no Senhor, meu coração se alegra no meu Salvador. Encerro este jejum como Ana encerrou o dela — não com uma exigência, mas com um cântico. Senhor, aquele ou aquela que Tu deres será Teu antes de ser meu. Consagro este desejo, este ventre, este amor que já existe para um filho que ainda não veio — mas em quem creio que virá. Se for Tua vontade, que seja agora. Se for Tua sabedoria, que seja no tempo certo. O que não muda é que confio em Ti. Amém.',
+        },
+      ],
+    },
+  ],
+};

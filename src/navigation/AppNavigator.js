@@ -28,6 +28,7 @@ import VideoOracaoScreen from '../screens/VideoOracaoScreen';
 import JejumDanielScreen from '../screens/JejumDanielScreen';
 import JejumEsterScreen from '../screens/JejumEsterScreen';
 import JejumEsterCasamentoScreen from '../screens/JejumEsterCasamentoScreen';
+import JejumAnaScreen from '../screens/JejumAnaScreen';
 import JejumNormalScreen from '../screens/JejumNormalScreen';
 import JejumParcialScreen from '../screens/JejumParcialScreen';
 import PaywallScreen from '../screens/PaywallScreen';
@@ -70,6 +71,7 @@ function JejumStack() {
       <Stack.Screen name="JejumDaniel" component={JejumDanielScreen} />
       <Stack.Screen name="JejumEster" component={JejumEsterScreen} />
       <Stack.Screen name="JejumEsterCasamento" component={JejumEsterCasamentoScreen} />
+      <Stack.Screen name="JejumAna" component={JejumAnaScreen} />
       <Stack.Screen name="JejumNormal" component={JejumNormalScreen} />
       <Stack.Screen name="JejumParcial" component={JejumParcialScreen} />
     </Stack.Navigator>
